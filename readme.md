@@ -40,4 +40,3 @@
 - Ensure you have a `.env` file at project root (see `.env.example`).
 - Adjust `USE_SQLITE` and database-related env vars before running the app.
 - `make env` will skip if `.env` already exists.
-
