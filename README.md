@@ -1,6 +1,6 @@
 ## Project Template
 
-### A django starter template for any python/django related projects.
+### A Django starter template for any python/django related projects.
 
 ## Quick start
 
@@ -11,13 +11,19 @@
    make setup
    ```
 
-   This installs dependencies, creates `.env` from `.env.example` (if it doesn't exist), and runs migrations.
+   This optionally creates a virtual environment (`../.venv`), installs dependencies, and creates `.env` from `.env.example` (if it doesn't exist).
 
-3. Set up env variables based on `.env.example`:
+3. Configure your environment variables in `.env`:
 
    → To use SQLite, set `USE_SQLITE=TRUE`, otherwise configure the database env vars.
 
-4. Start the dev server:
+4. Apply database migrations:
+
+   ```bash
+   make migrate
+   ```
+
+5. Start the dev server:
 
    ```bash
    python manage.py runserver
@@ -27,7 +33,7 @@
 
 | Command                | Action                                  |
 |------------------------|-----------------------------------------|
-| `make setup`           | Run install, create `.env`, and migrate |
+| `make setup`           | Optionally create `../.venv`, install dependencies, create `.env` (prompts to configure before migrating) |
 | `make install`         | Install dependencies                    |
 | `make env`             | Create `.env` from `.env.example`       |
 | `make migrate`         | Apply database migrations               |
@@ -38,5 +44,7 @@
 ## Notes
 
 - Ensure you have a `.env` file at project root (see `.env.example`).
-- Adjust `USE_SQLITE` and database-related env vars before running the app.
+- Adjust `USE_SQLITE` and database-related env vars before running `make migrate`.
+- `make setup` does **not** run migrations; run `make migrate` separately after configuring `.env`.
 - `make env` will skip if `.env` already exists.
+- When `make setup` creates a virtual environment, it is placed at `../.venv` (one level above the project root).
