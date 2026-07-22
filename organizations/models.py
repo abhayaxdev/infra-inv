@@ -61,11 +61,11 @@ class Deploy(BaseModel):
         verbose_name_plural = "Deploys"
 
 
-class DemoCredentials(BaseModel):
+class Credential(BaseModel):
     deploy = models.ForeignKey(
         Deploy,
         on_delete=models.CASCADE,
-        related_name="demo_credentials",
+        related_name="credentials",
     )
     username = models.CharField(max_length=255)
     password = EncryptedTextField()
@@ -75,8 +75,8 @@ class DemoCredentials(BaseModel):
         return f"{self.username} ({self.deploy})"
 
     class Meta:
-        verbose_name = "Demo Credential"
-        verbose_name_plural = "Demo Credentials"
+        verbose_name = "Credential"
+        verbose_name_plural = "Credentials"
 
 
 class Domain(BaseModel):

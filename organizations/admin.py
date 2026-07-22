@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from organizations.models import DemoCredentials, Deploy, Domain, Organization, Project
+from organizations.models import Credential, Deploy, Domain, Organization, Project
 
 
 @admin.register(Organization)
@@ -27,8 +27,8 @@ class DeployAdmin(admin.ModelAdmin):
     search_fields = ("title", "project__title")
 
 
-@admin.register(DemoCredentials)
-class DemoCredentialsAdmin(admin.ModelAdmin):
+@admin.register(Credential)
+class CredentialsAdmin(admin.ModelAdmin):
     list_display = ("username", "user_role", "deploy", "is_obsolete")
     list_editable = ("user_role", "is_obsolete")
     list_filter = ("user_role", "is_obsolete", "deploy")

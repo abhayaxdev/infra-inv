@@ -43,7 +43,7 @@ Deploy
 
     [x]Done
 
-DemoCredentials -> this doesn not store server keys, but demo credentials for the various deployed apps
+Credentials -> this doesn not store server keys, but credentials for the various deployed apps
     - a field with FK relationship to Deploy
     - store usernames, password and user roles in standalone fields, 
     - ensure that password field can store encrypted items

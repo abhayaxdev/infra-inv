@@ -22,7 +22,7 @@ django-debug-toolbar==6.2.0
 # Image Processing
 pillow==12.1.1
 
-# Encryption (used for DemoCredentials password field)
+# Encryption (used for Credentials password field)
 cryptography
 
 
