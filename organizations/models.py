@@ -61,9 +61,25 @@ class Deploy(BaseModel):
         verbose_name_plural = "Deploys"
 
 
-class Credential(BaseModel):
+class Domain(BaseModel):
     deploy = models.ForeignKey(
         Deploy,
+        on_delete=models.CASCADE,
+        related_name="domains",
+    )
+    url = models.URLField()
+
+    def __str__(self):
+        return self.url
+
+    class Meta:
+        verbose_name = "Domain"
+        verbose_name_plural = "Domains"
+
+
+class Credential(BaseModel):
+    deploy = models.ForeignKey(
+        Domain,
         on_delete=models.CASCADE,
         related_name="credentials",
     )
@@ -79,17 +95,3 @@ class Credential(BaseModel):
         verbose_name_plural = "Credentials"
 
 
-class Domain(BaseModel):
-    deploy = models.ForeignKey(
-        Deploy,
-        on_delete=models.CASCADE,
-        related_name="domains",
-    )
-    url = models.URLField()
-
-    def __str__(self):
-        return self.url
-
-    class Meta:
-        verbose_name = "Domain"
-        verbose_name_plural = "Domains"
