@@ -6,132 +6,54 @@
     <title>InfraInv — Infrastructure Inventory</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --fg: #fafafa;
-            --muted: #888;
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #fafafa;
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                }
+            }
         }
-
-        body {
-            background: var(--bg);
-            color: var(--fg);
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .line-art {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .line-art svg {
-            position: absolute;
-            top: 28%;
-            right: 8%;
-        }
-
-        main {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            max-width: 700px;
-            padding: 0 32px;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 14px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-            color: #a5b4fc;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            margin-bottom: 32px;
-        }
-        .badge-dot {
-            width: 5px; height: 5px;
-            border-radius: 50%;
-            background: #818cf8;
-        }
-
-        h1 {
-            font-size: clamp(42px, 6.5vw, 68px);
-            font-weight: 700;
-            letter-spacing: -0.045em;
-            line-height: 1.04;
-            margin-bottom: 20px;
-            color: var(--fg);
-        }
-
-        .subtitle {
-            color: var(--muted);
-            font-size: 18px;
-            line-height: 1.65;
-            max-width: 460px;
-            margin: 0 auto 48px;
-            letter-spacing: -0.01em;
-        }
-
-        .pills {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .pill {
-            padding: 6px 18px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: -0.005em;
-            color: var(--muted);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            transition: border-color 0.2s, color 0.2s;
-            cursor: default;
-        }
-        .pill:hover {
-            border-color: rgba(99, 102, 241, 0.3);
-            color: var(--fg);
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <main>
-        <div class="badge">
-            <span class="badge-dot"></span>
+<body class="font-sans antialiased bg-zinc-50 text-zinc-900 min-h-screen" style="font-feature-settings: 'tnum' 1, 'cv01' 1, 'cv03' 1, 'cv04' 1, 'cv10' 1;">
+
+    <header class="flex items-center justify-between px-6 py-4 border-b border-zinc-200/60">
+        <a href="/" class="text-sm font-semibold text-zinc-900 tracking-tight">InfraInv</a>
+        <a href="/dashboard/" class="text-xs font-medium text-zinc-500 hover:text-indigo-600 transition-colors">Dashboard →</a>
+    </header>
+
+    <main class="flex flex-col items-center justify-center pt-32 pb-20 px-6 text-center">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-indigo-100 bg-indigo-50/60 text-[13px] font-medium text-indigo-600 mb-8 tracking-tight">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
             Coming Soon
         </div>
 
-        <h1>Infrastructure Inventory</h1>
+        <h1 class="text-5xl md:text-6xl font-bold tracking-tight text-zinc-900 max-w-2xl leading-[1.08] mb-4">
+            Infrastructure Inventory
+        </h1>
 
-        <p class="subtitle">
+        <p class="text-lg text-zinc-500 max-w-lg mb-10 leading-relaxed">
             Deployment intelligence across all environments — for every stakeholder.
             No middlemen, no guesswork.
         </p>
 
-        <div class="pills">
-            <span class="pill">Dev</span>
-            <span class="pill">Staging</span>
-            <span class="pill">UAT</span>
-            <span class="pill">Production</span>
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-10">
+            <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-indigo-200 hover:text-zinc-700 transition-colors cursor-default">Dev</span>
+            <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-indigo-200 hover:text-zinc-700 transition-colors cursor-default">Staging</span>
+            <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-indigo-200 hover:text-zinc-700 transition-colors cursor-default">UAT</span>
+            <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-indigo-200 hover:text-zinc-700 transition-colors cursor-default">Production</span>
         </div>
+
+        <a href="/dashboard/" class="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white bg-zinc-900 rounded-lg hover:bg-zinc-800 transition-colors shadow-sm">
+            View Demo Dashboard
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
     </main>
+
 </body>
 </html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfraInv — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans antialiased text-zinc-900 bg-zinc-50" style="font-feature-settings: 'tnum' 1, 'cv01' 1, 'cv03' 1, 'cv04' 1, 'cv10' 1;">
+
+<div class="flex h-screen overflow-hidden">
+
+<!-- LEFT ICON RAIL -->
+<aside class="w-[52px] flex-shrink-0 flex flex-col items-center py-4 bg-zinc-100 border-r border-zinc-200">
+    <svg class="w-6 h-6 text-zinc-900 mb-8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L24 22H0L12 2z"/></svg>
+    <svg class="w-5 h-5 text-zinc-400 mb-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    <nav class="flex-1 flex flex-col items-center gap-5">
+        <button class="w-8 h-8 flex items-center justify-center rounded-md bg-zinc-200 text-zinc-800" title="Projects">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </button>
+        <button class="w-8 h-8 flex items-center justify-center rounded-md text-zinc-400 hover:text-zinc-700 hover:bg-zinc-200" title="Environments">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="w-8 h-8 flex items-center justify-center rounded-md text-zinc-400 hover:text-zinc-700 hover:bg-zinc-200" title="Security">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="w-8 h-8 flex items-center justify-center rounded-md text-zinc-400 hover:text-zinc-700 hover:bg-zinc-200" title="Users">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-linecap="round"/></svg>
+        </button>
+        <button class="w-8 h-8 flex items-center justify-center rounded-md text-zinc-400 hover:text-zinc-700 hover:bg-zinc-200" title="Settings">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 8.4a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke-linecap="round"/></svg>
+        </button>
+    </nav>
+    <div class="flex flex-col items-center gap-5 mt-auto pb-2">
+        <button class="w-8 h-8 flex items-center justify-center rounded-md text-zinc-400 hover:text-zinc-700 hover:bg-zinc-200" title="Help">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>
+        </button>
+        <div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-[10px] font-semibold text-indigo-600">AG</div>
+    </div>
+</aside>
+
+<!-- PROJECTS SIDEBAR -->
+<aside class="w-[264px] flex-shrink-0 border-r border-zinc-200 bg-zinc-50 flex flex-col">
+    <div class="flex items-center justify-between px-4 py-[14px] border-b border-zinc-200/60">
+        <h2 class="text-sm font-semibold text-zinc-900 tracking-tight">Projects</h2>
+        <button onclick="showToast('Add project form coming soon')" class="w-6 h-6 flex items-center justify-center rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+    <div class="px-3 py-3">
+        <div class="relative">
+            <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+            <input id="searchInput" type="text" placeholder="Search projects..." oninput="filterProjects()" class="w-full pl-8 pr-12 py-1.5 text-xs bg-zinc-200/50 border border-zinc-200 rounded-md text-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-indigo-200 focus:border-indigo-300">
+            <kbd class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-400 font-medium bg-white border border-zinc-200 rounded px-1 py-0.5">⌘K</kbd>
+        </div>
+    </div>
+    <div id="projectList" class="flex-1 overflow-y-auto">
+        <!-- rendered by JS -->
+    </div>
+    <div id="pagination" class="flex items-center justify-between px-4 py-3 border-t border-zinc-200/60 text-[11px] text-zinc-400">
+        <!-- rendered by JS -->
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="flex-1 overflow-y-auto bg-zinc-50" id="mainContent">
+    <!-- rendered by JS -->
+</main>
+
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900 text-white text-xs px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-200 pointer-events-none z-50"></div>
+
+<script>
+// ── MOCK DATA ──────────────────────────────────────────────
+var MOCK = {
+    projects: [
+        {
+            id: 1, name: 'Healthy Ayush', subtitle: 'Healthcare Management System', initial: 'H',
+            owner: 'Abhaya Gautam', repo: 'github.com/ajnablab/healthy-ayush', url: 'https://healthyayush.com',
+            lastDeploy: '2d ago', lastUpdated: '2d ago',
+            dotColors: ['green','green','green','gray'],
+            envs: [
+                { name:'PRODUCTION', status:'active', url:'https://healthyayush.com', server:'prod-01.ajnablab.com', region:'Singapore (SG)', services:['Django','Celery','Redis','PostgreSQL','Nginx','+1'], updated:'2d ago', expanded:true, creds:[{role:'Admin Account',username:'admin@healthyayush.com',password:'Adm!nP@ss2024'},{role:'QA Account',username:'qa-tester@healthyayush.com',password:'QA@Test2024!'},{role:'Readonly Account',username:'readonly@healthyayush.com',password:'R3ad0n!y#Acc'}]},
+                { name:'STAGING', status:'maintenance', url:'https://staging.healthyayush.com', server:'staging-01.ajnablab.com', region:'Singapore (SG)', services:['Django','Celery','Redis','PostgreSQL','Nginx'], updated:'5d ago', expanded:false, creds:[{role:'Admin Account',username:'admin',password:'St@g!ng2024'}]},
+                { name:'UAT', status:'active', url:'https://uat.healthyayush.com', server:'uat-01.ajnablab.com', region:'Singapore (SG)', services:['Django','Redis','PostgreSQL'], updated:'1w ago', expanded:false, creds:[{role:'Admin Account',username:'uat-admin',password:'U@tP@ss2024'}]},
+                { name:'DEV', status:'inactive', url:'https://dev.healthyayush.com', server:'dev-01.ajnablab.com', region:'Singapore (SG)', services:['PostgreSQL'], updated:'2w ago', expanded:false, creds:[]},
+            ]
+        },
+        {id:2,name:'Dice SMS',subtitle:'Communication Platform',initial:'D',owner:'Rajan Shrestha',repo:'github.com/ajnablab/dice-sms',url:'https://dicesms.com',lastDeploy:'2d ago',lastUpdated:'2d ago',dotColors:['green','green','gray'],envs:[{name:'PRODUCTION',status:'active',url:'https://dicesms.com',server:'prod-01.dicesms.com',region:'Bangalore (IN)',services:['Node.js','Redis','PostgreSQL','Nginx'],updated:'2d ago',expanded:false,creds:[{role:'Admin Account',username:'admin@dicesms.com',password:'D!ce@dm!n'}]},{name:'STAGING',status:'active',url:'https://staging.dicesms.com',server:'staging-01.dicesms.com',region:'Bangalore (IN)',services:['Node.js','Redis','PostgreSQL'],updated:'4d ago',expanded:false,creds:[]},{name:'DEV',status:'inactive',url:'https://dev.dicesms.com',server:'dev-01.dicesms.com',region:'Bangalore (IN)',services:['PostgreSQL'],updated:'1w ago',expanded:false,creds:[]}]},
+        {id:3,name:'Pick & Sip',subtitle:'E-Commerce Platform',initial:'P',owner:'Sagar Lama',repo:'github.com/ajnablab/pick-and-sip',url:'https://picknsip.com',lastDeploy:'2d ago',lastUpdated:'2d ago',dotColors:['green','green'],envs:[{name:'PRODUCTION',status:'active',url:'https://picknsip.com',server:'prod-01.picknsip.com',region:'Singapore (SG)',services:['Django','Celery','Redis','PostgreSQL','Nginx','ElasticSearch'],updated:'2d ago',expanded:false,creds:[{role:'Admin Account',username:'admin@picknsip.com',password:'P!ck@S!p#23'}]},{name:'UAT',status:'active',url:'https://uat.picknsip.com',server:'uat-01.picknsip.com',region:'Singapore (SG)',services:['Django','Redis','PostgreSQL'],updated:'1w ago',expanded:false,creds:[]}]},
+        {id:4,name:'Ajna LMS',subtitle:'Learning Management System',initial:'A',owner:'Bikash Gurung',repo:'github.com/ajnablab/ajna-lms',url:'https://ajnalms.com',lastDeploy:'2d ago',lastUpdated:'2d ago',dotColors:['green','yellow','gray'],envs:[{name:'PRODUCTION',status:'active',url:'https://ajnalms.com',server:'prod-01.ajnalms.com',region:'Mumbai (IN)',services:['Django','Celery','Redis','PostgreSQL','Nginx','MinIO'],updated:'2d ago',expanded:false,creds:[{role:'Admin Account',username:'admin@ajnalms.com',password:'Ajna@dm!n24'},{role:'Instructor Account',username:'instructor',password:'!nstruct0r!'}]},{name:'STAGING',status:'maintenance',url:'https://staging.ajnalms.com',server:'staging-01.ajnalms.com',region:'Mumbai (IN)',services:['Django','Redis','PostgreSQL'],updated:'1w ago',expanded:false,creds:[]},{name:'DEV',status:'inactive',url:'https://dev.ajnalms.com',server:'dev-01.ajnalms.com',region:'Mumbai (IN)',services:['PostgreSQL'],updated:'2w ago',expanded:false,creds:[]}]},
+        {id:5,name:'OPDPAY',subtitle:'Payment Gateway',initial:'O',owner:'Prakash Rai',repo:'github.com/ajnablab/opdpay',url:'https://opdpay.com',lastDeploy:'2d ago',lastUpdated:'2d ago',dotColors:['gray'],envs:[{name:'STAGING',status:'inactive',url:'https://staging.opdpay.com',server:'staging-01.opdpay.com',region:'Singapore (SG)',services:['Go','Redis','PostgreSQL'],updated:'3w ago',expanded:false,creds:[]}]},
+        {id:6,name:'NepHealth',subtitle:'Health Records Platform',initial:'N',owner:'Sita Devi',repo:'github.com/ajnablab/nephealth',url:'https://nephealth.com',lastDeploy:'5d ago',lastUpdated:'3d ago',dotColors:['green','green','green','yellow'],envs:[{name:'PRODUCTION',status:'active',url:'https://nephealth.com',server:'prod-01.nephealth.com',region:'Kathmandu (NP)',services:['Django','Celery','Redis','PostgreSQL','Nginx'],updated:'5d ago',expanded:false,creds:[{role:'Admin Account',username:'admin@nephealth.com',password:'N3p@H#lth2024'}]},{name:'STAGING',status:'active',url:'https://staging.nephealth.com',server:'staging-01.nephealth.com',region:'Kathmandu (NP)',services:['Django','Redis','PostgreSQL'],updated:'1w ago',expanded:false,creds:[]},{name:'UAT',status:'active',url:'https://uat.nephealth.com',server:'uat-01.nephealth.com',region:'Kathmandu (NP)',services:['Django','PostgreSQL'],updated:'1w ago',expanded:false,creds:[]},{name:'DEV',status:'maintenance',url:'https://dev.nephealth.com',server:'dev-01.nephealth.com',region:'Kathmandu (NP)',services:['PostgreSQL'],updated:'2w ago',expanded:false,creds:[]}]},
+        {id:7,name:'KhaltiPay',subtitle:'Digital Wallet',initial:'K',owner:'Anil Maharjan',repo:'github.com/ajnablab/khaltepay',url:'https://khaltepay.com',lastDeploy:'1d ago',lastUpdated:'1d ago',dotColors:['green','green'],envs:[{name:'PRODUCTION',status:'active',url:'https://khaltepay.com',server:'prod-01.khaltepay.com',region:'Bangalore (IN)',services:['Node.js','Redis','PostgreSQL','Nginx','Kafka'],updated:'1d ago',expanded:false,creds:[{role:'Admin Account',username:'admin@khaltepay.com',password:'Kh@lt!P@y'}]},{name:'UAT',status:'active',url:'https://uat.khaltepay.com',server:'uat-01.khaltepay.com',region:'Bangalore (IN)',services:['Node.js','Redis','PostgreSQL'],updated:'3d ago',expanded:false,creds:[]}]},
+        {id:8,name:'Sajilo HR',subtitle:'HR Management',initial:'S',owner:'Maya Tamang',repo:'github.com/ajnablab/sajilohr',url:'https://sajilohr.com',lastDeploy:'6d ago',lastUpdated:'4d ago',dotColors:['green','gray'],envs:[{name:'PRODUCTION',status:'active',url:'https://sajilohr.com',server:'prod-01.sajilohr.com',region:'Singapore (SG)',services:['Django','Celery','Redis','PostgreSQL','Nginx'],updated:'6d ago',expanded:false,creds:[{role:'Admin Account',username:'admin@sajilohr.com',password:'S@j!l0HR#'}]},{name:'DEV',status:'inactive',url:'https://dev.sajilohr.com',server:'dev-01.sajilohr.com',region:'Singapore (SG)',services:['PostgreSQL'],updated:'2w ago',expanded:false,creds:[]}]},
+        {id:9,name:'Foodmandu',subtitle:'Food Delivery',initial:'F',owner:'Bishal Thapa',repo:'github.com/ajnablab/foodmandu',url:'https://foodmandu.com',lastDeploy:'12h ago',lastUpdated:'12h ago',dotColors:['green','green','green'],envs:[{name:'PRODUCTION',status:'active',url:'https://foodmandu.com',server:'prod-01.foodmandu.com',region:'Singapore (SG)',services:['Node.js','Redis','PostgreSQL','Nginx','ElasticSearch','Kafka'],updated:'12h ago',expanded:false,creds:[{role:'Admin Account',username:'admin@foodmandu.com',password:'F00d@M@ndu2024'},{role:'Ops Account',username:'ops@foodmandu.com',password:'0ps@Team!'}]},{name:'STAGING',status:'active',url:'https://staging.foodmandu.com',server:'staging-01.foodmandu.com',region:'Singapore (SG)',services:['Node.js','Redis','PostgreSQL','Nginx'],updated:'2d ago',expanded:false,creds:[]},{name:'UAT',status:'active',url:'https://uat.foodmandu.com',server:'uat-01.foodmandu.com',region:'Singapore (SG)',services:['Node.js','Redis','PostgreSQL'],updated:'3d ago',expanded:false,creds:[]}]},
+        {id:10,name:'Mero Doctor',subtitle:'Telemedicine',initial:'M',owner:'Dr. Sunil KC',repo:'github.com/ajnablab/merodoctor',url:'https://merodoctor.com',lastDeploy:'3d ago',lastUpdated:'2d ago',dotColors:['green','green'],envs:[{name:'PRODUCTION',status:'active',url:'https://merodoctor.com',server:'prod-01.merodoctor.com',region:'Mumbai (IN)',services:['Django','Celery','Redis','PostgreSQL','Nginx','WebRTC'],updated:'3d ago',expanded:false,creds:[{role:'Admin Account',username:'admin@merodoctor.com',password:'M3r0@D0ct0r'}]},{name:'STAGING',status:'active',url:'https://staging.merodoctor.com',server:'staging-01.merodoctor.com',region:'Mumbai (IN)',services:['Django','Redis','PostgreSQL'],updated:'1w ago',expanded:false,creds:[]}]},
+        {id:11,name:'Sasto Deal',subtitle:'Deals Aggregator',initial:'S',owner:'Kiran Bista',repo:'github.com/ajnablab/sastodeal',url:'https://sastodeal.com',lastDeploy:'1mo ago',lastUpdated:'3w ago',dotColors:['gray'],envs:[{name:'PRODUCTION',status:'inactive',url:'https://sastodeal.com',server:'prod-01.sastodeal.com',region:'Singapore (SG)',services:['Django','Redis','PostgreSQL','Nginx'],updated:'1mo ago',expanded:false,creds:[{role:'Admin Account',username:'admin@sastodeal.com',password:'S@stoD3@l!'}]}]},
+        {id:12,name:'TaxiSarathi',subtitle:'Ride Hailing',initial:'T',owner:'Deepak Joshi',repo:'github.com/ajnablab/taxisarathi',url:'https://taxisarathi.com',lastDeploy:'2d ago',lastUpdated:'1d ago',dotColors:['green','green','yellow','gray'],envs:[{name:'PRODUCTION',status:'active',url:'https://taxisarathi.com',server:'prod-01.taxisarathi.com',region:'Singapore (SG)',services:['Node.js','Redis','PostgreSQL','Nginx','Kafka','Socket.io'],updated:'2d ago',expanded:false,creds:[{role:'Admin Account',username:'admin@taxisarathi.com',password:'T@x!S@rath!'},{role:'Driver Account',username:'driver-api',password:'Dr!v3r@API'}]},{name:'STAGING',status:'active',url:'https://staging.taxisarathi.com',server:'staging-01.taxisarathi.com',region:'Singapore (SG)',services:['Node.js','Redis','PostgreSQL'],updated:'4d ago',expanded:false,creds:[]},{name:'UAT',status:'maintenance',url:'https://uat.taxisarathi.com',server:'uat-01.taxisarathi.com',region:'Singapore (SG)',services:['Node.js','PostgreSQL'],updated:'1w ago',expanded:false,creds:[]},{name:'DEV',status:'inactive',url:'https://dev.taxisarathi.com',server:'dev-01.taxisarathi.com',region:'Singapore (SG)',services:['PostgreSQL'],updated:'2w ago',expanded:false,creds:[]}]},
+    ]
+};
+
+var state = { selectedProjectId: 1, currentPage: 0, perPage: 5, filtered: null };
+
+// ── HELPERS ────────────────────────────────────────────────
+function getProjects() {
+    if (state.filtered) return state.filtered;
+    return MOCK.projects;
+}
+function getSelectedProject() {
+    return MOCK.projects.find(function(p) { return p.id === state.selectedProjectId; });
+}
+function getPageProjects() {
+    var list = getProjects();
+    var start = state.currentPage * state.perPage;
+    return { items: list.slice(start, start + state.perPage), total: list.length };
+}
+function envStatusColor(s) {
+    if (s === 'active') return { accent: '#22c55e', bg: '#f0fdf4', badge: 'bg-green-100 text-green-700', label: 'Active' };
+    if (s === 'maintenance') return { accent: '#eab308', bg: '#fefce8', badge: 'bg-yellow-100 text-yellow-700', label: 'Maintenance' };
+    return { accent: '#9ca3af', bg: '#f9fafb', badge: 'bg-zinc-200/50 text-zinc-500', label: 'Inactive' };
+}
+function dotColor(c) {
+    return c === 'green' ? 'bg-green-500' : c === 'yellow' ? 'bg-yellow-500' : 'bg-zinc-300';
+}
+
+// ── TOAST ──────────────────────────────────────────────────
+var toastTimer;
+function showToast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('opacity-100');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { el.classList.remove('opacity-100'); }, 2000);
+}
+
+// ── SEARCH ─────────────────────────────────────────────────
+function filterProjects() {
+    var q = document.getElementById('searchInput').value.toLowerCase().trim();
+    if (q === '') {
+        state.filtered = null;
+    } else {
+        state.filtered = MOCK.projects.filter(function(p) {
+            return p.name.toLowerCase().indexOf(q) !== -1 || p.subtitle.toLowerCase().indexOf(q) !== -1;
+        });
+    }
+    state.currentPage = 0;
+    renderSidebar();
+}
+
+// ── PAGINATION ─────────────────────────────────────────────
+function prevPage() { if (state.currentPage > 0) { state.currentPage--; renderSidebar(); } }
+function nextPage() {
+    var total = getProjects().length;
+    if ((state.currentPage + 1) * state.perPage < total) { state.currentPage++; renderSidebar(); }
+}
+
+// ── PROJECT SELECTION ──────────────────────────────────────
+function selectProject(id) {
+    state.selectedProjectId = id;
+    renderSidebar();
+    renderMain();
+}
+
+// ── ENV TOGGLE ─────────────────────────────────────────────
+function toggleEnv(idx) {
+    var p = getSelectedProject();
+    p.envs[idx].expanded = !p.envs[idx].expanded;
+    renderMain();
+}
+
+// ── CRED TOGGLE ────────────────────────────────────────────
+function toggleCred(envIdx, credIdx) {
+    var el = document.getElementById('cred-' + envIdx + '-' + credIdx);
+    if (el) el.classList.toggle('hidden');
+    var ch = document.getElementById('credchev-' + envIdx + '-' + credIdx);
+    if (ch) ch.classList.toggle('rotate-180');
+}
+
+// ── COPY URL ───────────────────────────────────────────────
+function copyUrl(url, btn) {
+    navigator.clipboard.writeText(url).then(function() {
+        var orig = btn.innerHTML;
+        btn.innerHTML = '<svg class="w-3.5 h-3.5 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        showToast('Copied to clipboard');
+        setTimeout(function() { btn.innerHTML = orig; }, 1500);
+    });
+}
+
+// ── COPY CREDENTIAL ────────────────────────────────────────
+function copyCred(envIdx, credIdx, field) {
+    var p = getSelectedProject();
+    var val = p.envs[envIdx].creds[credIdx][field];
+    navigator.clipboard.writeText(val).then(function() {
+        showToast('Copied ' + field + ': ' + val);
+    });
+}
+
+// ── RENDER SIDEBAR ─────────────────────────────────────────
+function renderSidebar() {
+    var pg = getPageProjects();
+    var html = '';
+    pg.items.forEach(function(proj) {
+        var sel = proj.id === state.selectedProjectId;
+        html += '<div class="' + (sel ? 'border-l-2 border-indigo-500 bg-indigo-50/40' : 'border-l-2 border-transparent hover:bg-zinc-200/70') + ' px-4 py-3 cursor-pointer" onclick="selectProject(' + proj.id + ')">';
+        html += '<div class="flex items-center gap-3">';
+        html += '<div class="w-8 h-8 rounded-md bg-zinc-900 flex items-center justify-center flex-shrink-0"><span class="text-xs font-semibold text-white">' + proj.initial + '</span></div>';
+        html += '<div class="flex-1 min-w-0"><div class="text-sm font-semibold text-zinc-900 truncate">' + proj.name + '</div>';
+        html += '<div class="text-[11px] text-zinc-500 truncate">' + proj.subtitle + '</div></div>';
+        html += '<span class="text-[11px] text-zinc-400 flex-shrink-0">' + proj.lastUpdated + '</span></div>';
+        html += '<div class="flex gap-1 mt-2 ml-11">';
+        proj.dotColors.forEach(function(c) { html += '<span class="w-1.5 h-1.5 rounded-full ' + dotColor(c) + '"></span>'; });
+        html += '</div></div>';
+    });
+    document.getElementById('projectList').innerHTML = html;
+
+    var total = getProjects().length;
+    var start = state.currentPage * state.perPage + 1;
+    var end = Math.min(start + state.perPage - 1, total);
+    document.getElementById('pagination').innerHTML =
+        '<span>Showing ' + start + '–' + end + ' of ' + total + ' projects</span>' +
+        '<div class="flex gap-1">' +
+        '<button onclick="prevPage()" class="w-5 h-5 flex items-center justify-center rounded hover:bg-zinc-200 ' + (state.currentPage === 0 ? 'text-zinc-300 cursor-default' : 'text-zinc-500') + '"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6" stroke-linecap="round"/></svg></button>' +
+        '<button onclick="nextPage()" class="w-5 h-5 flex items-center justify-center rounded hover:bg-zinc-200 ' + (end >= total ? 'text-zinc-300 cursor-default' : 'text-zinc-500') + '"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round"/></svg></button>' +
+        '</div>';
+}
+
+// ── RENDER MAIN ────────────────────────────────────────────
+function renderMain() {
+    var p = getSelectedProject();
+    var totalEnvs = p.envs.length;
+    var activeCount = 0, maintenanceCount = 0, inactiveCount = 0;
+    p.envs.forEach(function(e) {
+        if (e.status === 'active') activeCount++;
+        else if (e.status === 'maintenance') maintenanceCount++;
+        else inactiveCount++;
+    });
+
+    var html = '';
+    html += '<div class="max-w-4xl mx-auto px-8 py-6">';
+
+    // Header
+    html += '<div class="flex items-start justify-between mb-6">';
+    html += '<div><div class="flex items-center gap-2 mb-1">';
+    html += '<svg class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+    html += '<h1 class="text-xl font-bold text-zinc-900 tracking-tight">' + p.name + '</h1></div>';
+    html += '<p class="text-sm text-zinc-500">' + p.subtitle + '</p></div>';
+    html += '<div class="flex items-center gap-2">';
+    html += '<button onclick="window.open(\'' + p.url + '\',\'_blank\')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 bg-white border border-zinc-200 rounded-md hover:bg-zinc-200/70 transition-colors">';
+    html += '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke-linecap="round"/></svg>Open in New Tab</button>';
+    html += '<button onclick="showToast(\'Edit project form coming soon\')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-zinc-900 rounded-md hover:bg-zinc-800 transition-colors">';
+    html += '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" stroke-linecap="round"/></svg>Edit Project</button>';
+    html += '<div class="relative">';
+    html += '<button onclick="toggleMenu()" class="inline-flex items-center justify-center w-8 h-8 text-zinc-400 border border-zinc-200 rounded-md hover:bg-zinc-200/70 hover:text-zinc-600"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>';
+    html += '<div id="moreMenu" class="hidden absolute right-0 top-full mt-1 w-40 bg-white border border-zinc-200 rounded-lg shadow-lg z-10 py-1">';
+    html += '<button onclick="showToast(\'Project duplicated\');toggleMenu()" class="w-full text-left px-3 py-1.5 text-xs text-zinc-700 hover:bg-zinc-200/70">Duplicate</button>';
+    html += '<button onclick="showToast(\'Project archived\');toggleMenu()" class="w-full text-left px-3 py-1.5 text-xs text-zinc-700 hover:bg-zinc-200/70">Archive</button>';
+    html += '<button onclick="showToast(\'Delete confirm dialog coming soon\');toggleMenu()" class="w-full text-left px-3 py-1.5 text-xs text-red-600 hover:bg-red-50">Delete</button>';
+    html += '</div></div></div></div>';
+
+    // Meta bar
+    html += '<div class="flex items-center gap-6 mb-6 text-xs text-zinc-500">';
+    html += '<div class="flex items-center gap-1.5"><div class="w-5 h-5 rounded-full bg-zinc-300 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="font-medium text-zinc-700">' + p.owner + '</span></div>';
+    html += '<div class="flex items-center gap-1.5"><svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg><span class="font-medium text-zinc-700">' + p.repo + '</span></div>';
+    html += '<div class="flex items-center gap-1.5"><svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span class="font-medium text-zinc-700">' + p.lastDeploy + '</span><span class="text-zinc-400">Last Deployment</span></div>';
+    html += '<div class="flex items-center gap-1.5"><svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg><span class="font-medium text-zinc-700">' + p.lastUpdated + '</span><span class="text-zinc-400">Last Updated</span></div>';
+    html += '</div>';
+
+    // Stats
+    html += '<div class="grid grid-cols-4 gap-3 mb-8">';
+    html += '<div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="text-2xl font-bold text-zinc-900">' + totalEnvs + '</div><div class="text-xs text-zinc-500 mt-0.5">Total Environments</div></div>';
+    html += '<div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500"></span><span class="text-2xl font-bold text-zinc-900">' + activeCount + '</span></div><div class="text-xs text-zinc-500 mt-0.5">Active</div></div>';
+    html += '<div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-yellow-500"></span><span class="text-2xl font-bold text-zinc-900">' + maintenanceCount + '</span></div><div class="text-xs text-zinc-500 mt-0.5">Maintenance</div></div>';
+    html += '<div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-zinc-400"></span><span class="text-2xl font-bold text-zinc-900">' + inactiveCount + '</span></div><div class="text-xs text-zinc-500 mt-0.5">Inactive</div></div>';
+    html += '</div>';
+
+    // Environment cards
+    html += '<div class="relative pl-8 border-l-2 border-zinc-200/60 ml-2 space-y-1">';
+    p.envs.forEach(function(env, i) {
+        var st = envStatusColor(env.status);
+        var expanded = env.expanded;
+        html += '<div class="relative">';
+        html += '<span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50" style="background:' + st.accent + '"></span>';
+
+        html += '<div class="border rounded-lg overflow-hidden mb-3" style="border-color:' + st.accent + ';border-left-width:4px;background:' + st.bg + '">';
+        html += '<div class="px-5 py-4 cursor-pointer" onclick="toggleEnv(' + i + ')">';
+
+        // Header row
+        html += '<div class="flex items-start gap-5">';
+
+        // Left block: badge + name, then URL
+        html += '<div class="w-56 flex-shrink-0">';
+        html += '<div class="flex items-center gap-2 mb-1">';
+        html += '<span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ' + st.badge + '">' + st.label + '</span>';
+        html += '<h3 class="text-sm font-semibold text-zinc-900">' + env.name + '</h3>';
+        html += '</div>';
+        html += '<div class="flex items-center gap-1">';
+        html += '<svg class="w-3 h-3 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>';
+        html += '<span class="text-indigo-600 font-medium text-xs truncate">' + env.url + '</span>';
+        html += '<button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation();copyUrl(\'' + env.url + '\',this)" title="Copy URL"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>';
+        html += '</div></div>';
+
+        // Server column
+        html += '<div class="flex-1 min-w-0">';
+        html += '<div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Server</div>';
+        html += '<div class="text-sm text-zinc-700 font-medium truncate">' + env.server + '</div></div>';
+
+        // Region column
+        html += '<div class="flex-shrink-0 w-24">';
+        html += '<div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Region</div>';
+        html += '<div class="text-sm text-zinc-700 font-medium">' + env.region + '</div></div>';
+
+        // Services column
+        html += '<div class="flex-1">';
+        html += '<div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-1">Services</div>';
+        html += '<div class="flex flex-wrap gap-1">';
+        env.services.forEach(function(s) {
+            html += '<span class="px-1.5 py-0.5 text-[11px] font-medium bg-white border border-zinc-200 rounded-full text-zinc-600 leading-none">' + s + '</span>';
+        });
+        html += '</div></div>';
+
+        // Updated column
+        html += '<div class="flex-shrink-0 w-14 text-right">';
+        html += '<div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Updated</div>';
+        html += '<div class="text-sm text-zinc-700 font-medium">' + env.updated + '</div></div>';
+
+        // Chevron
+        html += '<div class="flex-shrink-0 self-center ml-1">';
+        html += '<svg class="w-4 h-4 text-zinc-400 transition-transform' + (expanded ? ' rotate-180' : '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>';
+        html += '</div>';
+
+        html += '</div>'; // end header row
+        html += '</div>'; // end clickable area
+
+        // Credentials section
+        if (expanded && env.creds && env.creds.length > 0) {
+            html += '<div class="border-t bg-white px-5 py-3" style="border-color:' + st.accent + '">';
+            html += '<h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>';
+            html += '<div class="space-y-1">';
+            env.creds.forEach(function(cred, ci) {
+                html += '<div class="rounded border border-zinc-200/60 overflow-hidden">';
+                html += '<div class="flex items-center gap-2 py-2 px-3 hover:bg-zinc-200/70 cursor-pointer" onclick="event.stopPropagation();toggleCred(' + i + ',' + ci + ')">';
+                html += '<svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+                html += '<span class="text-sm font-medium text-zinc-800">' + cred.role + '</span>';
+                html += '<svg id="credchev-' + i + '-' + ci + '" class="w-4 h-4 text-zinc-300 ml-auto transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>';
+                html += '</div>';
+                html += '<div id="cred-' + i + '-' + ci + '" class="hidden border-t border-zinc-200/60 bg-zinc-100/50 px-4 py-3">';
+                html += '<div class="grid grid-cols-2 gap-3 text-xs">';
+                html += '<div><span class="text-zinc-400 block mb-0.5">Username</span><div class="flex items-center gap-1"><span class="font-medium text-zinc-800">' + cred.username + '</span><button onclick="event.stopPropagation();copyCred(' + i + ',' + ci + ',\'username\')" class="text-zinc-400 hover:text-zinc-600"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div></div>';
+                html += '<div><span class="text-zinc-400 block mb-0.5">Password</span><div class="flex items-center gap-1"><span class="font-medium text-zinc-800">••••••••</span><button onclick="event.stopPropagation();copyCred(' + i + ',' + ci + ',\'password\')" class="text-zinc-400 hover:text-zinc-600"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div></div>';
+                html += '</div></div></div>';
+            });
+            html += '</div></div>';
+        }
+
+        html += '</div></div>';
+    });
+    html += '</div></div>';
+
+    document.getElementById('mainContent').innerHTML = html;
+}
+
+// ── MENU TOGGLE ────────────────────────────────────────────
+function toggleMenu() {
+    document.getElementById('moreMenu').classList.toggle('hidden');
+}
+document.addEventListener('click', function(e) {
+    var menu = document.getElementById('moreMenu');
+    if (menu && !menu.contains(e.target) && !e.target.closest('button[onclick*="toggleMenu"]')) {
+        menu.classList.add('hidden');
+    }
+});
+
+// ── KEYBOARD ───────────────────────────────────────────────
+document.addEventListener('keydown', function(e) {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+    }
+    if (e.key === 'Escape') {
+        document.getElementById('searchInput').value = '';
+        filterProjects();
+    }
+});
+
+// ── INIT ───────────────────────────────────────────────────
+renderSidebar();
+renderMain();
+</script>
+
+</body>
+</html>
