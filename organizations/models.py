@@ -46,10 +46,19 @@ class Deploy(BaseModel):
         on_delete=models.CASCADE,
         related_name="deployments",
     )
-    title = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(
+        max_length=100, 
+        null=True, 
+        blank=True
+    )
     environment = models.IntegerField(
         choices=EnvironmentChoices.choices,
         default=EnvironmentChoices.DEV,
+    )
+    github_addr = models.URLField(
+        null=True, 
+        blank=True, 
+        verbose_name="Github Address"
     )
     is_active = models.BooleanField(default=False)
 
