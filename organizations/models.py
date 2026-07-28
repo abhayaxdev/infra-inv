@@ -24,7 +24,15 @@ class Project(BaseModel):
         on_delete=models.CASCADE,
         related_name="projects",
     )
-    title = models.CharField(max_length=255, verbose_name="Project Title")
+    title = models.CharField(
+        max_length=255, 
+        verbose_name="Project Title"
+    )
+    description = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name="Project Description",
+    )
 
     def __str__(self):
         return self.title
