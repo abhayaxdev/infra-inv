@@ -23,6 +23,8 @@ django-debug-toolbar==6.2.0
 pillow==12.1.1
 
 # Encryption (used for Credentials password field)
-cryptography
+cryptography==49.0.0
 
+# htmx
+django-htmx==1.28.0
 
