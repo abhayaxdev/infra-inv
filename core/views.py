@@ -11,3 +11,8 @@ class Dashboard(TemplateView):
         context  = self.get_context_data()
         context["projects"] = Project.objects.all()        
         return render(self.request, self.template_name, context)
+    
+
+def detail_component(request):
+    if request.method == 'GET':
+        return render(request, "partials/_detail.html")
