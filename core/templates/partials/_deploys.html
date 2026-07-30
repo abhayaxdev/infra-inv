@@ -1,6 +1,6 @@
     <!-- Tabs -->
     <div class="flex items-center gap-1 mb-6" id="envTabs">
-        <button class="env-tab px-4 py-2 text-xs font-medium rounded-lg bg-[#005ab3] text-white transition-colors" data-env="all" onclick="filterEnvs(this)">All</button>
+        <button class="env-tab px-4 py-2 text-xs font-medium rounded-lg bg-black text-white transition-colors" data-env="all" onclick="filterEnvs(this)">All</button>
         {% for env in deploy_envs %}
         <button class="env-tab px-4 py-2 text-xs font-medium rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-200/70 transition-colors" data-env="{{ env.0 }}" onclick="filterEnvs(this)">
             {{ env.1|upper }}
@@ -14,8 +14,8 @@
         <!-- PRODUCTION — Foodmandu -->
         <div class="relative env-card" data-env="4">
             <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-            <div class="bg-white border border-zinc-200 border-l-4 border-l-[#003f7d] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all mb-3">
-                <div class="px-5 py-4 cursor-pointer hover:bg-blue-50 transition-colors" onclick="this.closest('.border,.bg-white').querySelector('.deploy-panel').classList.toggle('hidden');this.querySelector('.env-chevron').classList.toggle('rotate-180');this.closest('.border,.bg-white').classList.toggle('shadow-lg');this.closest('.border,.bg-white').classList.toggle('ring-2');this.closest('.border,.bg-white').classList.toggle('ring-[#80c0ff]/20')">
+            <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all mb-3">
+                <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="this.closest('.border,.bg-white').querySelector('.deploy-panel').classList.toggle('hidden');this.querySelector('.env-chevron').classList.toggle('rotate-180');this.closest('.border,.bg-white').classList.toggle('shadow-lg');this.closest('.border,.bg-white').classList.toggle('ring-2');this.closest('.border,.bg-white').classList.toggle('ring-zinc-300/20')">
                     <div class="flex items-center gap-5">
                         <div class="flex-1 min-w-0">
                             <h3 class="text-sm font-semibold text-zinc-800">Foodmandu - Prod</h3>
@@ -25,34 +25,34 @@
                             <div class="text-sm text-zinc-700 font-medium">12h ago</div>
                         </div>
                         <div class="flex-shrink-0 self-center">
-                            <svg class="w-4 h-4 text-[#80c0ff] transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                            <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                         </div>
                     </div>
                 </div>
-                <div class="deploy-panel hidden border-t border-[#80c0ff]/25 bg-white px-5 py-3">
+                <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
                     <div class="space-y-1">
 
                         <!-- Active URL -->
                         <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
+                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
                                 <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-green-100 text-green-700 flex-shrink-0">Active</span>
                                 <a href="https://foodmandu.com" target="_blank" class="text-xs font-medium text-[#005ab3] hover:text-[#003f7d] truncate">https://foodmandu.com</a>
                                 <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
                                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                                 </button>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron ml-auto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
+                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
                                 <div class="space-y-1 mb-4">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">prod-01.foodmandu.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.1.10</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
@@ -61,12 +61,12 @@
                                         </div>
                                     </div>
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">prod-db.foodmandu.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.1.20</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
@@ -78,12 +78,12 @@
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
                                 <div class="space-y-1">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">Admin Account</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-2 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">admin@foodmandu.com</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">F00d@M@ndu2024</span></div>
@@ -91,12 +91,12 @@
                                         </div>
                                     </div>
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">Ops Account</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-2 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">ops@foodmandu.com</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">0ps@Team!</span></div>
@@ -109,25 +109,25 @@
 
                         <!-- Active URL -->
                         <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
+                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
                                 <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-green-100 text-green-700 flex-shrink-0">Active</span>
                                 <a href="https://admin.foodmandu.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://admin.foodmandu.com</a>
                                 <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
                                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                                 </button>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron ml-auto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
+                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
                                 <div class="space-y-1 mb-4">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">prod-admin.foodmandu.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.1.30</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
@@ -139,12 +139,12 @@
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
                                 <div class="space-y-1">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">Admin Account</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-2 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">admin-panel@foodmandu.com</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">@dm!nF00d!</span></div>
@@ -163,8 +163,8 @@
         <!-- STAGING — Dice SMS -->
         <div class="relative env-card" data-env="2">
             <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-            <div class="bg-white border border-zinc-200 border-l-4 border-l-amber-500 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all mb-3">
-                <div class="px-5 py-4 cursor-pointer hover:bg-blue-50 transition-colors" onclick="this.closest('.border,.bg-white').querySelector('.deploy-panel').classList.toggle('hidden');this.querySelector('.env-chevron').classList.toggle('rotate-180');this.closest('.border,.bg-white').classList.toggle('shadow-lg');this.closest('.border,.bg-white').classList.toggle('ring-2');this.closest('.border,.bg-white').classList.toggle('ring-[#80c0ff]/20')">
+            <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all mb-3">
+                <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="this.closest('.border,.bg-white').querySelector('.deploy-panel').classList.toggle('hidden');this.querySelector('.env-chevron').classList.toggle('rotate-180');this.closest('.border,.bg-white').classList.toggle('shadow-lg');this.closest('.border,.bg-white').classList.toggle('ring-2');this.closest('.border,.bg-white').classList.toggle('ring-zinc-300/20')">
                     <div class="flex items-center gap-5">
                         <div class="flex-1 min-w-0">
                             <h3 class="text-sm font-semibold text-zinc-800">Dice SMS - Staging</h3>
@@ -174,34 +174,34 @@
                             <div class="text-sm text-zinc-700 font-medium">4d ago</div>
                         </div>
                         <div class="flex-shrink-0 self-center">
-                            <svg class="w-4 h-4 text-[#80c0ff] transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                            <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                         </div>
                     </div>
                 </div>
-                <div class="deploy-panel hidden border-t border-[#80c0ff]/25 bg-white px-5 py-3">
+                <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
                     <div class="space-y-1">
 
                         <!-- Maintenance URL -->
                         <div class="rounded border border-l-4 border-yellow-500 border-zinc-200/60 bg-yellow-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
+                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-yellow-50/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
                                 <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 flex-shrink-0">Maintenance</span>
                                 <a href="https://staging.dicesms.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://staging.dicesms.com</a>
                                 <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
                                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                                 </button>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron ml-auto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-yellow-500 flex-shrink-0" title="Maintenance"></span>
+                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="hidden border-t border-yellow-200/60 bg-zinc-100/50 px-4 py-3">
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
                                 <div class="space-y-1 mb-4">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">staging-01.dicesms.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.2.10</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Bangalore (IN)</span></div>
@@ -213,12 +213,12 @@
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
                                 <div class="space-y-1">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">Admin Account</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-2 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">admin@dicesms.com</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">D!ce@dm!n</span></div>
@@ -231,25 +231,25 @@
 
                         <!-- Active URL -->
                         <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
+                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
                                 <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-green-100 text-green-700 flex-shrink-0">Active</span>
                                 <a href="https://staging-api.dicesms.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://staging-api.dicesms.com</a>
                                 <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
                                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                                 </button>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron ml-auto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
+                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
                                 <div class="space-y-1 mb-4">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">staging-api.dicesms.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.2.20</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Bangalore (IN)</span></div>
@@ -261,12 +261,12 @@
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
                                 <div class="space-y-1">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">API Account</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-2 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">api@dicesms.com</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">D!ce@API</span></div>
@@ -285,8 +285,8 @@
         <!-- UAT — Pick & Sip -->
         <div class="relative env-card" data-env="3">
             <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-            <div class="bg-white border border-zinc-200 border-l-4 border-l-[#003f7d] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all mb-3">
-                <div class="px-5 py-4 cursor-pointer hover:bg-blue-50 transition-colors" onclick="this.closest('.border,.bg-white').querySelector('.deploy-panel').classList.toggle('hidden');this.querySelector('.env-chevron').classList.toggle('rotate-180');this.closest('.border,.bg-white').classList.toggle('shadow-lg');this.closest('.border,.bg-white').classList.toggle('ring-2');this.closest('.border,.bg-white').classList.toggle('ring-[#80c0ff]/20')">
+            <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all mb-3">
+                <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="this.closest('.border,.bg-white').querySelector('.deploy-panel').classList.toggle('hidden');this.querySelector('.env-chevron').classList.toggle('rotate-180');this.closest('.border,.bg-white').classList.toggle('shadow-lg');this.closest('.border,.bg-white').classList.toggle('ring-2');this.closest('.border,.bg-white').classList.toggle('ring-zinc-300/20')">
                     <div class="flex items-center gap-5">
                         <div class="flex-1 min-w-0">
                             <h3 class="text-sm font-semibold text-zinc-800">Pick &amp; Sip - UAT</h3>
@@ -296,34 +296,34 @@
                             <div class="text-sm text-zinc-700 font-medium">1w ago</div>
                         </div>
                         <div class="flex-shrink-0 self-center">
-                            <svg class="w-4 h-4 text-[#80c0ff] transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                            <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                         </div>
                     </div>
                 </div>
-                <div class="deploy-panel hidden border-t border-[#80c0ff]/25 bg-white px-5 py-3">
+                <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
                     <div class="space-y-1">
 
                         <!-- Active URL -->
                         <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
+                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
                                 <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-green-100 text-green-700 flex-shrink-0">Active</span>
                                 <a href="https://uat.picknsip.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://uat.picknsip.com</a>
                                 <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
                                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                                 </button>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron ml-auto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
+                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
                                 <div class="space-y-1 mb-4">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">uat-01.picknsip.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.3.10</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
@@ -335,12 +335,12 @@
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
                                 <div class="space-y-1">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">Admin Account</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-2 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">admin@picknsip.com</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">P!ck@S!p#23</span></div>
@@ -352,26 +352,26 @@
                         </div>
 
                         <!-- Inactive URL -->
-                        <div class="rounded border border-l-4 border-zinc-400 border-zinc-200/60 bg-blue-50/60 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
+                        <div class="rounded border border-l-4 border-zinc-400 border-zinc-200/60 bg-zinc-50/60 overflow-hidden">
+                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
                                 <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-zinc-200/50 text-zinc-500 flex-shrink-0">Inactive</span>
                                 <a href="https://uat2.picknsip.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://uat2.picknsip.com</a>
                                 <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
                                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                                 </button>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron ml-auto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-zinc-300 flex-shrink-0" title="Inactive"></span>
+                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="hidden border-t border-zinc-200 bg-zinc-100/50 px-4 py-3">
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
                                 <div class="space-y-1">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">uat2-01.picknsip.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.3.20</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
@@ -392,7 +392,7 @@
         <div class="relative env-card" data-env="1">
             <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
             <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-400 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all mb-3">
-                <div class="px-5 py-4 cursor-pointer hover:bg-blue-50 transition-colors" onclick="this.closest('.border,.bg-white').querySelector('.deploy-panel').classList.toggle('hidden');this.querySelector('.env-chevron').classList.toggle('rotate-180');this.closest('.border,.bg-white').classList.toggle('shadow-lg');this.closest('.border,.bg-white').classList.toggle('ring-2');this.closest('.border,.bg-white').classList.toggle('ring-[#80c0ff]/20')">
+                <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="this.closest('.border,.bg-white').querySelector('.deploy-panel').classList.toggle('hidden');this.querySelector('.env-chevron').classList.toggle('rotate-180');this.closest('.border,.bg-white').classList.toggle('shadow-lg');this.closest('.border,.bg-white').classList.toggle('ring-2');this.closest('.border,.bg-white').classList.toggle('ring-zinc-300/20')">
                     <div class="flex items-center gap-5">
                         <div class="flex-1 min-w-0">
                             <h3 class="text-sm font-semibold text-zinc-800">Ajna LMS - Dev</h3>
@@ -402,34 +402,34 @@
                             <div class="text-sm text-zinc-700 font-medium">2w ago</div>
                         </div>
                         <div class="flex-shrink-0 self-center">
-                            <svg class="w-4 h-4 text-[#80c0ff] transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                            <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                         </div>
                     </div>
                 </div>
-                <div class="deploy-panel hidden border-t border-[#80c0ff]/25 bg-white px-5 py-3">
+                <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
                     <div class="space-y-1">
 
                         <!-- Inactive URL -->
-                        <div class="rounded border border-l-4 border-zinc-400 border-zinc-200/60 bg-blue-50/60 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
+                        <div class="rounded border border-l-4 border-zinc-400 border-zinc-200/60 bg-zinc-50/60 overflow-hidden">
+                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
                                 <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-zinc-200/50 text-zinc-500 flex-shrink-0">Inactive</span>
                                 <a href="https://dev.ajnalms.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://dev.ajnalms.com</a>
                                 <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
                                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                                 </button>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron ml-auto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-zinc-300 flex-shrink-0" title="Inactive"></span>
+                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="hidden border-t border-zinc-200 bg-zinc-100/50 px-4 py-3">
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
                                 <div class="space-y-1">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">dev-01.ajnalms.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.4.10</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Mumbai (IN)</span></div>
@@ -443,25 +443,25 @@
 
                         <!-- Maintenance URL -->
                         <div class="rounded border border-l-4 border-yellow-500 border-zinc-200/60 bg-yellow-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
+                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-yellow-50/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.url-chevron').classList.toggle('rotate-180')">
                                 <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 flex-shrink-0">Maintenance</span>
                                 <a href="https://dev-api.ajnalms.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://dev-api.ajnalms.com</a>
                                 <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
                                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                                 </button>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron ml-auto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-yellow-500 flex-shrink-0" title="Maintenance"></span>
+                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="hidden border-t border-yellow-200/60 bg-zinc-100/50 px-4 py-3">
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
                                 <div class="space-y-1 mb-4">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.server-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">dev-api.ajnalms.com</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-3 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.4.20</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Mumbai (IN)</span></div>
@@ -473,12 +473,12 @@
                                 <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
                                 <div class="space-y-1">
                                     <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-200/70" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
+                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden');this.querySelector('.cred-chevron').classList.toggle('rotate-180')">
                                             <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             <span class="text-sm font-medium text-zinc-800">Dev Account</span>
                                             <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                                         </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-blue-50/30 px-4 py-3">
+                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
                                             <div class="grid grid-cols-2 gap-3 text-xs">
                                                 <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">dev-admin@ajnalms.com</span></div>
                                                 <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">@jnaD3v!</span></div>
@@ -501,10 +501,10 @@
 <script>
 function filterEnvs(btn) {
     document.querySelectorAll('.env-tab').forEach(function(t) {
-        t.classList.remove('bg-[#005ab3]', 'text-white');
+        t.classList.remove('bg-black', 'text-white');
         t.classList.add('border', 'border-zinc-200', 'text-zinc-600', 'hover:bg-zinc-200/70');
     });
-    btn.classList.add('bg-[#005ab3]', 'text-white');
+    btn.classList.add('bg-black', 'text-white');
     btn.classList.remove('border', 'border-zinc-200', 'text-zinc-600', 'hover:bg-zinc-200/70');
     var filter = btn.getAttribute('data-env');
     document.querySelectorAll('.env-card').forEach(function(card) {
