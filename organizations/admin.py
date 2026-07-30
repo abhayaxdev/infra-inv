@@ -21,9 +21,9 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Deploy)
 class DeployAdmin(admin.ModelAdmin):
-    list_display = ("title", "project", "environment", "is_active", "is_obsolete")
-    list_editable = ("environment", "is_active", "is_obsolete")
-    list_filter = ("environment", "is_active", "is_obsolete", "project__organization")
+    list_display = ("title", "project", "environment", "is_obsolete")
+    list_editable = ("environment", "is_obsolete")
+    list_filter = ("environment", "is_obsolete", "project__organization")
     search_fields = ("title", "project__title")
 
 
@@ -37,7 +37,7 @@ class CredentialsAdmin(admin.ModelAdmin):
 
 @admin.register(Domain)
 class DomainAdmin(admin.ModelAdmin):
-    list_display = ("url", "deploy", "is_obsolete")
-    list_editable = ("is_obsolete",)
-    list_filter = ("is_obsolete", "deploy")
+    list_display = ("url", "deploy", "status", "is_obsolete")
+    list_editable = ("status", "is_obsolete")
+    list_filter = ("status", "is_obsolete", "deploy")
     search_fields = ("url", "deploy__title")

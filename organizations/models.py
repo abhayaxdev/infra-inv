@@ -33,6 +33,11 @@ class Project(BaseModel):
         blank=True,
         verbose_name="Project Description",
     )
+    github_addr = models.URLField(
+        null=True, 
+        blank=True, 
+        verbose_name="Github Address"
+    )
 
     def __str__(self):
         return self.title
@@ -63,12 +68,6 @@ class Deploy(BaseModel):
         choices=EnvironmentChoices.choices,
         default=EnvironmentChoices.DEV,
     )
-    github_addr = models.URLField(
-        null=True, 
-        blank=True, 
-        verbose_name="Github Address"
-    )
-    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.project}-{self.title} — {self.get_environment_display()}"
@@ -79,12 +78,21 @@ class Deploy(BaseModel):
 
 
 class Domain(BaseModel):
+    class StatusChoices(models.IntegerChoices):
+        ACTIVE = 1, "Active"
+        MAINTENANCE = 2, "Maintenance"
+        INACTIVE = 3, "Inactive"
+
     deploy = models.ForeignKey(
         Deploy,
         on_delete=models.CASCADE,
         related_name="domains",
     )
     url = models.URLField()
+    status = models.IntegerField(
+        choices=StatusChoices.choices,
+        default=StatusChoices.ACTIVE,
+    )
 
     def __str__(self):
         return self.url
