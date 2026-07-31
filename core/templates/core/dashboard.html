@@ -211,15 +211,45 @@ function selectProject(id) {
 function toggleEnv(idx) {
     var p = getSelectedProject();
     p.envs[idx].expanded = !p.envs[idx].expanded;
-    renderMain();
+    var el = document.getElementById('envcreds-' + idx);
+    if (el) animateAccordion(el, p.envs[idx].expanded);
+    var ch = document.getElementById('envchev-' + idx);
+    if (ch) ch.classList.toggle('rotate-180');
 }
 
 // ── CRED TOGGLE ────────────────────────────────────────────
 function toggleCred(envIdx, credIdx) {
     var el = document.getElementById('cred-' + envIdx + '-' + credIdx);
-    if (el) el.classList.toggle('hidden');
+    if (el) animateAccordion(el, el.classList.contains('hidden'));
     var ch = document.getElementById('credchev-' + envIdx + '-' + credIdx);
     if (ch) ch.classList.toggle('rotate-180');
+}
+
+// ── ACCORDION ANIMATION ────────────────────────────────────
+function animateAccordion(el, open) {
+    (el.getAnimations ? el.getAnimations() : []).forEach(function(a) { a.cancel(); });
+    var duration = 220;
+    if (open) {
+        el.classList.remove('hidden');
+        el.style.overflow = 'hidden';
+        el.style.height = '0px';
+        var target = el.scrollHeight + 'px';
+        el.offsetHeight;
+        el.animate([{ height: '0px', overflow: 'hidden' }, { height: target, overflow: 'hidden' }], { duration: duration, easing: 'ease-out' }).onfinish = function() {
+            el.style.height = '';
+            el.style.overflow = '';
+        };
+    } else {
+        var start = el.scrollHeight + 'px';
+        el.style.overflow = 'hidden';
+        el.style.height = start;
+        el.offsetHeight;
+        el.animate([{ height: start, overflow: 'hidden' }, { height: '0px', overflow: 'hidden' }], { duration: duration, easing: 'ease-in' }).onfinish = function() {
+            el.style.height = '';
+            el.style.overflow = '';
+            el.classList.add('hidden');
+        };
+    }
 }
 
 // ── COPY URL ───────────────────────────────────────────────
@@ -371,15 +401,15 @@ function renderMain() {
 
         // Chevron
         html += '<div class="flex-shrink-0 self-center ml-1">';
-        html += '<svg class="w-4 h-4 text-zinc-400 transition-transform' + (expanded ? ' rotate-180' : '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>';
+        html += '<svg id="envchev-' + i + '" class="w-4 h-4 text-zinc-400 transition-transform' + (expanded ? ' rotate-180' : '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>';
         html += '</div>';
 
         html += '</div>'; // end header row
         html += '</div>'; // end clickable area
 
         // Credentials section
-        if (expanded && env.creds && env.creds.length > 0) {
-            html += '<div class="border-t bg-white px-5 py-3" style="border-color:' + st.accent + '">';
+        if (env.creds && env.creds.length > 0) {
+            html += '<div id="envcreds-' + i + '" class="border-t bg-white px-5 py-3' + (expanded ? '' : ' hidden') + '" style="border-color:' + st.accent + '">';
             html += '<h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>';
             html += '<div class="space-y-1">';
             env.creds.forEach(function(cred, ci) {
