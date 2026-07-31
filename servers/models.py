@@ -9,11 +9,13 @@ class ServerDetails(BaseModel):
         on_delete=models.CASCADE,
         related_name="servers",
     )
+    name = models.CharField(max_length=100, blank=True, default="")
     ip_address = models.GenericIPAddressField()
+    region = models.CharField(max_length=100, blank=True, default="")
     services_used = models.TextField()
 
     def __str__(self):
-        return f"{self.deploy} — {self.ip_address}"
+        return f"{self.name or self.ip_address} ({self.deploy})"
 
     class Meta:
         verbose_name = "Server Detail"
