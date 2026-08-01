@@ -5,7 +5,7 @@
         
             <div class="relative env-card" data-env="{{ deployment.environment }}">
                 <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-                <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all mb-3">
+                <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-lg ring-2 ring-zinc-300/20 transition-all mb-3">
                     <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="slideEnv(this)">
                         <div class="flex items-center gap-5">
                             <div class="flex-1 min-w-0">
@@ -21,11 +21,11 @@
                                 <div class="text-sm text-zinc-700 font-medium">12h ago</div>
                             </div>
                             <div class="flex-shrink-0 self-center">
-                                <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                             </div>
                         </div>
                     </div>
-                    <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
+                    <div class="deploy-panel border-t border-zinc-200 bg-white px-5 py-3">
                         <div class="space-y-1">
 
                             {% if deployment.github_repo %}
