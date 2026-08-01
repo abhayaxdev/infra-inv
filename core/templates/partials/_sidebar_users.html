@@ -1,0 +1,20 @@
+{% if user.is_superuser %}
+<aside id="sidebar-users" class="sidebar-panel w-[264px] shrink-0 border-r border-zinc-200 bg-zinc-50 flex flex-col max-md:fixed max-md:top-0 max-md:left-[52px] max-md:h-full max-md:z-40 max-md:shadow-xl{% if not show_users %} hidden{% endif %}">
+    <div class="flex items-center justify-between px-4 py-[14px] border-b border-zinc-200/60">
+        <h2 class="text-sm font-semibold text-zinc-900 tracking-tight">Users</h2>
+        <a href="{% url 'users:user_create' %}" class="w-6 h-6 flex items-center justify-center rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100" title="Create User">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+        </a>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-2">
+        <a href="{% url 'users:user_list' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100 transition-colors">
+            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-linecap="round"/></svg>
+            Users List
+        </a>
+        <a href="{% url 'users:user_create' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100 transition-colors">
+            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            Create User
+        </a>
+    </nav>
+</aside>
+{% endif %}

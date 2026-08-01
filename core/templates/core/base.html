@@ -30,7 +30,6 @@
     <a href="{% url 'core:landing' %}" class="mb-8" title="Home">
         <svg class="w-6 h-6 text-zinc-700" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L24 22H0L12 2z"/></svg>
     </a>
-    <svg class="w-5 h-5 text-zinc-400 mb-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
     <nav class="flex-1 flex flex-col items-center gap-5">
         <button onclick="switchSidebar('projects')" data-sidebar="projects" class="icon-rail-btn w-8 h-8 flex items-center justify-center rounded-md bg-zinc-800 text-white" title="Projects">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -65,34 +64,71 @@
 </aside>
 
 <!-- SIDEBAR PANELS -->
+<div id="sidebar-backdrop" class="hidden md:hidden fixed inset-0 bg-black/20 z-30" onclick="closeAllSidebars()"></div>
 {% block sidebar %}{% endblock %}
 
 <!-- MAIN CONTENT -->
 <main class="flex-1 overflow-y-auto bg-zinc-50" id="mainContent">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="flex items-center justify-between rounded-lg border px-4 py-3 text-sm m-4
+        {% if message.level_tag == 'error' %}border-red-200 bg-red-50 text-red-700
+        {% elif message.level_tag == 'warning' %}border-yellow-200 bg-yellow-50 text-yellow-700
+        {% elif message.level_tag == 'success' %}border-green-200 bg-green-50 text-green-700
+        {% else %}border-blue-200 bg-blue-50 text-blue-700{% endif %}">
+        <span>{{ message }}</span>
+        <button onclick="this.parentElement.remove()" class="opacity-60 hover:opacity-100 ml-3 flex-shrink-0">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
     {% block content %}{% endblock %}
 </main>
 
 </div>
 
 <!-- Toast -->
-<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-800 text-white text-xs px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-200 pointer-events-none z-50"></div>
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-max bg-zinc-800 text-white text-xs px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-200 pointer-events-none z-50"></div>
 
 <script>
 function switchSidebar(name) {
-    document.querySelectorAll('[id^="sidebar-"]').forEach(function(s) {
-        s.style.display = 'none';
-    });
     var target = document.getElementById('sidebar-' + name);
-    if (target) target.style.display = '';
+    if (!target) return;
 
+    var isOpen = !target.classList.contains('hidden');
+
+    closeAllSidebars();
+    unhighlightAll();
+
+    if (isOpen) return;
+
+    target.classList.remove('hidden');
+    highlightSidebarBtn(name);
+    var backdrop = document.getElementById('sidebar-backdrop');
+    if (backdrop && window.innerWidth < 768) backdrop.classList.remove('hidden');
+}
+
+function closeAllSidebars() {
+    document.querySelectorAll('[id^="sidebar-"]').forEach(function(s) {
+        s.classList.add('hidden');
+    });
+    var backdrop = document.getElementById('sidebar-backdrop');
+    if (backdrop) backdrop.classList.add('hidden');
+}
+
+function unhighlightAll() {
     document.querySelectorAll('.icon-rail-btn[data-sidebar]').forEach(function(b) {
         b.classList.remove('bg-zinc-800', 'text-white');
         b.classList.add('text-zinc-400');
     });
-    var activeBtn = document.querySelector('.icon-rail-btn[data-sidebar="' + name + '"]');
-    if (activeBtn) {
-        activeBtn.classList.add('bg-zinc-800', 'text-white');
-        activeBtn.classList.remove('text-zinc-400');
+}
+
+function highlightSidebarBtn(name) {
+    var btn = document.querySelector('.icon-rail-btn[data-sidebar="' + name + '"]');
+    if (btn) {
+        btn.classList.add('bg-zinc-800', 'text-white');
+        btn.classList.remove('text-zinc-400');
     }
 }
 </script>

@@ -9,6 +9,7 @@ from django.views.generic.edit import FormView
 
 from users.models import CustomUser
 from users.forms import UserForm, UserPasswordResetForm
+from organizations.models import Project
 
 
 class LoginView(BaseLoginView):
@@ -29,6 +30,11 @@ class SuperuserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
             return super().handle_no_permission()
         messages.error(self.request, "Only superusers can access this page.")
         return redirect("core:dashboard")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["projects"] = Project.objects.all()
+        return context
 
 
 class UserListView(SuperuserRequiredMixin, ListView):
