@@ -1,502 +1,165 @@
-    <!-- Tabs -->
-    <div class="flex items-center gap-1 mb-6" id="envTabs">
-        <button class="env-tab px-4 py-2 text-xs font-medium rounded-lg bg-black text-white transition-colors" data-env="all" onclick="filterEnvs(this)">All</button>
-        {% for env in deploy_envs %}
-        <button class="env-tab px-4 py-2 text-xs font-medium rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-200/70 transition-colors" data-env="{{ env.0 }}" onclick="filterEnvs(this)">
-            {{ env.1|upper }}
-        </button>
-        {% endfor %}
-    </div>
-
     <!-- Environment cards -->
     <div class="relative pl-8 border-l-2 border-zinc-200/60 ml-2 space-y-1" id="envCards">
 
-        <!-- PRODUCTION — Foodmandu -->
-        <div class="relative env-card" data-env="4">
-            <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-            <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all mb-3">
-                <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="slideEnv(this)">
-                    <div class="flex items-center gap-5">
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-sm font-semibold text-zinc-800">Foodmandu - Prod</h3>
-                        </div>
-                        <div class="flex-shrink-0 w-14 text-right">
-                            <div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Updated</div>
-                            <div class="text-sm text-zinc-700 font-medium">12h ago</div>
-                        </div>
-                        <div class="flex-shrink-0 self-center">
-                            <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+        {% for deployment in project.deployments.all %}
+        
+            <div class="relative env-card" data-env="{{ deployment.environment }}">
+                <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
+                <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all mb-3">
+                    <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="slideEnv(this)">
+                        <div class="flex items-center gap-5">
+                            <div class="flex-1 min-w-0">
+                                <h3 class="flex items-center gap-2 text-sm font-semibold text-zinc-800">
+                                    {{ deployment.title }}
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full {% if deployment.environment == 4 %}bg-green-100 text-green-700{% elif deployment.environment == 3 %}bg-blue-100 text-blue-700{% elif deployment.environment == 2 %}bg-yellow-100 text-yellow-700{% else %}bg-zinc-100 text-zinc-600{% endif %}">
+                                        {{ deployment.get_environment_display }}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="flex-shrink-0 w-14 text-right">
+                                <div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Updated</div>
+                                <div class="text-sm text-zinc-700 font-medium">12h ago</div>
+                            </div>
+                            <div class="flex-shrink-0 self-center">
+                                <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
-                    <div class="space-y-1">
+                    <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
+                        <div class="space-y-1">
 
-                        <!-- Active URL -->
-                        <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="slideToggle(this)">
-                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <a href="https://foodmandu.com" target="_blank" class="text-xs font-medium text-[#005ab3] hover:text-[#003f7d] truncate">https://foodmandu.com</a>
-                                <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
-                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                </button>
-                                <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                            {% if deployment.github_repo %}
+                            <div class="flex items-center gap-2 px-1">
+                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                <a href="{{ deployment.github_repo }}" target="_blank" class="text-xs font-medium text-[#005ab3] hover:text-[#003f7d] truncate">{{ deployment.github_repo }}</a>
                             </div>
-                            <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                <div class="space-y-1 mb-4">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">prod-01.foodmandu.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.1.10</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">Node.js, Redis, PostgreSQL, Nginx, ElasticSearch, Kafka</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">prod-db.foodmandu.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.1.20</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">PostgreSQL</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
-                                <div class="space-y-1">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">Admin Account</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">admin@foodmandu.com</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">F00d@M@ndu2024</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">Ops Account</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">ops@foodmandu.com</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">0ps@Team!</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            {% endif %}
 
-                        <!-- Active URL -->
-                        <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="slideToggle(this)">
-                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <a href="https://admin.foodmandu.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://admin.foodmandu.com</a>
-                                <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
-                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                </button>
-                                <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                            </div>
-                            <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                <div class="space-y-1 mb-4">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">prod-admin.foodmandu.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.1.30</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">Node.js, Redis, Nginx</span></div>
+                            {% for deploy in deployment.domains.all %}
+                                <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
+                                    <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="slideToggle(this)">
+                                        <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+                                        <a href="{{ deploy.url }}" target="_blank" class="text-xs font-medium text-[#005ab3] hover:text-[#003f7d] truncate">{{ deploy.url }}</a>
+                                        <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation();copyUrl(this)" data-url="{{ deploy.url }}" title="Copy URL">
+                                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                        </button>
+                                        <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
+                                        <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                    </div>
+                                    <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
+                                        {% if request.user.is_superuser or request.user.role == 4 %}    
+                                            <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
+                                            {% for server in deployment.servers.all %}
+                                                <div class="space-y-1 mb-4">
+                                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
+                                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
+                                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+                                                            <span class="text-sm font-medium text-zinc-800">{{ server.name }}</span>
+                                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                                        </div>
+                                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
+                                                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                                                <div>
+                                                                    <span class="text-zinc-400 block mb-0.5">IP Address</span>
+                                                                    <span class="font-medium text-zinc-800 font-mono">{{ server.ip_address }}</span>
+                                                                </div>
+                                                                <div><span class="text-zinc-400 block mb-0.5">Port</span><span class="font-medium text-zinc-800">{% if server.port %}{{ server.port }}{% else %}<span class="text-zinc-400">—</span>{% endif %}</span></div>
+                                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">{% if server.region %}{{ server.region }}{% else %}<span class="text-zinc-400">—</span>{% endif %}</span></div>
+                                                                <div><span class="text-zinc-400 block mb-0.5">Provider</span><span class="font-medium text-zinc-800">{% if server.provider %}{{ server.provider }}{% else %}<span class="text-zinc-400">—</span>{% endif %}</span></div>
+                                                                <div>
+                                                                    <span class="text-zinc-400 block mb-1">Technologies</span>
+                                                                    {% for tag in server.technologies.all %}
+                                                                    <span class="inline-block px-1.5 py-0.5 text-[11px] font-medium bg-white border border-zinc-200 rounded-full text-zinc-600 leading-none mr-1 mb-1">{{ tag }}</span>
+                                                                    {% empty %}
+                                                                    <span class="text-zinc-400">—</span>
+                                                                    {% endfor %}
+                                                                </div>
+                                                                <div><span class="text-zinc-400 block mb-0.5">Auto Deploy</span><span class="font-medium text-zinc-800">{% if server.auto_deploy %}<span class="text-green-600">&#x2713;</span>{% else %}<span class="text-red-500">&#x2717;</span>{% endif %}</span></div>
+                                                            </div>
+                                                            <hr class="border-zinc-200 my-3">
+                                                            <div class="text-xs">
+                                                                <span class="text-zinc-400 block mb-0.5">Services &amp; server notes</span>
+                                                                {% if server.services_used %}
+                                                                <div class="font-medium text-zinc-800 whitespace-pre-wrap">{{ server.services_used }}</div>
+                                                                {% else %}
+                                                                <span class="text-zinc-400">—</span>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% empty %}
+                                            <div class="rounded border border-zinc-200/60 overflow-hidden mb-4">
+                                                <p class="text-xs text-zinc-500 px-4 py-3">No server information available for this environment.</p>
                                             </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
+                                        <div class="space-y-1">
+                                            {% for cred in deploy.credentials.all %}
+                                                <div class="rounded border border-zinc-200/60 overflow-hidden">
+                                                    <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
+                                                        <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                                        <span class="text-sm font-medium text-zinc-800">{{ cred.user_role }}</span>
+                                                        <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                                                    </div>
+                                                    <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
+                                                        <div class="grid grid-cols-2 gap-3 text-xs">
+                                                            <div>
+                                                                <span class="text-zinc-400 block mb-0.5">Username/Email</span>
+                                                                <div class="flex items-center gap-1">
+                                                                    <span id="cred-user-{{ cred.pk }}" class="font-medium text-zinc-800">{{ cred.username }}</span>
+                                                                    <button type="button" class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="copyField('username', {{ cred.pk }})" title="Copy username">
+                                                                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <span class="text-zinc-400 block mb-0.5">Password</span>
+                                                                <div class="flex items-center gap-1">
+                                                                    <span id="pw-masked-{{ cred.pk }}" class="font-medium text-zinc-800">••••••••</span>
+                                                                    <span id="pw-text-{{ cred.pk }}" class="hidden font-medium text-zinc-800">{{ cred.password }}</span>
+                                                                    <button type="button" class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="togglePassword(this)" data-target="{{ cred.pk }}" title="Show password">
+                                                                        <svg class="w-3.5 h-3.5 eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                                        <svg class="w-3.5 h-3.5 eye-on hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                                                    </button>
+                                                                    <button type="button" class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="copyField('password', {{ cred.pk }})" title="Copy password">
+                                                                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% empty %}
+                                            <div class="rounded border border-zinc-200/60 overflow-hidden">
+                                                <p class="text-xs text-zinc-500 px-4 py-3">No credentials stored for this domain.</p>
+                                            </div>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
-                                <div class="space-y-1">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">Admin Account</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">admin-panel@foodmandu.com</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">@dm!nF00d!</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            {% empty %}
+                            <div class="rounded-lg border border-dashed border-zinc-300 bg-white/60 px-4 py-4 text-center">
+                                <p class="text-xs font-medium text-zinc-500">No domains configured for this environment.</p>
                             </div>
-                        </div>
+                            {% endfor %}
 
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- STAGING — Dice SMS -->
-        <div class="relative env-card" data-env="2">
-            <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-            <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all mb-3">
-                <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="slideEnv(this)">
-                    <div class="flex items-center gap-5">
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-sm font-semibold text-zinc-800">Dice SMS - Staging</h3>
                         </div>
-                        <div class="flex-shrink-0 w-14 text-right">
-                            <div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Updated</div>
-                            <div class="text-sm text-zinc-700 font-medium">4d ago</div>
-                        </div>
-                        <div class="flex-shrink-0 self-center">
-                            <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
-                    <div class="space-y-1">
-
-                        <!-- Maintenance URL -->
-                        <div class="rounded border border-l-4 border-yellow-500 border-zinc-200/60 bg-yellow-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-yellow-50/70" onclick="slideToggle(this)">
-                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <a href="https://staging.dicesms.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://staging.dicesms.com</a>
-                                <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
-                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                </button>
-                                <span class="ml-auto w-2 h-2 rounded-full bg-yellow-500 flex-shrink-0" title="Maintenance"></span>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                            </div>
-                            <div class="hidden border-t border-yellow-200/60 bg-zinc-100/50 px-4 py-3">
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                <div class="space-y-1 mb-4">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">staging-01.dicesms.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.2.10</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Bangalore (IN)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">Node.js, Redis, PostgreSQL</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
-                                <div class="space-y-1">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">Admin Account</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">admin@dicesms.com</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">D!ce@dm!n</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Active URL -->
-                        <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="slideToggle(this)">
-                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <a href="https://staging-api.dicesms.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://staging-api.dicesms.com</a>
-                                <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
-                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                </button>
-                                <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                            </div>
-                            <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                <div class="space-y-1 mb-4">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">staging-api.dicesms.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.2.20</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Bangalore (IN)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">Node.js, Redis, PostgreSQL</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
-                                <div class="space-y-1">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">API Account</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">api@dicesms.com</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">D!ce@API</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
+        {% empty %}
+        <div class="rounded-lg border border-dashed border-zinc-300 bg-white/60 px-5 py-6 text-center">
+            <p class="text-sm font-medium text-zinc-500">No environments configured for this project yet.</p>
+            <p class="text-xs text-zinc-400 mt-1">Add a deployment to start tracking domains, servers, and credentials.</p>
         </div>
-
-        <!-- UAT — Pick & Sip -->
-        <div class="relative env-card" data-env="3">
-            <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-            <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all mb-3">
-                <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="slideEnv(this)">
-                    <div class="flex items-center gap-5">
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-sm font-semibold text-zinc-800">Pick &amp; Sip - UAT</h3>
-                        </div>
-                        <div class="flex-shrink-0 w-14 text-right">
-                            <div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Updated</div>
-                            <div class="text-sm text-zinc-700 font-medium">1w ago</div>
-                        </div>
-                        <div class="flex-shrink-0 self-center">
-                            <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
-                    <div class="space-y-1">
-
-                        <!-- Active URL -->
-                        <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="slideToggle(this)">
-                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <a href="https://uat.picknsip.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://uat.picknsip.com</a>
-                                <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
-                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                </button>
-                                <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                            </div>
-                            <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                <div class="space-y-1 mb-4">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">uat-01.picknsip.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.3.10</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">Django, Celery, Redis, PostgreSQL, Nginx</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
-                                <div class="space-y-1">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">Admin Account</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">admin@picknsip.com</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">P!ck@S!p#23</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Inactive URL -->
-                        <div class="rounded border border-l-4 border-zinc-400 border-zinc-200/60 bg-zinc-50/60 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <a href="https://uat2.picknsip.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://uat2.picknsip.com</a>
-                                <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
-                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                </button>
-                                <span class="ml-auto w-2 h-2 rounded-full bg-zinc-300 flex-shrink-0" title="Inactive"></span>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                            </div>
-                            <div class="hidden border-t border-zinc-200 bg-zinc-100/50 px-4 py-3">
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                <div class="space-y-1">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">uat2-01.picknsip.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.3.20</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Singapore (SG)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">Django, PostgreSQL</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+        {% endfor %}
+        <div id="envEmpty" class="hidden rounded-lg border border-dashed border-zinc-300 bg-white/60 px-5 py-6 text-center">
+            <p class="text-sm font-medium text-zinc-500">No environments found for this filter.</p>
+            <p class="text-xs text-zinc-400 mt-1">Try selecting a different environment tab.</p>
         </div>
-
-        <!-- DEV — Ajna LMS -->
-        <div class="relative env-card" data-env="1">
-            <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-            <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-400 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all mb-3">
-                <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="slideEnv(this)">
-                    <div class="flex items-center gap-5">
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-sm font-semibold text-zinc-800">Ajna LMS - Dev</h3>
-                        </div>
-                        <div class="flex-shrink-0 w-14 text-right">
-                            <div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Updated</div>
-                            <div class="text-sm text-zinc-700 font-medium">2w ago</div>
-                        </div>
-                        <div class="flex-shrink-0 self-center">
-                            <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="deploy-panel hidden border-t border-zinc-200 bg-white px-5 py-3">
-                    <div class="space-y-1">
-
-                        <!-- Inactive URL -->
-                        <div class="rounded border border-l-4 border-zinc-400 border-zinc-200/60 bg-zinc-50/60 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <a href="https://dev.ajnalms.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://dev.ajnalms.com</a>
-                                <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
-                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                </button>
-                                <span class="ml-auto w-2 h-2 rounded-full bg-zinc-300 flex-shrink-0" title="Inactive"></span>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                            </div>
-                            <div class="hidden border-t border-zinc-200 bg-zinc-100/50 px-4 py-3">
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                <div class="space-y-1">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">dev-01.ajnalms.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.4.10</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Mumbai (IN)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">PostgreSQL</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Maintenance URL -->
-                        <div class="rounded border border-l-4 border-yellow-500 border-zinc-200/60 bg-yellow-50/40 overflow-hidden">
-                            <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-yellow-50/70" onclick="slideToggle(this)">
-                                <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                <a href="https://dev-api.ajnalms.com" target="_blank" class="text-xs font-medium text-[#003f7d] hover:text-[#005ab3] truncate">https://dev-api.ajnalms.com</a>
-                                <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation()" title="Copy URL">
-                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                </button>
-                                <span class="ml-auto w-2 h-2 rounded-full bg-yellow-500 flex-shrink-0" title="Maintenance"></span>
-                                <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                            </div>
-                            <div class="hidden border-t border-yellow-200/60 bg-zinc-100/50 px-4 py-3">
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                <div class="space-y-1 mb-4">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">dev-api.ajnalms.com</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-3 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">IP Address</span><span class="font-medium text-zinc-800 font-mono">192.168.4.20</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">Mumbai (IN)</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Services</span><span class="font-medium text-zinc-800">Django, PostgreSQL</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
-                                <div class="space-y-1">
-                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                            <span class="text-sm font-medium text-zinc-800">Dev Account</span>
-                                            <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                        </div>
-                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                <div><span class="text-zinc-400 block mb-0.5">Username</span><span class="font-medium text-zinc-800">dev-admin@ajnalms.com</span></div>
-                                                <div><span class="text-zinc-400 block mb-0.5">Password</span><span class="font-medium text-zinc-800">@jnaD3v!</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
-
-</div>
 
 <script>
 function animateAccordion(el, open) {
@@ -541,6 +204,46 @@ function slideEnv(head) {
     card.classList.toggle('ring-2');
     card.classList.toggle('ring-zinc-300/20');
 }
+function copyField(field, id, btn) {
+    var el = field === 'username' ? document.getElementById('cred-user-' + id) : document.getElementById('pw-text-' + id);
+    if (!el) return;
+    navigator.clipboard.writeText(el.textContent).then(function() {
+        showToast('Copied!');
+    });
+}
+function copyUrl(btn) {
+    var url = btn.getAttribute('data-url');
+    if (!url) return;
+    navigator.clipboard.writeText(url).then(function() {
+        showToast('Copied!');
+    });
+}
+var toastTimer;
+function showToast(msg) {
+    var el = document.getElementById('toast');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = 'toast';
+        el.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-800 text-white text-xs px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-200 pointer-events-none z-50';
+        document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add('opacity-100');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { el.classList.remove('opacity-100'); }, 2000);
+}
+function togglePassword(btn) {
+    var id = btn.getAttribute('data-target');
+    var masked = document.getElementById('pw-masked-' + id);
+    var text = document.getElementById('pw-text-' + id);
+    if (masked && text) {
+        masked.classList.toggle('hidden');
+        text.classList.toggle('hidden');
+    }
+    btn.querySelector('.eye-off').classList.toggle('hidden');
+    btn.querySelector('.eye-on').classList.toggle('hidden');
+    btn.setAttribute('title', masked.classList.contains('hidden') ? 'Hide password' : 'Show password');
+}
 function filterEnvs(btn) {
     document.querySelectorAll('.env-tab').forEach(function(t) {
         t.classList.remove('bg-black', 'text-white');
@@ -549,12 +252,22 @@ function filterEnvs(btn) {
     btn.classList.add('bg-black', 'text-white');
     btn.classList.remove('border', 'border-zinc-200', 'text-zinc-600', 'hover:bg-zinc-200/70');
     var filter = btn.getAttribute('data-env');
+    var visible = 0;
     document.querySelectorAll('.env-card').forEach(function(card) {
         if (filter === 'all' || card.getAttribute('data-env') === filter) {
             card.style.display = '';
+            visible++;
         } else {
             card.style.display = 'none';
         }
     });
+    var empty = document.getElementById('envEmpty');
+    if (empty) {
+        if (filter !== 'all' && visible === 0) {
+            empty.classList.remove('hidden');
+        } else {
+            empty.classList.add('hidden');
+        }
+    }
 }
 </script>

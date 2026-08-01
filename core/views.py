@@ -1,12 +1,14 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseBadRequest
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from organizations.models import Project, Deploy
 
 
-class Dashboard(TemplateView):
+class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = "core/dashboard.html"
 
     def get(self, request, *args, **kwargs):
@@ -37,7 +39,3 @@ def detail_component(request, pk):
             'deploy_envs': envs
         }
         return render(request, "partials/_detail.html", context)
-    
-
-def filter_deploys(request):
-    return render(request, "partials/_detail_body.html")
