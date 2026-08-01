@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfraInv | Delete User</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans antialiased bg-zinc-50 text-zinc-900 min-h-screen" style="font-feature-settings: 'tnum' 1, 'cv01' 1, 'cv03' 1, 'cv04' 1, 'cv10' 1;">
+
+    <header class="flex items-center justify-between px-6 py-4 border-b border-zinc-200/60">
+        <div class="flex items-center gap-6">
+            <a href="{% url 'core:dashboard' %}" class="text-sm font-semibold text-zinc-900 tracking-tight">InfraInv</a>
+            <a href="{% url 'users:user_list' %}" class="text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors">Users</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="text-xs text-zinc-400">{{ user.email }}</span>
+            <form method="post" action="{% url 'users:logout' %}" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="text-xs text-zinc-500 hover:text-zinc-800 transition-colors">Log Out</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-4 py-16">
+        <div class="bg-white border border-red-200 rounded-lg p-6 text-center">
+            <h2 class="text-lg font-bold text-zinc-900 mb-2">Delete User</h2>
+            <p class="text-sm text-zinc-600 mb-6">Are you sure you want to delete <strong class="text-zinc-900">{{ object.email }}</strong>? This action cannot be undone.</p>
+            <form method="post" class="flex items-center justify-center gap-3">
+                {% csrf_token %}
+                <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">Delete</button>
+                <a href="{% url 'users:user_list' %}" class="px-4 py-2 text-sm font-medium text-zinc-600 bg-zinc-100 border border-zinc-200 rounded-lg hover:bg-zinc-200 transition-colors">Cancel</a>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -40,6 +40,10 @@ ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 AUTH_USER_MODEL = "users.CustomUser"
 
+LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "core:dashboard"
+LOGOUT_REDIRECT_URL = "core:landing"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -54,6 +58,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_htmx',
+    'taggit',
     'core',
     'users',
     'organizations',

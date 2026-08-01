@@ -28,3 +28,6 @@ cryptography==49.0.0
 # htmx
 django-htmx==1.28.0
 
+# django taggit
+django-taggit==6.1.0
+

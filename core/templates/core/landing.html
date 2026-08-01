@@ -24,7 +24,17 @@
 
     <header class="flex items-center justify-between px-6 py-4 border-b border-zinc-200/60">
         <a href="/" class="text-sm font-semibold text-zinc-900 tracking-tight">InfraInv</a>
-        <a href="/dashboard/" class="text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors">Dashboard →</a>
+        <div class="flex items-center gap-4">
+            {% if user.is_authenticated %}
+            <a href="{% url 'core:dashboard' %}" class="text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors">Dashboard</a>
+            <form method="post" action="{% url 'users:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors">Log Out</button>
+            </form>
+            {% else %}
+            <a href="{% url 'users:login' %}" class="text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors">Sign In</a>
+            {% endif %}
+        </div>
     </header>
 
     <main class="flex flex-col items-center justify-center pt-32 pb-20 px-6 text-center">
@@ -48,11 +58,6 @@
             <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-zinc-400 hover:text-zinc-700 transition-colors cursor-default">UAT</span>
             <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-zinc-400 hover:text-zinc-700 transition-colors cursor-default">Production</span>
         </div>
-
-        <a href="/dashboard/" class="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors shadow-sm">
-            View Demo Dashboard
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
     </main>
 
 </body>

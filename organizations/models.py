@@ -33,11 +33,6 @@ class Project(BaseModel):
         blank=True,
         verbose_name="Project Description",
     )
-    github_addr = models.URLField(
-        null=True, 
-        blank=True, 
-        verbose_name="Github Address"
-    )
 
     def __str__(self):
         return self.title
@@ -68,9 +63,14 @@ class Deploy(BaseModel):
         choices=EnvironmentChoices.choices,
         default=EnvironmentChoices.DEV,
     )
+    github_repo = models.URLField(
+        null=True,
+        blank=True,
+        verbose_name="Github Repository",
+    )
 
     def __str__(self):
-        return f"{self.project}-{self.title} — {self.get_environment_display()}"
+        return f"{self.title} — {self.get_environment_display()}"
 
     class Meta:
         verbose_name = "Deploy"

@@ -17,6 +17,7 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         return render(self.request, self.template_name, context)
     
 
+@login_required
 def detail_component(request, pk):
     if request.method == 'GET':
         
