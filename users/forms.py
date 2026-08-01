@@ -11,10 +11,15 @@ class UserForm(forms.ModelForm):
         required=False,
         help_text="Leave blank to keep existing password.",
     )
+    password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput,
+        required=False,
+    )
 
     class Meta:
         model = CustomUser
-        fields = ["email", "role", "organization", "is_active", "is_staff"]
+        fields = ["email", "first_name", "last_name", "role", "organization", "is_active", "is_staff"]
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -30,6 +35,14 @@ class UserForm(forms.ModelForm):
         if not self.instance.pk and not password:
             raise forms.ValidationError("Password is required for new users.")
         return password
+
+    def clean(self):
+        cleaned = super().clean()
+        p1 = cleaned.get("password1")
+        p2 = cleaned.get("password2")
+        if p1 and p1 != p2:
+            self.add_error("password2", "Passwords do not match.")
+        return cleaned
 
     def save(self, commit=True):
         user = super().save(commit=False)

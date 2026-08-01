@@ -54,11 +54,26 @@
                 <input type="email" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default:'' }}" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400" required>
                 {% if form.email.errors %}<p class="text-xs text-red-600 mt-1">{{ form.email.errors.0 }}</p>{% endif %}
             </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label for="{{ form.first_name.id_for_label }}" class="block text-xs font-medium text-zinc-500 mb-1.5">First Name</label>
+                    <input type="text" name="{{ form.first_name.name }}" id="{{ form.first_name.id_for_label }}" value="{{ form.first_name.value|default:'' }}" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400">
+                </div>
+                <div>
+                    <label for="{{ form.last_name.id_for_label }}" class="block text-xs font-medium text-zinc-500 mb-1.5">Last Name</label>
+                    <input type="text" name="{{ form.last_name.name }}" id="{{ form.last_name.id_for_label }}" value="{{ form.last_name.value|default:'' }}" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400">
+                </div>
+            </div>
             <div>
                 <label for="{{ form.password1.id_for_label }}" class="block text-xs font-medium text-zinc-500 mb-1.5">Password</label>
                 <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400" {% if not form.instance.pk %}required{% endif %}>
                 {% if form.password1.help_text %}<p class="text-xs text-zinc-400 mt-1">{{ form.password1.help_text }}</p>{% endif %}
                 {% if form.password1.errors %}<p class="text-xs text-red-600 mt-1">{{ form.password1.errors.0 }}</p>{% endif %}
+            </div>
+            <div>
+                <label for="{{ form.password2.id_for_label }}" class="block text-xs font-medium text-zinc-500 mb-1.5">Confirm Password</label>
+                <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400" {% if not form.instance.pk %}required{% endif %}>
+                {% if form.password2.errors %}<p class="text-xs text-red-600 mt-1">{{ form.password2.errors.0 }}</p>{% endif %}
             </div>
             <div>
                 <label for="{{ form.role.id_for_label }}" class="block text-xs font-medium text-zinc-500 mb-1.5">Role</label>

@@ -6,7 +6,7 @@ from users.models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(BaseUserAdmin):
-    list_display = ("email", "role", "organization", "is_staff", "is_active", "is_obsolete")
+    list_display = ("email", "first_name", "last_name", "role", "organization", "is_staff", "is_active", "is_obsolete")
     list_editable = ("role", "is_active", "is_obsolete")
     list_filter = ("role", "is_staff", "is_active", "is_obsolete", "organization")
     search_fields = ("email",)
@@ -34,7 +34,15 @@ class CustomUserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2"),
+                "fields": (
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "role",
+                    "organization",
+                    "password1",
+                    "password2",
+                ),
             },
         ),
     )
