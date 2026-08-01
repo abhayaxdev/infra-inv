@@ -22,6 +22,12 @@ class LogoutView(BaseLogoutView):
 
 
 class SuperuserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    
+    def dispatch(self, request, *args, **kwargs):
+        print(f"\n{request}\n")
+        messages.error(self.request, f"Access to {self.request.path} is blocked temporarily. You're now redirected to the dashboard!")
+        return redirect("core:dashboard")
+    
     def test_func(self):
         return self.request.user.is_superuser
 
