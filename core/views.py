@@ -9,7 +9,7 @@ from organizations.models import Project, Deploy
 
 
 class Dashboard(LoginRequiredMixin, TemplateView):
-    template_name = "core/dashboard.html"
+    template_name = "core/index.html"
 
     def get(self, request, *args, **kwargs):
         context  = self.get_context_data()
