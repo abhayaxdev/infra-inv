@@ -1,29 +1,37 @@
-## Project Template
+## InfraInv
 
-### A Django starter template for any python/django related projects.
+### A management platform for all your deployments.
 
 ## Quick start
 
-1. Clone the template and `cd` into it.
-2. Run the setup command:
+1. Clone the repo and `cd` into it.
+
+2. Create a virtual environment at `../.venv` (one level above the project):
+
+   ```bash
+   python3 -m venv ../.venv
+   source ../.venv/bin/activate
+   ```
+
+3. Run the setup command:
 
    ```bash
    make setup
    ```
 
-   This optionally creates a virtual environment (`../.venv`), installs dependencies, and creates `.env` from `.env.example` (if it doesn't exist).
+   This installs dependencies and creates `.env` from `.env.example` (if it doesn't exist).
 
-3. Configure your environment variables in `.env`:
+4. Configure your environment variables in `.env`:
 
    → To use SQLite, set `USE_SQLITE=TRUE`, otherwise configure the database env vars.
 
-4. Apply database migrations:
+5. Apply database migrations:
 
    ```bash
    make migrate
    ```
 
-5. Start the dev server:
+6. Start the dev server:
 
    ```bash
    python manage.py runserver
@@ -33,7 +41,7 @@
 
 | Command                | Action                                  |
 |------------------------|-----------------------------------------|
-| `make setup`           | Optionally create `../.venv`, install dependencies, create `.env` (prompts to configure before migrating) |
+| `make setup`           | Install dependencies and create `.env` from `.env.example` |
 | `make install`         | Install dependencies                    |
 | `make env`             | Create `.env` from `.env.example`       |
 | `make migrate`         | Apply database migrations               |
@@ -47,4 +55,4 @@
 - Adjust `USE_SQLITE` and database-related env vars before running `make migrate`.
 - `make setup` does **not** run migrations; run `make migrate` separately after configuring `.env`.
 - `make env` will skip if `.env` already exists.
-- When `make setup` creates a virtual environment, it is placed at `../.venv` (one level above the project root).
+- Create a virtual environment at `../.venv` before running `make setup`. The Makefile will auto-detect and use it.
