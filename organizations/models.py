@@ -63,11 +63,6 @@ class Deploy(BaseModel):
         choices=EnvironmentChoices.choices,
         default=EnvironmentChoices.DEV,
     )
-    github_repo = models.URLField(
-        null=True,
-        blank=True,
-        verbose_name="Github Repository",
-    )
 
     def __str__(self):
         return f"{self.title} — {self.get_environment_display()}"
@@ -92,6 +87,11 @@ class Domain(BaseModel):
     status = models.IntegerField(
         choices=StatusChoices.choices,
         default=StatusChoices.ACTIVE,
+    )
+    github_repo = models.URLField(
+        null=True,
+        blank=True,
+        verbose_name="Github Repository",
     )
 
     def __str__(self):
