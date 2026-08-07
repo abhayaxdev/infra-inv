@@ -1,273 +1,82 @@
-    <!-- Environment cards -->
-    <div class="relative pl-8 border-l-2 border-zinc-200/60 ml-2 space-y-1" id="envCards">
-
-        {% for deployment in project.deployments.all %}
-        
-            <div class="relative env-card" data-env="{{ deployment.environment }}">
-                <span class="block absolute -left-[33px] top-5 w-2 h-2 rounded-full ring-2 ring-zinc-50 bg-zinc-400"></span>
-                <div class="bg-white border border-zinc-200 border-l-4 border-l-zinc-300 rounded-xl overflow-hidden shadow-lg ring-2 ring-zinc-300/20 transition-all mb-3">
-                    <div class="px-5 py-4 cursor-pointer hover:bg-zinc-50 transition-colors" onclick="slideEnv(this)">
-                        <div class="flex items-center gap-5">
-                            <div class="flex-1 min-w-0">
-                                <h3 class="flex items-center gap-2 text-sm font-semibold text-zinc-800">
-                                    {{ deployment.title }}
-                                    <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full {% if deployment.environment == 4 %}bg-green-100 text-green-700{% elif deployment.environment == 3 %}bg-blue-100 text-blue-700{% elif deployment.environment == 2 %}bg-yellow-100 text-yellow-700{% else %}bg-zinc-100 text-zinc-600{% endif %}">
-                                        {{ deployment.get_environment_display }}
-                                    </span>
-                                </h3>
+<div class="relative ml-2 border-l border-[#8b847d]/40 pl-6 dark:border-[#495059]" id="envCards">
+    {% for deployment in project.deployments.all %}
+    <article class="env-card relative mb-4" data-env="{{ deployment.environment }}">
+        {% if deployment.environment == 1 %}
+        <span class="absolute -left-[1.72rem] top-6 h-2 w-2 rounded-full bg-[#8b847d] ring-4 ring-[#ebe7e4] dark:bg-[#9fa4ab] dark:ring-[#0d1116]"></span>
+        {% elif deployment.environment == 2 %}
+        <span class="absolute -left-[1.72rem] top-6 h-2 w-2 rounded-full bg-[#e8993a] ring-4 ring-[#ebe7e4] dark:ring-[#0d1116]"></span>
+        {% elif deployment.environment == 3 %}
+        <span class="absolute -left-[1.72rem] top-6 h-2 w-2 rounded-full bg-[#4b607c] ring-4 ring-[#ebe7e4] dark:bg-[#6a9fcc] dark:ring-[#0d1116]"></span>
+        {% elif deployment.environment == 4 %}
+        <span class="absolute -left-[1.72rem] top-6 h-2 w-2 rounded-full bg-[#5db87a] ring-4 ring-[#ebe7e4] dark:ring-[#0d1116]"></span>
+        {% endif %}
+        <div class="overflow-hidden border border-[#8b847d]/50 bg-[#f4f2f0]/90 dark:border-[#495059] dark:bg-[#212730]/90">
+            <button type="button" class="flex w-full items-center gap-4 border-b border-[#8b847d]/30 px-4 py-4 text-left hover:bg-[#4b607c]/10 dark:border-[#495059] dark:hover:bg-[#6a9fcc]/10" onclick="slideEnv(this)">
+                <span class="min-w-0 flex-1">
+                    <span class="flex flex-wrap items-center gap-2 text-sm font-medium text-[#252f3d] dark:text-[#ebe7e4]">{{ deployment.title }}
+                        {% if deployment.environment == 1 %}
+                        <span class="border border-[#8b847d]/60 bg-[#8b847d]/10 px-2 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.08em] text-[#5c5752] dark:border-[#757d89]/60 dark:bg-[#757d89]/10 dark:text-[#9fa4ab]">{{ deployment.get_environment_display }}</span>
+                        {% elif deployment.environment == 2 %}
+                        <span class="border border-[#e8993a]/50 bg-[#e8993a]/10 px-2 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.08em] text-[#a96c1e] dark:border-[#e8993a]/60 dark:bg-[#e8993a]/10 dark:text-[#e8993a]">{{ deployment.get_environment_display }}</span>
+                        {% elif deployment.environment == 3 %}
+                        <span class="border border-[#4b607c]/60 bg-[#4b607c]/10 px-2 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.08em] text-[#4b607c] dark:border-[#6a9fcc]/60 dark:bg-[#6a9fcc]/10 dark:text-[#6a9fcc]">{{ deployment.get_environment_display }}</span>
+                        {% elif deployment.environment == 4 %}
+                        <span class="border border-[#5db87a]/50 bg-[#5db87a]/10 px-2 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.08em] text-[#39764e] dark:border-[#5db87a]/60 dark:bg-[#5db87a]/10 dark:text-[#83c998]">{{ deployment.get_environment_display }}</span>
+                        {% endif %}
+                    </span>
+                </span>
+                <span class="hidden text-right sm:block"><span class="block font-mono text-[0.56rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">Updated</span><span class="font-mono text-xs text-[#252f3d] dark:text-[#ebe7e4]">12h ago</span></span>
+                <svg class="env-chevron h-4 w-4 shrink-0 rotate-180 text-[#5c5752] transition-transform dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+            </button>
+            <div class="deploy-panel px-4 py-3">
+                <div class="space-y-2">
+                    {% for deploy in deployment.domains.all %}
+                    <div class="overflow-hidden border border-l-2 border-l-[#5db87a] border-[#8b847d]/40 bg-[#5db87a]/5 dark:border-[#495059]">
+                        <div class="flex cursor-pointer items-center gap-2 px-3 py-2 hover:bg-[#5db87a]/10" onclick="slideToggle(this)">
+                            <svg class="h-4 w-4 shrink-0 text-[#5c5752] dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+                            <a href="{{ deploy.url }}" target="_blank" class="min-w-0 flex-1 truncate font-mono text-xs text-[#4b607c] hover:text-[#252f3d] dark:text-[#6a9fcc] dark:hover:text-white">{{ deploy.url }}</a>
+                            <button type="button" class="shrink-0 text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" onclick="event.stopPropagation();copyUrl(this)" data-url="{{ deploy.url }}" title="Copy URL"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                            <span class="h-2 w-2 shrink-0 rounded-full bg-[#5db87a]" title="Active"></span>
+                            <svg class="url-chevron h-4 w-4 shrink-0 text-[#5c5752] transition-transform dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                        </div>
+                        <div class="hidden border-t border-[#5db87a]/30 bg-[#ebe7e4]/40 px-4 py-3 dark:bg-[#161d27]/40">
+                            {% if deploy.github_repo %}<div class="mb-3 flex justify-end"><a href="{{ deploy.github_repo }}" target="_blank" class="text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" title="Github repository"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23 0 0 1.008-.322 3.301 1.23 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a></div>{% endif %}
+                            {% if request.user.is_superuser or request.user.role == 4 %}
+                            <h4 class="mb-3 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[#4b607c] dark:text-[#6a9fcc]">Server details</h4>
+                            {% for server in deployment.servers.all %}
+                            <div class="mb-3 overflow-hidden border border-[#8b847d]/40 dark:border-[#495059]">
+                                <div class="flex cursor-pointer items-center gap-2 px-3 py-2 hover:bg-[#4b607c]/10 dark:hover:bg-[#6a9fcc]/10" onclick="slideToggle(this)"><svg class="h-4 w-4 text-[#5c5752] dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14"/><path d="M8 21h8M12 17v4"/></svg><span class="text-sm text-[#252f3d] dark:text-[#ebe7e4]">{{ server.name }}</span><svg class="server-chevron ml-auto h-4 w-4 text-[#5c5752] dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div>
+                                <div class="hidden border-t border-[#8b847d]/40 px-4 py-3 dark:border-[#495059]"><div class="grid grid-cols-2 gap-3 font-mono text-[0.65rem]"><div><span class="block text-[#5c5752] dark:text-[#9fa4ab]">IP address</span><span class="text-[#252f3d] dark:text-[#ebe7e4]">{{ server.ip_address }}</span></div><div><span class="block text-[#5c5752] dark:text-[#9fa4ab]">Port</span><span class="text-[#252f3d] dark:text-[#ebe7e4]">{% if server.port %}{{ server.port }}{% else %}—{% endif %}</span></div><div><span class="block text-[#5c5752] dark:text-[#9fa4ab]">Region</span><span class="text-[#252f3d] dark:text-[#ebe7e4]">{% if server.region %}{{ server.region }}{% else %}—{% endif %}</span></div><div><span class="block text-[#5c5752] dark:text-[#9fa4ab]">Provider</span><span class="text-[#252f3d] dark:text-[#ebe7e4]">{% if server.provider %}{{ server.provider }}{% else %}—{% endif %}</span></div><div class="col-span-2"><span class="block text-[#5c5752] dark:text-[#9fa4ab]">Technologies</span>{% for tag in server.technologies.all %}<span class="mr-1 inline-block border border-[#8b847d]/50 px-1.5 py-0.5 text-[0.6rem] text-[#5c5752] dark:border-[#495059] dark:text-[#9fa4ab]">{{ tag }}</span>{% empty %}—{% endfor %}</div><div><span class="block text-[#5c5752] dark:text-[#9fa4ab]">Auto deploy</span>{% if server.auto_deploy %}<span class="text-[#5db87a]">✓</span>{% else %}<span class="text-[#e8704f]">✕</span>{% endif %}</div></div><hr class="my-3 border-[#8b847d]/30 dark:border-[#495059]"><span class="block font-mono text-[0.65rem] text-[#5c5752] dark:text-[#9fa4ab]">Services &amp; server notes</span><div class="mt-1 whitespace-pre-wrap text-sm text-[#252f3d] dark:text-[#ebe7e4]">{% if server.services_used %}{{ server.services_used }}{% else %}—{% endif %}</div></div>
                             </div>
-                            <div class="flex-shrink-0 w-14 text-right">
-                                <div class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-0.5">Updated</div>
-                                <div class="text-sm text-zinc-700 font-medium">12h ago</div>
-                            </div>
-                            <div class="flex-shrink-0 self-center">
-                                <svg class="w-4 h-4 text-zinc-400 transition-transform env-chevron rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                            </div>
+                            {% empty %}<div class="mb-4 border border-dashed border-[#8b847d]/50 px-4 py-3 font-mono text-[0.65rem] text-[#5c5752] dark:border-[#495059] dark:text-[#9fa4ab]">No server information available for this environment.</div>{% endfor %}
+                            {% endif %}
+                            <h4 class="mb-3 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[#4b607c] dark:text-[#6a9fcc]">Credentials</h4>
+                            {% for cred in deploy.credentials.all %}
+                            <div class="mb-2 overflow-hidden border border-[#8b847d]/40 dark:border-[#495059]"><div class="flex cursor-pointer items-center gap-2 px-3 py-2 hover:bg-[#4b607c]/10 dark:hover:bg-[#6a9fcc]/10" onclick="slideToggle(this)"><svg class="h-4 w-4 text-[#5c5752] dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="text-sm text-[#252f3d] dark:text-[#ebe7e4]">{{ cred.user_role }}</span><svg class="cred-chevron ml-auto h-4 w-4 text-[#5c5752] dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div><div class="hidden border-t border-[#8b847d]/40 px-4 py-3 dark:border-[#495059]"><div class="grid grid-cols-1 gap-3 font-mono text-[0.65rem] sm:grid-cols-2"><div><span class="block text-[#5c5752] dark:text-[#9fa4ab]">Username / email</span><div class="flex items-center gap-1 text-[#252f3d] dark:text-[#ebe7e4]"><span id="cred-user-{{ cred.pk }}">{{ cred.username }}</span><button type="button" class="text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" onclick="copyField('username', {{ cred.pk }})" title="Copy username"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div></div><div><span class="block text-[#5c5752] dark:text-[#9fa4ab]">Password</span><div class="flex items-center gap-1 text-[#252f3d] dark:text-[#ebe7e4]"><span id="pw-masked-{{ cred.pk }}">••••••••</span><span id="pw-text-{{ cred.pk }}" class="hidden">{{ cred.password }}</span><button type="button" class="text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" onclick="togglePassword(this)" data-target="{{ cred.pk }}" title="Show password"><svg class="eye-off h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-on hidden h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22"/></svg></button><button type="button" class="text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" onclick="copyField('password', {{ cred.pk }})" title="Copy password"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div></div></div></div></div>
+                            {% empty %}<div class="border border-dashed border-[#8b847d]/50 px-4 py-3 font-mono text-[0.65rem] text-[#5c5752] dark:border-[#495059] dark:text-[#9fa4ab]">No credentials stored for this domain.</div>{% endfor %}
                         </div>
                     </div>
-                    <div class="deploy-panel border-t border-zinc-200 bg-white px-5 py-3">
-                        <div class="space-y-1">
-
-                            {% for deploy in deployment.domains.all %}
-                                <div class="rounded border border-l-4 border-green-500 border-zinc-200/60 bg-green-50/40 overflow-hidden">
-                                    <div class="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-green-50/70" onclick="slideToggle(this)">
-                                        <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
-                                        <a href="{{ deploy.url }}" target="_blank" class="text-xs font-medium text-[#005ab3] hover:text-[#003f7d] truncate">{{ deploy.url }}</a>
-                                        <button class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="event.stopPropagation();copyUrl(this)" data-url="{{ deploy.url }}" title="Copy URL">
-                                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                        </button>
-                                        <span class="ml-auto w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title="Active"></span>
-                                        <svg class="w-4 h-4 text-zinc-300 url-chevron flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                    </div>
-                                    <div class="hidden border-t border-green-200/60 bg-zinc-100/50 px-4 py-3">
-                                        {% if deploy.github_repo %}
-                                        <div class="flex justify-end mb-3">
-                                            <a href="{{ deploy.github_repo }}" target="_blank" class="text-zinc-400 hover:text-zinc-600" title="Github Repository">
-                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                                            </a>
-                                        </div>
-                                        {% endif %}
-                                        {% if request.user.is_superuser or request.user.role == 4 %}    
-                                            <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Server Details</h4>
-                                            {% for server in deployment.servers.all %}
-                                                <div class="space-y-1 mb-4">
-                                                    <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                                        <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                                            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                                                            <span class="text-sm font-medium text-zinc-800">{{ server.name }}</span>
-                                                            <svg class="w-4 h-4 text-zinc-300 ml-auto server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                                        </div>
-                                                        <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                                <div>
-                                                                    <span class="text-zinc-400 block mb-0.5">IP Address</span>
-                                                                    <span class="font-medium text-zinc-800 font-mono">{{ server.ip_address }}</span>
-                                                                </div>
-                                                                <div><span class="text-zinc-400 block mb-0.5">Port</span><span class="font-medium text-zinc-800">{% if server.port %}{{ server.port }}{% else %}<span class="text-zinc-400">—</span>{% endif %}</span></div>
-                                                                <div><span class="text-zinc-400 block mb-0.5">Region</span><span class="font-medium text-zinc-800">{% if server.region %}{{ server.region }}{% else %}<span class="text-zinc-400">—</span>{% endif %}</span></div>
-                                                                <div><span class="text-zinc-400 block mb-0.5">Provider</span><span class="font-medium text-zinc-800">{% if server.provider %}{{ server.provider }}{% else %}<span class="text-zinc-400">—</span>{% endif %}</span></div>
-                                                                <div>
-                                                                    <span class="text-zinc-400 block mb-1">Technologies</span>
-                                                                    {% for tag in server.technologies.all %}
-                                                                    <span class="inline-block px-1.5 py-0.5 text-[11px] font-medium bg-white border border-zinc-200 rounded-full text-zinc-600 leading-none mr-1 mb-1">{{ tag }}</span>
-                                                                    {% empty %}
-                                                                    <span class="text-zinc-400">—</span>
-                                                                    {% endfor %}
-                                                                </div>
-                                                                <div><span class="text-zinc-400 block mb-0.5">Auto Deploy</span><span class="font-medium text-zinc-800">{% if server.auto_deploy %}<span class="text-green-600">&#x2713;</span>{% else %}<span class="text-red-500">&#x2717;</span>{% endif %}</span></div>
-                                                            </div>
-                                                            <hr class="border-zinc-200 my-3">
-                                                            <div class="text-xs">
-                                                                <span class="text-zinc-400 block mb-0.5">Services &amp; server notes</span>
-                                                                {% if server.services_used %}
-                                                                <div class="font-medium text-zinc-800 whitespace-pre-wrap">{{ server.services_used }}</div>
-                                                                {% else %}
-                                                                <span class="text-zinc-400">—</span>
-                                                                {% endif %}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% empty %}
-                                            <div class="rounded border border-zinc-200/60 overflow-hidden mb-4">
-                                                <p class="text-xs text-zinc-500 px-4 py-3">No server information available for this environment.</p>
-                                            </div>
-                                            {% endfor %}
-                                        {% endif %}
-                                        <h4 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Credentials</h4>
-                                        <div class="space-y-1">
-                                            {% for cred in deploy.credentials.all %}
-                                                <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                                    <div class="flex items-center gap-2 py-2 px-3 cursor-pointer" onclick="slideToggle(this)">
-                                                        <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                                        <span class="text-sm font-medium text-zinc-800">{{ cred.user_role }}</span>
-                                                        <svg class="w-4 h-4 text-zinc-300 ml-auto cred-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
-                                                    </div>
-                                                    <div class="hidden border-t border-zinc-200/60 bg-zinc-50/30 px-4 py-3">
-                                                        <div class="grid grid-cols-2 gap-3 text-xs">
-                                                            <div>
-                                                                <span class="text-zinc-400 block mb-0.5">Username/Email</span>
-                                                                <div class="flex items-center gap-1">
-                                                                    <span id="cred-user-{{ cred.pk }}" class="font-medium text-zinc-800">{{ cred.username }}</span>
-                                                                    <button type="button" class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="copyField('username', {{ cred.pk }})" title="Copy username">
-                                                                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <span class="text-zinc-400 block mb-0.5">Password</span>
-                                                                <div class="flex items-center gap-1">
-                                                                    <span id="pw-masked-{{ cred.pk }}" class="font-medium text-zinc-800">••••••••</span>
-                                                                    <span id="pw-text-{{ cred.pk }}" class="hidden font-medium text-zinc-800">{{ cred.password }}</span>
-                                                                    <button type="button" class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="togglePassword(this)" data-target="{{ cred.pk }}" title="Show password">
-                                                                        <svg class="w-3.5 h-3.5 eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                                                        <svg class="w-3.5 h-3.5 eye-on hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                                                                    </button>
-                                                                    <button type="button" class="text-zinc-400 hover:text-zinc-600 flex-shrink-0" onclick="copyField('password', {{ cred.pk }})" title="Copy password">
-                                                                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% empty %}
-                                            <div class="rounded border border-zinc-200/60 overflow-hidden">
-                                                <p class="text-xs text-zinc-500 px-4 py-3">No credentials stored for this domain.</p>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                            {% empty %}
-                            <div class="rounded-lg border border-dashed border-zinc-300 bg-white/60 px-4 py-4 text-center">
-                                <p class="text-xs font-medium text-zinc-500">No domains configured for this environment.</p>
-                            </div>
-                            {% endfor %}
-
-                        </div>
-                    </div>
+                    {% empty %}<div class="border border-dashed border-[#8b847d]/50 px-4 py-4 text-center font-mono text-[0.65rem] text-[#5c5752] dark:border-[#495059] dark:text-[#9fa4ab]">No domains configured for this environment.</div>{% endfor %}
                 </div>
             </div>
-        {% empty %}
-        <div class="rounded-lg border border-dashed border-zinc-300 bg-white/60 px-5 py-6 text-center">
-            <p class="text-sm font-medium text-zinc-500">No environments configured for this project yet.</p>
-            <p class="text-xs text-zinc-400 mt-1">Add a deployment to start tracking domains, servers, and credentials.</p>
         </div>
-        {% endfor %}
-        <div id="envEmpty" class="hidden rounded-lg border border-dashed border-zinc-300 bg-white/60 px-5 py-6 text-center">
-            <p class="text-sm font-medium text-zinc-500">No environments found for this filter.</p>
-            <p class="text-xs text-zinc-400 mt-1">Try selecting a different environment tab.</p>
-        </div>
-    </div>
+    </article>
+    {% empty %}
+    <div class="border border-dashed border-[#8b847d]/50 px-5 py-6 text-center dark:border-[#495059]"><p class="font-mono text-xs text-[#5c5752] dark:text-[#9fa4ab]">No environments configured for this project yet.</p><p class="mt-1 text-sm text-[#5c5752] dark:text-[#9fa4ab]">Add a deployment to start tracking domains, servers, and credentials.</p></div>
+    {% endfor %}
+    <div id="envEmpty" class="hidden border border-dashed border-[#8b847d]/50 px-5 py-6 text-center dark:border-[#495059]"><p class="font-mono text-xs text-[#5c5752] dark:text-[#9fa4ab]">No environments found for this filter.</p><p class="mt-1 text-sm text-[#5c5752] dark:text-[#9fa4ab]">Try selecting a different environment tab.</p></div>
+</div>
 
 <script>
 function animateAccordion(el, open) {
     (el.getAnimations ? el.getAnimations() : []).forEach(function(a) { a.cancel(); });
-    var duration = 220;
-    if (open) {
-        el.classList.remove('hidden');
-        el.style.overflow = 'hidden';
-        el.style.height = '0px';
-        var target = el.scrollHeight + 'px';
-        el.offsetHeight;
-        el.animate([{ height: '0px', overflow: 'hidden' }, { height: target, overflow: 'hidden' }], { duration: duration, easing: 'ease-out' }).onfinish = function() {
-            el.style.height = '';
-            el.style.overflow = '';
-        };
-    } else {
-        var start = el.scrollHeight + 'px';
-        el.style.overflow = 'hidden';
-        el.style.height = start;
-        el.offsetHeight;
-        el.animate([{ height: start, overflow: 'hidden' }, { height: '0px', overflow: 'hidden' }], { duration: duration, easing: 'ease-in' }).onfinish = function() {
-            el.style.height = '';
-            el.style.overflow = '';
-            el.classList.add('hidden');
-        };
-    }
+    if (open) { el.classList.remove('hidden'); el.style.overflow = 'hidden'; el.style.height = '0px'; var target = el.scrollHeight + 'px'; el.offsetHeight; el.animate([{height:'0px'},{height:target}], {duration:220,easing:'ease-out'}).onfinish=function(){el.style.height='';el.style.overflow='';}; }
+    else { var start=el.scrollHeight+'px'; el.style.overflow='hidden'; el.style.height=start; el.offsetHeight; el.animate([{height:start},{height:'0px'}], {duration:220,easing:'ease-in'}).onfinish=function(){el.style.height='';el.style.overflow='';el.classList.add('hidden');}; }
 }
-function slideToggle(head) {
-    var panel = head.nextElementSibling;
-    if (panel) animateAccordion(panel, panel.classList.contains('hidden'));
-    var ch = head.querySelector('.url-chevron, .server-chevron, .cred-chevron');
-    if (ch) ch.classList.toggle('rotate-180');
-}
-function slideEnv(head) {
-    var card = head.closest('.border,.bg-white');
-    if (!card) return;
-    var panel = card.querySelector('.deploy-panel');
-    if (panel) animateAccordion(panel, panel.classList.contains('hidden'));
-    var ch = head.querySelector('.env-chevron');
-    if (ch) ch.classList.toggle('rotate-180');
-    card.classList.toggle('shadow-lg');
-    card.classList.toggle('ring-2');
-    card.classList.toggle('ring-zinc-300/20');
-}
-function copyField(field, id, btn) {
-    var el = field === 'username' ? document.getElementById('cred-user-' + id) : document.getElementById('pw-text-' + id);
-    if (!el) return;
-    navigator.clipboard.writeText(el.textContent).then(function() {
-        showToast('Copied!');
-    });
-}
-function copyUrl(btn) {
-    var url = btn.getAttribute('data-url');
-    if (!url) return;
-    navigator.clipboard.writeText(url).then(function() {
-        showToast('Copied!');
-    });
-}
-var toastTimer;
-function showToast(msg) {
-    var el = document.getElementById('toast');
-    if (!el) {
-        el = document.createElement('div');
-        el.id = 'toast';
-        el.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-800 text-white text-xs px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-200 pointer-events-none z-50';
-        document.body.appendChild(el);
-    }
-    el.textContent = msg;
-    el.classList.add('opacity-100');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function() { el.classList.remove('opacity-100'); }, 2000);
-}
-function togglePassword(btn) {
-    var id = btn.getAttribute('data-target');
-    var masked = document.getElementById('pw-masked-' + id);
-    var text = document.getElementById('pw-text-' + id);
-    if (masked && text) {
-        masked.classList.toggle('hidden');
-        text.classList.toggle('hidden');
-    }
-    btn.querySelector('.eye-off').classList.toggle('hidden');
-    btn.querySelector('.eye-on').classList.toggle('hidden');
-    btn.setAttribute('title', masked.classList.contains('hidden') ? 'Hide password' : 'Show password');
-}
-function filterEnvs(btn) {
-    document.querySelectorAll('.env-tab').forEach(function(t) {
-        t.classList.remove('bg-black', 'text-white');
-        t.classList.add('border', 'border-zinc-200', 'text-zinc-600', 'hover:bg-zinc-200/70');
-    });
-    btn.classList.add('bg-black', 'text-white');
-    btn.classList.remove('border', 'border-zinc-200', 'text-zinc-600', 'hover:bg-zinc-200/70');
-    var filter = btn.getAttribute('data-env');
-    var visible = 0;
-    document.querySelectorAll('.env-card').forEach(function(card) {
-        if (filter === 'all' || card.getAttribute('data-env') === filter) {
-            card.style.display = '';
-            visible++;
-        } else {
-            card.style.display = 'none';
-        }
-    });
-    var empty = document.getElementById('envEmpty');
-    if (empty) {
-        if (filter !== 'all' && visible === 0) {
-            empty.classList.remove('hidden');
-        } else {
-            empty.classList.add('hidden');
-        }
-    }
-}
+function slideToggle(head) { var panel=head.nextElementSibling; if(panel) animateAccordion(panel,panel.classList.contains('hidden')); var ch=head.querySelector('.url-chevron,.server-chevron,.cred-chevron'); if(ch) ch.classList.toggle('rotate-180'); }
+function slideEnv(head) { var card=head.closest('.env-card'); if(!card) return; var panel=card.querySelector('.deploy-panel'); if(panel) animateAccordion(panel,panel.classList.contains('hidden')); var ch=head.querySelector('.env-chevron'); if(ch) ch.classList.toggle('rotate-180'); }
+function copyField(field,id) { var el=field==='username'?document.getElementById('cred-user-'+id):document.getElementById('pw-text-'+id); if(el) navigator.clipboard.writeText(el.textContent).then(function(){showToast('Copied');}); }
+function copyUrl(btn) { var url=btn.getAttribute('data-url'); if(url) navigator.clipboard.writeText(url).then(function(){showToast('Copied');}); }
+function togglePassword(btn) { var id=btn.getAttribute('data-target'), masked=document.getElementById('pw-masked-'+id), text=document.getElementById('pw-text-'+id); if(masked&&text){masked.classList.toggle('hidden');text.classList.toggle('hidden');} btn.querySelector('.eye-off').classList.toggle('hidden');btn.querySelector('.eye-on').classList.toggle('hidden'); }
+function filterEnvs(btn) { document.querySelectorAll('.env-tab').forEach(function(t){t.classList.remove('ring-2','ring-offset-2','ring-[#4b607c]/30','dark:ring-[#6a9fcc]/30','ring-[#8b847d]/50','dark:ring-[#9fa4ab]/50','ring-[#e8993a]/50','ring-[#4b607c]/40','dark:ring-[#6a9fcc]/40','ring-[#5db87a]/50','font-semibold');t.setAttribute('aria-pressed','false');});btn.classList.add('ring-2','ring-offset-2','font-semibold');if(btn.dataset.envTone==='all'){btn.classList.add('ring-[#4b607c]/30','dark:ring-[#6a9fcc]/30');}else if(btn.dataset.envTone==='dev'){btn.classList.add('ring-[#8b847d]/50','dark:ring-[#9fa4ab]/50');}else if(btn.dataset.envTone==='staging'){btn.classList.add('ring-[#e8993a]/50');}else if(btn.dataset.envTone==='uat'){btn.classList.add('ring-[#4b607c]/40','dark:ring-[#6a9fcc]/40');}else if(btn.dataset.envTone==='prod'){btn.classList.add('ring-[#5db87a]/50');}btn.setAttribute('aria-pressed','true');var filter=btn.getAttribute('data-env'),visible=0;document.querySelectorAll('.env-card').forEach(function(card){var show=filter==='all'||card.getAttribute('data-env')===filter;card.style.display=show?'':'none';if(show)visible++;});var empty=document.getElementById('envEmpty');if(empty)empty.classList.toggle('hidden',filter==='all'||visible>0);}
 </script>

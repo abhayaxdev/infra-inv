@@ -3,79 +3,23 @@
 {% block title %}InfraInv | Users{% endblock %}
 
 {% block sidebar %}
-
 {% include "partials/_sidebar_projects.html" with show_projects=0 %}
 {% include "partials/_sidebar_users.html" with show_users=1 %}
-
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 md:px-8 py-8">
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-lg font-bold text-zinc-900 tracking-tight">Users</h2>
-        <a href="{% url 'users:user_create' %}" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-zinc-800 rounded-md hover:bg-zinc-700 transition-colors">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>New User
-        </a>
-    </div>
-
-    <div class="bg-white border border-zinc-200 rounded-lg overflow-hidden">
-        <table class="w-full text-sm">
-            <thead>
-                <tr class="border-b border-zinc-200 bg-zinc-50 text-left">
-                    <th class="px-5 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Email</th>
-                    <th class="px-5 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Role</th>
-                    <th class="px-5 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Organization</th>
-                    <th class="px-5 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Staff</th>
-                    <th class="px-5 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Active</th>
-                    <th class="px-5 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider w-36"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-zinc-100">
-                {% for u in users %}
-                <tr class="hover:bg-zinc-50 transition-colors">
-                    <td class="px-5 py-3 font-medium text-zinc-800">{{ u.email }}</td>
-                    <td class="px-5 py-3 text-zinc-600">
-                        {% if u.role == 1 %}<span class="text-[11px] font-medium text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">Stakeholder</span>
-                        {% elif u.role == 2 %}<span class="text-[11px] font-medium text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">Product</span>
-                        {% elif u.role == 3 %}<span class="text-[11px] font-medium text-green-700 bg-green-100 px-2 py-0.5 rounded-full">Dev</span>
-                        {% elif u.role == 4 %}<span class="text-[11px] font-medium text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">Infra</span>
-                        {% elif u.role == 5 %}<span class="text-[11px] font-medium text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">QA</span>
-                        {% else %}<span class="text-zinc-400">—</span>{% endif %}
-                    </td>
-                    <td class="px-5 py-3 text-zinc-600">{% if u.organization %}{{ u.organization }}{% else %}<span class="text-zinc-400">—</span>{% endif %}</td>
-                    <td class="px-5 py-3">
-                        {% if u.is_staff %}
-                        <span class="text-[11px] font-medium text-green-700 bg-green-100 px-2 py-0.5 rounded-full">Staff</span>
-                        {% else %}
-                        <span class="text-[11px] font-medium text-zinc-500 bg-zinc-200/50 px-2 py-0.5 rounded-full">—</span>
-                        {% endif %}
-                    </td>
-                    <td class="px-5 py-3">
-                        {% if u.is_active %}
-                        <span class="text-green-600">&#x2713;</span>
-                        {% else %}
-                        <span class="text-red-500">&#x2717;</span>
-                        {% endif %}
-                    </td>
-                    <td class="px-5 py-3">
-                        <div class="flex items-center gap-1">
-                            <a href="{% url 'users:user_update' u.pk %}" class="w-7 h-7 flex items-center justify-center rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors" title="Edit">
-                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" stroke-linecap="round"/></svg>
-                            </a>
-                            <a href="{% url 'users:user_password_reset' u.pk %}" class="w-7 h-7 flex items-center justify-center rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors" title="Reset Password">
-                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-                            </a>
-                            <a href="{% url 'users:user_delete' u.pk %}" class="w-7 h-7 flex items-center justify-center rounded text-zinc-400 hover:text-zinc-700 hover:bg-red-50 hover:text-red-600 transition-colors" title="Delete">
-                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="px-5 py-8 text-center text-sm text-zinc-400">No users found.</td>
-                </tr>
-                {% endfor %}
+<div class="mx-auto w-full max-w-6xl px-6 py-10 lg:px-10">
+    <header class="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-[#8b847d]/30 pb-6 dark:border-[#495059]">
+        <div><div class="mb-2 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[#4b607c] dark:text-[#6a9fcc]">Administration / directory</div><h1 class="text-4xl font-normal tracking-[-0.055em] text-[#252f3d] dark:text-[#ebe7e4]">Users</h1></div>
+        <a href="{% url 'users:user_create' %}" class="inline-flex items-center gap-2 border border-[#4b607c] bg-[#4b607c] px-3 py-2 font-mono text-[0.64rem] uppercase tracking-[0.08em] text-white no-underline transition hover:bg-[#252f3d] dark:border-[#6a9fcc] dark:bg-[#6a9fcc] dark:hover:bg-[#4b607c]"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>New user</a>
+    </header>
+    <div class="overflow-x-auto border border-[#8b847d]/40 bg-[#f4f2f0]/80 dark:border-[#495059] dark:bg-[#212730]/80">
+        <table class="w-full min-w-[720px] border-collapse text-sm">
+            <thead><tr class="border-b border-[#8b847d]/40 bg-[#ebe7e4]/70 text-left dark:border-[#495059] dark:bg-[#252f3d]/70"><th class="px-5 py-3 font-mono text-[0.6rem] font-normal uppercase tracking-[0.12em] text-[#5c5752] dark:text-[#9fa4ab]">Email</th><th class="px-5 py-3 font-mono text-[0.6rem] font-normal uppercase tracking-[0.12em] text-[#5c5752] dark:text-[#9fa4ab]">Role</th><th class="px-5 py-3 font-mono text-[0.6rem] font-normal uppercase tracking-[0.12em] text-[#5c5752] dark:text-[#9fa4ab]">Organization</th><th class="px-5 py-3 font-mono text-[0.6rem] font-normal uppercase tracking-[0.12em] text-[#5c5752] dark:text-[#9fa4ab]">Staff</th><th class="px-5 py-3 font-mono text-[0.6rem] font-normal uppercase tracking-[0.12em] text-[#5c5752] dark:text-[#9fa4ab]">Active</th><th class="w-36 px-5 py-3"></th></tr></thead>
+            <tbody>
+            {% for u in users %}
+            <tr class="border-b border-[#8b847d]/30 transition hover:bg-[#4b607c]/10 dark:border-[#495059] dark:hover:bg-[#6a9fcc]/10"><td class="px-5 py-3 font-medium text-[#252f3d] dark:text-[#ebe7e4]">{{ u.email }}</td><td class="px-5 py-3">{% if u.role == 1 %}<span class="border border-[#a855f7]/40 bg-[#a855f7]/10 px-2 py-1 font-mono text-[0.58rem] uppercase text-[#7e22ce] dark:text-[#d8b4fe]">Stakeholder</span>{% elif u.role == 2 %}<span class="border border-[#4b8dcc]/40 bg-[#4b8dcc]/10 px-2 py-1 font-mono text-[0.58rem] uppercase text-[#2563a8] dark:text-[#93c5fd]">Product</span>{% elif u.role == 3 %}<span class="border border-[#5db87a]/40 bg-[#5db87a]/10 px-2 py-1 font-mono text-[0.58rem] uppercase text-[#39764e] dark:text-[#83c998]">Dev</span>{% elif u.role == 4 %}<span class="border border-[#e8993a]/40 bg-[#e8993a]/10 px-2 py-1 font-mono text-[0.58rem] uppercase text-[#a96c1e] dark:text-[#e8993a]">Infra</span>{% elif u.role == 5 %}<span class="border border-[#2aa198]/40 bg-[#2aa198]/10 px-2 py-1 font-mono text-[0.58rem] uppercase text-[#147d76] dark:text-[#7adbd4]">QA</span>{% else %}<span class="text-[#5c5752] dark:text-[#9fa4ab]">—</span>{% endif %}</td><td class="px-5 py-3 text-[#5c5752] dark:text-[#9fa4ab]">{% if u.organization %}{{ u.organization }}{% else %}—{% endif %}</td><td class="px-5 py-3">{% if u.is_staff %}<span class="font-mono text-[0.62rem] text-[#39764e] dark:text-[#83c998]">STAFF</span>{% else %}<span class="text-[#5c5752] dark:text-[#9fa4ab]">—</span>{% endif %}</td><td class="px-5 py-3">{% if u.is_active %}<span class="text-[#39764e] dark:text-[#83c998]">✓</span>{% else %}<span class="text-[#e8704f]">✕</span>{% endif %}</td><td class="px-5 py-3"><div class="flex items-center gap-1"><a href="{% url 'users:user_update' u.pk %}" class="flex h-7 w-7 items-center justify-center text-[#5c5752] no-underline hover:bg-[#4b607c]/10 hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" title="Edit"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></a><a href="{% url 'users:user_password_reset' u.pk %}" class="flex h-7 w-7 items-center justify-center text-[#5c5752] no-underline hover:bg-[#4b607c]/10 hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" title="Reset password"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777z"/></svg></a><a href="{% url 'users:user_delete' u.pk %}" class="flex h-7 w-7 items-center justify-center text-[#5c5752] no-underline hover:bg-[#e8704f]/10 hover:text-[#e8704f] dark:text-[#9fa4ab]" title="Delete"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></a></div></td></tr>
+            {% empty %}<tr><td colspan="6" class="px-5 py-10 text-center font-mono text-xs text-[#5c5752] dark:text-[#9fa4ab]">No users found.</td></tr>{% endfor %}
             </tbody>
         </table>
     </div>

@@ -1,56 +1,52 @@
-<div class="max-w-4xl mx-auto px-4 md:px-8 py-6">
-
-    <!-- Header -->
-    <div class="flex items-start justify-between mb-6">
+<div class="mx-auto w-full max-w-5xl px-6 py-10 lg:px-10">
+    <header class="mb-8 flex flex-wrap items-start justify-between gap-4 border-b border-[#8b847d]/30 pb-6 dark:border-[#495059]">
         <div>
-            <div class="flex items-center gap-2 mb-1">
-                <svg class="w-5 h-5 text-zinc-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <h1 class="text-xl font-bold text-zinc-900 tracking-tight">{{ project.title }}</h1>
+            <div class="mb-3 flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[#4b607c] dark:text-[#6a9fcc]">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Project / inventory
             </div>
-            <p class="text-sm text-zinc-500">
-                {% if project.description %}
-                    {{ project.description }}
-                {% endif %}
-            </p>
+            <h1 class="text-4xl font-normal tracking-[-0.055em] text-[#252f3d] dark:text-[#ebe7e4]">{{ project.title }}</h1>
+            {% if project.description %}<p class="mt-2 max-w-2xl text-sm leading-6 text-[#5c5752] dark:text-[#9fa4ab]">{{ project.description }}</p>{% endif %}
         </div>
+        <div class="font-mono text-[0.62rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">{{ project.organization }}</div>
+    </header>
+
+    <div class="mb-10 grid grid-cols-2 gap-px border border-[#8b847d]/40 bg-[#8b847d]/40 dark:border-[#495059] dark:bg-[#495059] md:grid-cols-4">
+        <div class="bg-[#f4f2f0]/90 p-4 dark:bg-[#212730]/90"><div class="font-mono text-2xl text-[#252f3d] dark:text-[#ebe7e4]">4</div><div class="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">Total deployments</div></div>
+        <div class="bg-[#f4f2f0]/90 p-4 dark:bg-[#212730]/90"><div class="flex items-center gap-2 font-mono text-2xl text-[#39764e] dark:text-[#83c998]"><span class="h-2 w-2 rounded-full bg-[#5db87a]"></span>2</div><div class="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">Active</div></div>
+        <div class="bg-[#f4f2f0]/90 p-4 dark:bg-[#212730]/90"><div class="flex items-center gap-2 font-mono text-2xl text-[#a96c1e] dark:text-[#e8993a]"><span class="h-2 w-2 rounded-full bg-[#e8993a]"></span>1</div><div class="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">Maintenance</div></div>
+        <div class="bg-[#f4f2f0]/90 p-4 dark:bg-[#212730]/90"><div class="flex items-center gap-2 font-mono text-2xl text-[#5c5752] dark:text-[#9fa4ab]"><span class="h-2 w-2 rounded-full bg-[#9fa4ab]"></span>1</div><div class="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">Inactive</div></div>
     </div>
 
-    <!-- Meta bar -->
-    <div class="flex items-center gap-6 mb-6 text-xs text-zinc-500">
-        <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
-            <span class="font-medium text-zinc-700">2d ago</span>
-            <span class="text-zinc-400">Last Updated</span>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div class="bg-white border border-zinc-200 rounded-lg p-4">
-            <div class="text-2xl font-bold text-zinc-800">4</div>
-            <div class="text-xs text-zinc-500 mt-0.5">Total Deployments</div>
-        </div>
-        <div class="bg-white border border-zinc-200 rounded-lg p-4">
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500"></span><span class="text-2xl font-bold text-zinc-800">2</span></div>
-            <div class="text-xs text-zinc-500 mt-0.5">Active</div>
-        </div>
-        <div class="bg-white border border-zinc-200 rounded-lg p-4">
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-yellow-500"></span><span class="text-2xl font-bold text-zinc-800">1</span></div>
-            <div class="text-xs text-zinc-500 mt-0.5">Maintenance</div>
-        </div>
-        <div class="bg-white border border-zinc-200 rounded-lg p-4">
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-zinc-400"></span><span class="text-2xl font-bold text-zinc-800">1</span></div>
-            <div class="text-xs text-zinc-500 mt-0.5">Inactive</div>
-        </div>
-    </div>
-
-        <!-- Tabs -->
-    <div class="flex items-center gap-1 mb-6" id="envTabs">
-        <button class="env-tab px-4 py-2 text-xs font-medium rounded-lg bg-black text-white transition-colors" data-env="all" onclick="filterEnvs(this)">All</button>
-        {% for env in deploy_envs %}
-        <button class="env-tab px-4 py-2 text-xs font-medium rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-200/70 transition-colors" data-env="{{ env.0 }}" onclick="filterEnvs(this)">
-            {{ env.1|upper }}
+    <div class="mb-6 flex flex-wrap items-center gap-2 border-b border-[#8b847d]/30 pb-4 dark:border-[#495059]" id="envTabs">
+        <button class="env-tab border border-[#4b607c] bg-[#4b607c] px-3 py-2 font-mono text-[0.64rem] uppercase tracking-[0.08em] font-semibold text-white ring-2 ring-[#4b607c]/30 ring-offset-2 ring-offset-[#ebe7e4] transition dark:border-[#6a9fcc] dark:bg-[#6a9fcc] dark:ring-[#6a9fcc]/30 dark:ring-offset-[#0d1116]" data-env="all" data-env-tone="all" aria-pressed="true" onclick="filterEnvs(this)">
+            <span class="w-2 h-2 rounded-full inline-block align-middle mr-1.5 shrink-0 bg-white/70"></span>
+            <span class="tab-text inline-block">All</span>
         </button>
+        {% for env in deploy_envs %}
+            {% if env.0 == 1 %}
+            <button class="env-tab border border-[#8b847d]/60 bg-[#8b847d]/10 px-3 py-2 font-mono text-[0.64rem] uppercase tracking-[0.08em] text-[#5c5752] transition hover:border-[#5c5752] hover:bg-[#8b847d]/20 dark:border-[#757d89]/60 dark:bg-[#757d89]/10 dark:text-[#9fa4ab] dark:hover:border-[#9fa4ab]" data-env="{{ env.0 }}" data-env-tone="dev" aria-pressed="false" onclick="filterEnvs(this)">
+                <span class="w-2 h-2 rounded-full inline-block align-middle mr-1.5 shrink-0 bg-[#8b847d] dark:bg-[#9fa4ab]"></span>
+                <span class="tab-text inline-block">{{ env.1|upper }}</span>
+            </button>
+            {% elif env.0 == 2 %}
+            <button class="env-tab border border-[#e8993a]/50 bg-[#e8993a]/10 px-3 py-2 font-mono text-[0.64rem] uppercase tracking-[0.08em] text-[#a96c1e] transition hover:border-[#e8993a] hover:bg-[#e8993a]/20 dark:border-[#e8993a]/60 dark:bg-[#e8993a]/10 dark:text-[#e8993a] dark:hover:border-[#e8993a]" data-env="{{ env.0 }}" data-env-tone="staging" aria-pressed="false" onclick="filterEnvs(this)">
+                <span class="w-2 h-2 rounded-full inline-block align-middle mr-1.5 shrink-0 bg-[#e8993a]"></span>
+                <span class="tab-text inline-block">{{ env.1|upper }}</span>
+            </button>
+            {% elif env.0 == 3 %}
+            <button class="env-tab border border-[#4b607c]/60 bg-[#4b607c]/10 px-3 py-2 font-mono text-[0.64rem] uppercase tracking-[0.08em] text-[#4b607c] transition hover:border-[#4b607c] hover:bg-[#4b607c]/20 dark:border-[#6a9fcc]/60 dark:bg-[#6a9fcc]/10 dark:text-[#6a9fcc] dark:hover:border-[#6a9fcc]" data-env="{{ env.0 }}" data-env-tone="uat" aria-pressed="false" onclick="filterEnvs(this)">
+                <span class="w-2 h-2 rounded-full inline-block align-middle mr-1.5 shrink-0 bg-[#4b607c] dark:bg-[#6a9fcc]"></span>
+                <span class="tab-text inline-block">{{ env.1|upper }}</span>
+            </button>
+            {% elif env.0 == 4 %}
+            <button class="env-tab border border-[#5db87a]/50 bg-[#5db87a]/10 px-3 py-2 font-mono text-[0.64rem] uppercase tracking-[0.08em] text-[#39764e] transition hover:border-[#5db87a] hover:bg-[#5db87a]/20 dark:border-[#5db87a]/60 dark:bg-[#5db87a]/10 dark:text-[#83c998] dark:hover:border-[#5db87a]" data-env="{{ env.0 }}" data-env-tone="prod" aria-pressed="false" onclick="filterEnvs(this)">
+                <span class="w-2 h-2 rounded-full inline-block align-middle mr-1.5 shrink-0 bg-[#5db87a]"></span>
+                <span class="tab-text inline-block">{{ env.1|upper }}</span>
+            </button>
+            {% endif %}
         {% endfor %}
     </div>
 
     {% include "partials/_deploys.html" %}
+</div>

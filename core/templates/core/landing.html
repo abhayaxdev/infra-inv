@@ -1,64 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InfraInv | Infrastructure Inventory</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        tailwind = {
+            config: {
+                darkMode: 'class',
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['Georgia', 'Times New Roman', 'serif'],
+                            serif: ['Georgia', 'Times New Roman', 'serif'],
+                            mono: ['SFMono-Regular', 'Consolas', 'Liberation Mono', 'monospace'],
+                        },
                     },
-                }
-            }
-        }
+                },
+            },
+        };
+        (function () {
+            var theme = localStorage.getItem('infrainv:theme');
+            if (theme === 'light') document.documentElement.classList.remove('dark');
+        }());
     </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="font-sans antialiased bg-zinc-50 text-zinc-900 min-h-screen" style="font-feature-settings: 'tnum' 1, 'cv01' 1, 'cv03' 1, 'cv04' 1, 'cv10' 1;">
+<body class="min-h-screen overflow-x-hidden bg-[#ebe7e4] font-serif text-[#252f3d] antialiased selection:bg-[#4b607c]/20 dark:bg-[#0d1116] dark:text-[#ebe7e4]">
+    <div class="pointer-events-none fixed inset-0 -z-0 opacity-70 [background-image:linear-gradient(#252f3d0d_1px,transparent_1px),linear-gradient(90deg,#252f3d0d_1px,transparent_1px)] [background-size:20px_20px] dark:opacity-100 dark:[background-image:linear-gradient(#6a9fcc0b_1px,transparent_1px),linear-gradient(90deg,#6a9fcc0b_1px,transparent_1px)]"></div>
+    <div class="pointer-events-none fixed inset-0 -z-0 bg-gradient-to-b from-transparent via-transparent to-[#ebe7e4] dark:to-[#0d1116]"></div>
 
-    <header class="flex items-center justify-between px-6 py-4 border-b border-zinc-200/60">
-        <a href="/" class="text-sm font-semibold text-zinc-900 tracking-tight">InfraInv</a>
-        <div class="flex items-center gap-4">
-            {% if user.is_authenticated %}
-            <a href="{% url 'core:dashboard' %}" class="text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors">Dashboard</a>
-            <form method="post" action="{% url 'users:logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors">Log Out</button>
-            </form>
-            {% else %}
-            <a href="{% url 'users:login' %}" class="text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors">Sign In</a>
-            {% endif %}
-        </div>
-    </header>
+    <div class="relative z-10 mx-auto w-full max-w-[96rem] px-3 sm:px-8">
+        <header class="sticky top-0 z-20 pt-3 sm:pt-4">
+            <div class="flex min-h-[3.5rem] items-center justify-between border border-[#8b847d]/40 border-t-[#5c5752] bg-[#f4f2f0]/90 px-3 py-2 backdrop-blur dark:border-[#495059] dark:border-t-[#9fa4ab]/60 dark:bg-[#212730]/90 sm:px-4">
+                <a href="{% url 'core:landing' %}" class="group flex items-center gap-2 text-[#252f3d] no-underline dark:text-white">
+                    <svg class="h-9 w-9 transition-transform duration-300 group-hover:scale-95" viewBox="0 0 800 800" aria-hidden="true"><path fill="currentColor" d="M112 112H304V208H256V592H304V688H112V592H160V208H112Z"></path><path fill="currentColor" d="M496 112H688V208H640V592H688V688H496V592H544V208H496Z"></path></svg>
+                    <span class="font-mono text-[0.72rem] uppercase tracking-[0.16em]">InfraInv</span>
+                </a>
+                <nav class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 md:flex" aria-label="Primary navigation">
+                    <a href="#overview" class="relative font-mono text-[0.68rem] uppercase tracking-[0.1em] text-[#394352] no-underline hover:text-[#252f3d] dark:text-[#d5d8db]/75 dark:hover:text-white">Overview</a>
+                    <a href="#capabilities" class="relative font-mono text-[0.68rem] uppercase tracking-[0.1em] text-[#394352] no-underline hover:text-[#252f3d] dark:text-[#d5d8db]/75 dark:hover:text-white">Capabilities</a>
+                    <a href="#access" class="relative font-mono text-[0.68rem] uppercase tracking-[0.1em] text-[#394352] no-underline hover:text-[#252f3d] dark:text-[#d5d8db]/75 dark:hover:text-white">Access</a>
+                </nav>
+                <div class="flex items-center gap-3">
+                    <button type="button" data-theme-toggle class="font-mono text-[0.62rem] uppercase tracking-[0.08em] text-[#5c5752] hover:text-[#252f3d] dark:text-[#9fa4ab] dark:hover:text-white">Light</button>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'core:dashboard' %}" class="font-mono text-[0.62rem] uppercase tracking-[0.08em] text-[#5c5752] no-underline hover:text-[#252f3d] dark:text-[#9fa4ab] dark:hover:text-white">Dashboard <span aria-hidden="true">→</span></a>
+                    {% else %}
+                    <a href="{% url 'users:login' %}" class="font-mono text-[0.62rem] uppercase tracking-[0.08em] text-[#5c5752] no-underline hover:text-[#252f3d] dark:text-[#9fa4ab] dark:hover:text-white">Sign in <span aria-hidden="true">→</span></a>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
 
-    <main class="flex flex-col items-center justify-center pt-32 pb-20 px-6 text-center">
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-300 bg-zinc-100 text-[13px] font-medium text-zinc-700 mb-8 tracking-tight">
-            <span class="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
-            Coming Soon
-        </div>
+        <main>
+            <section id="overview" class="grid min-h-[calc(100vh-5rem)] items-center gap-12 py-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,0.85fr)] lg:gap-24 lg:py-20">
+                <div class="max-w-2xl">
+                    <div class="mb-5 inline-flex items-center border border-[#8b847d]/50 border-l-2 border-l-[#4b607c] bg-[#f4f2f0]/70 px-2 py-1 font-mono text-[0.64rem] uppercase tracking-[0.14em] text-[#5c5752] dark:border-[#495059] dark:border-l-[#6a9fcc] dark:bg-[#212730]/80 dark:text-[#d5d8db]/80">Infrastructure inventory / v0.1</div>
+                    <h1 class="max-w-[10ch] text-[clamp(3.5rem,9vw,7.5rem)] font-normal leading-[0.86] tracking-[-0.07em] text-[#252f3d] dark:text-[#ebe7e4]">Know what is <span class="text-[#4b607c] dark:text-[#6a9fcc]">deployed.</span></h1>
+                    <p class="mt-7 max-w-xl text-[clamp(1.08rem,2vw,1.35rem)] leading-[1.45] text-[#384251] dark:text-[#ebe7e4]/75">InfraInv gives every team a shared view of projects, environments, services, and deployment details—without the middleman.</p>
+                    <div id="access" class="mt-8 flex flex-wrap gap-3">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'core:dashboard' %}" class="inline-flex min-h-11 items-center gap-2 border border-[#4b607c] bg-[#4b607c] px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] text-white no-underline transition hover:bg-[#252f3d] dark:border-[#6a9fcc] dark:bg-[#6a9fcc] dark:hover:bg-[#4b607c]">Open dashboard <span aria-hidden="true">→</span></a>
+                        {% else %}
+                        <a href="{% url 'users:login' %}" class="inline-flex min-h-11 items-center gap-2 border border-[#4b607c] bg-[#4b607c] px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] text-white no-underline transition hover:bg-[#252f3d] dark:border-[#6a9fcc] dark:bg-[#6a9fcc] dark:hover:bg-[#4b607c]">Sign in to continue <span aria-hidden="true">→</span></a>
+                        {% endif %}
+                        <a href="#capabilities" class="inline-flex min-h-11 items-center border border-[#8b847d]/60 bg-transparent px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] text-[#5c5752] no-underline transition hover:border-[#4b607c] hover:bg-[#4b607c]/10 dark:border-[#495059] dark:text-[#d5d8db]/75 dark:hover:border-[#6a9fcc] dark:hover:bg-[#6a9fcc]/10">Explore the system</a>
+                    </div>
+                </div>
 
-        <h1 class="text-5xl md:text-6xl font-bold tracking-tight text-zinc-900 max-w-2xl leading-[1.08] mb-4">
-            Infrastructure Inventory
-        </h1>
+                <div class="overflow-hidden border border-[#5c5752]/60 bg-[#142433] shadow-2xl shadow-[#5c5752]/10 dark:border-[#757d89]/60 dark:shadow-black/30">
+                    <div class="flex items-center justify-between border-b border-white/10 px-3 py-2 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-white/60">
+                        <span>infra-inv / workspace</span>
+                        <span class="flex gap-1" aria-hidden="true"><i class="h-1.5 w-1.5 rounded-full bg-[#6a9fcc]"></i><i class="h-1.5 w-1.5 rounded-full bg-[#6a9fcc]/70"></i><i class="h-1.5 w-1.5 rounded-full bg-[#6a9fcc]/40"></i></span>
+                    </div>
+                    <div class="min-h-[21rem] p-5 font-mono text-[0.7rem] leading-7 text-[#d5e1e8] sm:text-[0.75rem]">
+                        <div><span class="text-[#7db0d8]">$</span> inspect project atlas</div>
+                        <div class="text-[#8297a6]">loading environments...</div>
+                        <br>
+                        <div><span class="text-[#83c998]">✓</span> dev &nbsp;&nbsp;&nbsp; api.atlas.internal</div>
+                        <div><span class="text-[#83c998]">✓</span> staging &nbsp; atlas-staging.example.com</div>
+                        <div><span class="text-[#83c998]">✓</span> uat &nbsp;&nbsp;&nbsp;&nbsp; atlas-uat.example.com</div>
+                        <div><span class="text-[#83c998]">✓</span> production &nbsp; atlas.example.com</div>
+                        <br>
+                        <div class="text-[#8297a6]">4 environments / 12 services / 2 active</div>
+                        <div><span class="text-[#7db0d8]">$</span> <span class="ml-1 inline-block h-4 w-2 translate-y-1 animate-pulse bg-[#6a9fcc]"></span></div>
+                    </div>
+                </div>
+            </section>
 
-        <p class="text-lg text-zinc-500 max-w-lg mb-10 leading-relaxed">
-            Deployment intelligence across all environments — for every stakeholder.
-            No middlemen, no guesswork.
-        </p>
+            <section id="capabilities" class="border-t border-[#8b847d]/30 py-20 dark:border-[#495059] sm:py-24" aria-labelledby="capabilities-title">
+                <div class="grid gap-8 lg:grid-cols-[minmax(12rem,0.65fr)_minmax(0,1.35fr)] lg:gap-12">
+                    <h2 id="capabilities-title" class="max-w-xs text-[clamp(2.25rem,4vw,3.5rem)] font-normal leading-[0.92] tracking-[-0.055em]">One source of operational truth.</h2>
+                    <p class="max-w-xl text-lg leading-[1.5] text-[#384251] dark:text-[#ebe7e4]/75">From development to production, InfraInv keeps deployment context visible to the people who build, test, ship, and support your software.</p>
+                </div>
+                <div class="mt-12 grid gap-px border border-[#8b847d]/40 bg-[#8b847d]/40 dark:border-[#495059] dark:bg-[#495059] md:grid-cols-3">
+                    <article class="min-h-48 bg-[#f4f2f0]/90 p-5 dark:bg-[#212730]/90"><div class="font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[#4b607c] dark:text-[#6a9fcc]">01 / projects</div><h3 class="mt-10 text-xl font-normal tracking-[-0.02em]">Map the work.</h3><p class="mt-2 text-sm leading-[1.5] text-[#384251] dark:text-[#ebe7e4]/65">Organize projects by organization and make ownership clear across every team.</p></article>
+                    <article class="min-h-48 bg-[#f4f2f0]/90 p-5 dark:bg-[#212730]/90"><div class="font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[#4b607c] dark:text-[#6a9fcc]">02 / environments</div><h3 class="mt-10 text-xl font-normal tracking-[-0.02em]">Trace every release.</h3><p class="mt-2 text-sm leading-[1.5] text-[#384251] dark:text-[#ebe7e4]/65">See development, staging, UAT, and production deployments in one consistent view.</p></article>
+                    <article class="min-h-48 bg-[#f4f2f0]/90 p-5 dark:bg-[#212730]/90"><div class="font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[#4b607c] dark:text-[#6a9fcc]">03 / access</div><h3 class="mt-10 text-xl font-normal tracking-[-0.02em]">Share with context.</h3><p class="mt-2 text-sm leading-[1.5] text-[#384251] dark:text-[#ebe7e4]/65">Give stakeholders the details they need while keeping sensitive infrastructure data controlled.</p></article>
+                </div>
+            </section>
+        </main>
 
-        <div class="flex flex-wrap items-center justify-center gap-2 mb-10">
-            <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-zinc-400 hover:text-zinc-700 transition-colors cursor-default">Dev</span>
-            <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-zinc-400 hover:text-zinc-700 transition-colors cursor-default">Staging</span>
-            <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-zinc-400 hover:text-zinc-700 transition-colors cursor-default">UAT</span>
-            <span class="px-4 py-1.5 text-[13px] font-medium text-zinc-500 bg-zinc-200/50 border border-zinc-200 rounded-full hover:border-zinc-400 hover:text-zinc-700 transition-colors cursor-default">Production</span>
-        </div>
-    </main>
-
+        <footer class="border-t border-[#8b847d]/30 py-6 font-mono text-[0.62rem] uppercase tracking-[0.08em] text-[#5c5752] dark:border-[#495059] dark:text-[#9fa4ab]">InfraInv / deployment intelligence for everyone</footer>
+    </div>
+    <script>
+    (function () {
+        var toggle = document.querySelector('[data-theme-toggle]');
+        if (!toggle) return;
+        function updateLabel() { toggle.textContent = document.documentElement.classList.contains('dark') ? 'Light' : 'Dark'; }
+        updateLabel();
+        toggle.addEventListener('click', function () {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('infrainv:theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateLabel();
+        });
+    }());
+    </script>
 </body>
 </html>

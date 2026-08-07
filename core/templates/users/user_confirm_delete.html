@@ -1,24 +1,13 @@
 {% extends "core/base.html" %}
-
 {% block title %}InfraInv | Delete User{% endblock %}
-
-{% block sidebar %}
-
-{% include "partials/_sidebar_projects.html" with show_projects=0 %}
-{% include "partials/_sidebar_users.html" with show_users=1 %}
-
-{% endblock %}
-
+{% block sidebar %}{% include "partials/_sidebar_projects.html" with show_projects=0 %}{% include "partials/_sidebar_users.html" with show_users=1 %}{% endblock %}
 {% block content %}
-<div class="max-w-md mx-auto px-4 py-16">
-    <div class="bg-white border border-red-200 rounded-lg p-6 text-center">
-        <h2 class="text-lg font-bold text-zinc-900 mb-2">Delete User</h2>
-        <p class="text-sm text-zinc-600 mb-6">Are you sure you want to delete <strong class="text-zinc-900">{{ object.email }}</strong>? This action cannot be undone.</p>
-        <form method="post" class="flex items-center justify-center gap-3">
-            {% csrf_token %}
-            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">Delete</button>
-            <a href="{% url 'users:user_list' %}" class="px-4 py-2 text-sm font-medium text-zinc-600 bg-zinc-100 border border-zinc-200 rounded-lg hover:bg-zinc-200 transition-colors">Cancel</a>
-        </form>
+<div class="mx-auto flex min-h-full w-full max-w-xl items-center justify-center px-6 py-16">
+    <div class="w-full border border-[#e8704f]/50 border-l-2 border-l-[#e8704f] bg-[#f4f2f0]/80 p-6 dark:bg-[#212730]/80">
+        <div class="mb-3 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[#e8704f]">Destructive action</div>
+        <h1 class="text-3xl font-normal tracking-[-0.05em] text-[#252f3d] dark:text-[#ebe7e4]">Delete user?</h1>
+        <p class="mt-3 text-sm leading-6 text-[#5c5752] dark:text-[#9fa4ab]">Are you sure you want to delete <strong class="text-[#252f3d] dark:text-[#ebe7e4]">{{ object.email }}</strong>? This action cannot be undone.</p>
+        <form method="post" class="mt-6 flex items-center gap-3">{% csrf_token %}<button type="submit" class="border border-[#e8704f] bg-[#e8704f] px-4 py-2.5 font-mono text-[0.64rem] uppercase tracking-[0.08em] text-white hover:bg-[#844f3b]">Delete</button><a href="{% url 'users:user_list' %}" class="border border-[#8b847d]/50 px-4 py-2.5 font-mono text-[0.64rem] uppercase tracking-[0.08em] text-[#5c5752] no-underline dark:border-[#495059] dark:text-[#9fa4ab]">Cancel</a></form>
     </div>
 </div>
 {% endblock %}

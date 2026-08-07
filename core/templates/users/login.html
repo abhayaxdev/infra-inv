@@ -1,65 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InfraInv | Login</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>InfraInv | Sign In</title>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                    },
-                }
-            }
-        }
+        tailwind = { config: { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Georgia', 'Times New Roman', 'serif'], mono: ['SFMono-Regular', 'Consolas', 'Liberation Mono', 'monospace'] } } } } };
+        (function () { if (localStorage.getItem('infrainv:theme') === 'light') document.documentElement.classList.remove('dark'); }());
     </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="font-sans antialiased bg-zinc-50 text-zinc-900 min-h-screen flex flex-col" style="font-feature-settings: 'tnum' 1, 'cv01' 1, 'cv03' 1, 'cv04' 1, 'cv10' 1;">
-
-    <header class="flex items-center px-6 py-4 border-b border-zinc-200/60">
-        <a href="/" class="text-sm font-semibold text-zinc-900 tracking-tight">InfraInv</a>
+<body class="min-h-screen overflow-x-hidden bg-[#ebe7e4] font-sans text-[#252f3d] antialiased dark:bg-[#0d1116] dark:text-[#ebe7e4]">
+    <div class="pointer-events-none fixed inset-0 opacity-70 [background-image:linear-gradient(#252f3d0d_1px,transparent_1px),linear-gradient(90deg,#252f3d0d_1px,transparent_1px)] [background-size:20px_20px] dark:opacity-100 dark:[background-image:linear-gradient(#6a9fcc0b_1px,transparent_1px),linear-gradient(90deg,#6a9fcc0b_1px,transparent_1px)]"></div>
+    <header class="relative z-10 mx-auto flex w-full max-w-[96rem] items-center justify-between border-b border-[#8b847d]/40 px-4 py-4 dark:border-[#495059] sm:px-8">
+        <a href="{% url 'core:landing' %}" class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-[#252f3d] no-underline dark:text-white">
+            <svg class="h-8 w-8" viewBox="0 0 800 800" aria-hidden="true"><path fill="currentColor" d="M112 112H304V208H256V592H304V688H112V592H160V208H112Z"></path><path fill="currentColor" d="M496 112H688V208H640V592H688V688H496V592H544V208H496Z"></path></svg>
+            InfraInv
+        </a>
+        <button type="button" data-theme-toggle class="font-mono text-[0.62rem] uppercase tracking-[0.08em] text-[#5c5752] hover:text-[#252f3d] dark:text-[#9fa4ab] dark:hover:text-white">Light</button>
     </header>
-
-    <main class="flex-1 flex items-center justify-center px-4">
-        <div class="w-full max-w-sm">
-            <h2 class="text-xl font-bold text-zinc-900 mb-6 text-center tracking-tight">Sign In</h2>
+    <main class="relative z-10 flex min-h-[calc(100vh-4.5rem)] items-center justify-center px-4 py-16">
+        <div class="w-full max-w-md">
+            <div class="mb-8 border border-[#8b847d]/50 border-l-2 border-l-[#4b607c] bg-[#f4f2f0]/80 p-5 dark:border-[#495059] dark:border-l-[#6a9fcc] dark:bg-[#212730]/85">
+                <div class="mb-3 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[#5c5752] dark:text-[#9fa4ab]">Secure access / InfraInv</div>
+                <h1 class="text-4xl font-normal tracking-[-0.05em] text-[#252f3d] dark:text-[#ebe7e4]">Sign in.</h1>
+                <p class="mt-2 text-sm leading-6 text-[#384251] dark:text-[#ebe7e4]/65">Access your projects, environments, and deployment inventory.</p>
+            </div>
 
             {% if form.errors %}
-            <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 mb-6">
-                Invalid email or password. Please try again.
-            </div>
+            <div class="mb-5 border border-[#e8704f]/50 border-l-2 border-l-[#e8704f] bg-[#e8704f]/10 px-4 py-3 text-sm text-[#844f3b] dark:text-[#e8704f]">Invalid email or password. Please try again.</div>
             {% endif %}
-
             {% if messages %}
             {% for message in messages %}
-            <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 mb-6">
-                {{ message }}
-            </div>
+            <div class="mb-5 border border-[#5db87a]/50 border-l-2 border-l-[#5db87a] bg-[#5db87a]/10 px-4 py-3 text-sm text-[#39764e] dark:text-[#83c998]">{{ message }}</div>
             {% endfor %}
             {% endif %}
 
-            <form method="post" class="space-y-4">
+            <form method="post" class="space-y-5">
                 {% csrf_token %}
                 <div>
-                    <label for="{{ form.username.id_for_label }}" class="block text-xs font-medium text-zinc-500 mb-1.5">Email</label>
-                    <input type="email" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400" placeholder="you@example.com" required autofocus>
+                    <label for="{{ form.username.id_for_label }}" class="mb-2 block font-mono text-[0.64rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">Email</label>
+                    <input type="email" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" placeholder="you@example.com" required autofocus class="w-full border border-[#8b847d]/60 bg-[#f4f2f0]/80 px-3 py-3 font-mono text-sm text-[#252f3d] outline-none placeholder:text-[#5c5752]/60 focus:border-[#4b607c] focus:ring-1 focus:ring-[#4b607c] dark:border-[#495059] dark:bg-[#212730]/80 dark:text-[#ebe7e4] dark:placeholder:text-[#9fa4ab]/60 dark:focus:border-[#6a9fcc] dark:focus:ring-[#6a9fcc]">
                 </div>
                 <div>
-                    <label for="{{ form.password.id_for_label }}" class="block text-xs font-medium text-zinc-500 mb-1.5">Password</label>
-                    <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-200 focus:border-zinc-400" placeholder="••••••••" required>
+                    <label for="{{ form.password.id_for_label }}" class="mb-2 block font-mono text-[0.64rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">Password</label>
+                    <div class="relative">
+                        <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" placeholder="••••••••" required class="w-full border border-[#8b847d]/60 bg-[#f4f2f0]/80 px-3 py-3 pr-20 font-mono text-sm text-[#252f3d] outline-none placeholder:text-[#5c5752]/60 focus:border-[#4b607c] focus:ring-1 focus:ring-[#4b607c] dark:border-[#495059] dark:bg-[#212730]/80 dark:text-[#ebe7e4] dark:placeholder:text-[#9fa4ab]/60 dark:focus:border-[#6a9fcc] dark:focus:ring-[#6a9fcc]">
+                        <button type="button" data-password-toggle data-password-target="{{ form.password.id_for_label }}" class="absolute inset-y-0 right-0 px-3 font-mono text-[0.58rem] uppercase tracking-[0.08em] text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" aria-label="Show password">Show</button>
+                    </div>
                 </div>
-                <button type="submit" class="w-full py-2.5 text-sm font-medium text-white bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors shadow-sm">
-                    Sign In
-                </button>
+                <button type="submit" class="w-full border border-[#4b607c] bg-[#4b607c] px-4 py-3 font-mono text-[0.68rem] uppercase tracking-[0.08em] text-white transition hover:bg-[#252f3d] dark:border-[#6a9fcc] dark:bg-[#6a9fcc] dark:hover:bg-[#4b607c]">Continue <span aria-hidden="true">→</span></button>
             </form>
         </div>
     </main>
-
+    <script>
+    (function () {
+        var toggle = document.querySelector('[data-theme-toggle]');
+        function updateLabel() { toggle.textContent = document.documentElement.classList.contains('dark') ? 'Light' : 'Dark'; }
+        updateLabel();
+        toggle.addEventListener('click', function () { document.documentElement.classList.toggle('dark'); localStorage.setItem('infrainv:theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); updateLabel(); });
+    }());
+    document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+        var input = document.getElementById(button.getAttribute('data-password-target'));
+        if (!input) return;
+        button.addEventListener('click', function () {
+            var visible = input.type === 'text';
+            input.type = visible ? 'password' : 'text';
+            button.textContent = visible ? 'Show' : 'Hide';
+            button.setAttribute('aria-label', visible ? 'Show password' : 'Hide password');
+        });
+    });
+    </script>
 </body>
 </html>

@@ -1,33 +1,39 @@
-<aside id="sidebar-projects" class="sidebar-panel w-[264px] shrink-0 border-r border-zinc-200 bg-zinc-50 flex flex-col max-md:fixed max-md:top-0 max-md:left-[52px] max-md:h-full max-md:z-40 max-md:shadow-xl{% if not show_projects %} hidden{% endif %}">
-    <div class="flex items-center justify-between px-4 py-[14px] border-b border-zinc-200/60">
-        <h2 class="text-sm font-semibold text-zinc-900 tracking-tight">Projects</h2>
-        <button class="w-6 h-6 flex items-center justify-center rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+<aside id="sidebar-projects" class="sidebar-panel flex w-[264px] shrink-0 flex-col border-r border-[#8b847d]/40 bg-[#f4f2f0] dark:border-[#495059] dark:bg-[#161d27] max-md:fixed max-md:top-0 max-md:left-[52px] max-md:h-full max-md:z-40 max-md:shadow-xl{% if not show_projects %} hidden{% endif %}">
+    <div class="flex items-center justify-between border-b border-[#8b847d]/30 px-4 py-3 dark:border-[#495059]">
+        <div>
+            <div class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#5c5752] dark:text-[#9fa4ab]">Workspace</div>
+            <h2 class="mt-1 text-lg font-normal tracking-[-0.04em] text-[#252f3d] dark:text-[#ebe7e4]">Projects</h2>
+        </div>
+        <button type="button" class="flex h-7 w-7 items-center justify-center border border-transparent text-[#5c5752] hover:border-[#4b607c] hover:bg-[#4b607c]/10 hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:border-[#6a9fcc] dark:hover:text-[#6a9fcc]" title="Create project" aria-label="Create project">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
         </button>
     </div>
     <div class="px-3 py-3">
-        <div class="relative">
-            <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
-            <input type="text" placeholder="Search projects..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-zinc-200/50 border border-zinc-200 rounded-md text-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-zinc-300/20 focus:border-zinc-500">
-        </div>
+        <label class="relative block">
+            <span class="sr-only">Search projects</span>
+            <svg class="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#5c5752] dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+            <input type="search" data-project-search placeholder="Search projects..." autocomplete="off" class="w-full border border-[#8b847d]/40 bg-[#ebe7e4]/70 py-2 pl-8 pr-3 font-mono text-[0.68rem] text-[#252f3d] outline-none placeholder:text-[#5c5752]/70 focus:border-[#4b607c] dark:border-[#495059] dark:bg-[#212730]/70 dark:text-[#ebe7e4] dark:placeholder:text-[#9fa4ab] dark:focus:border-[#6a9fcc]">
+        </label>
     </div>
     {% if projects %}
     <div class="flex-1 overflow-y-auto">
         {% for project in projects %}
-            <div class="border-l-2 border-transparent hover:bg-zinc-100 px-4 py-3 cursor-pointer" hx-get="{% url 'core:project_detail' pk=project.id %}" hx-target="#mainContent">
-                <div class="flex items-center gap-3">
-                    {% with initial=project|stringformat:'s'|first|upper %}
-                    <div class="w-8 h-8 rounded-md bg-zinc-800 flex items-center justify-center flex-shrink-0"><span class="text-xs font-semibold text-white">{{ initial }}</span></div>
-                    {% endwith %}
-                    <div class="flex-1 min-w-0">
-                        <div class="text-sm font-semibold text-zinc-900 truncate">{{ project }}</div>
-                        <div class="text-[11px] text-zinc-500 truncate">{{ project.title }}</div>
-                    </div>
-                    <span class="text-[11px] text-zinc-400 flex-shrink-0">—</span>
-                </div>
-                <div class="flex gap-1 mt-2 ml-11"></div>
+        <button type="button" data-project-item data-project-search-text="{{ project }} {{ project.title }}" class="group block w-full border-l-2 border-transparent px-4 py-3 text-left transition hover:border-[#4b607c] hover:bg-[#4b607c]/10 dark:hover:border-[#6a9fcc] dark:hover:bg-[#6a9fcc]/10" hx-get="{% url 'core:project_detail' pk=project.id %}" hx-target="#mainContent">
+            <div class="flex items-center gap-3">
+                {% with initial=project|stringformat:'s'|first|upper %}
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center border border-[#4b607c] bg-[#4b607c]/10 font-mono text-xs text-[#4b607c] dark:border-[#6a9fcc] dark:bg-[#6a9fcc]/10 dark:text-[#6a9fcc]">{{ initial }}</span>
+                {% endwith %}
+                <span class="min-w-0 flex-1">
+                    <span class="block truncate text-sm font-medium text-[#252f3d] dark:text-[#ebe7e4]">{{ project }}</span>
+                    <span class="mt-0.5 block truncate font-mono text-[0.62rem] text-[#5c5752] dark:text-[#9fa4ab]">{{ project.title }}</span>
+                </span>
+                <span class="font-mono text-xs text-[#5c5752] dark:text-[#9fa4ab]">→</span>
             </div>
+        </button>
         {% endfor %}
     </div>
+    <p data-project-empty class="hidden px-4 py-6 font-mono text-[0.68rem] text-[#5c5752] dark:text-[#9fa4ab]">No matching projects.</p>
+    {% else %}
+    <p class="px-4 py-6 font-mono text-[0.68rem] text-[#5c5752] dark:text-[#9fa4ab]">No projects indexed.</p>
     {% endif %}
 </aside>

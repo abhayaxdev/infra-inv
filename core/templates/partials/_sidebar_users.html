@@ -1,19 +1,22 @@
 {% if user.is_superuser %}
-<aside id="sidebar-users" class="sidebar-panel w-[264px] shrink-0 border-r border-zinc-200 bg-zinc-50 flex flex-col max-md:fixed max-md:top-0 max-md:left-[52px] max-md:h-full max-md:z-40 max-md:shadow-xl{% if not show_users %} hidden{% endif %}">
-    <div class="flex items-center justify-between px-4 py-[14px] border-b border-zinc-200/60">
-        <h2 class="text-sm font-semibold text-zinc-900 tracking-tight">Users</h2>
-        <a href="{% url 'users:user_create' %}" class="w-6 h-6 flex items-center justify-center rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100" title="Create User">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+<aside id="sidebar-users" class="sidebar-panel flex w-[264px] shrink-0 flex-col border-r border-[#8b847d]/40 bg-[#f4f2f0] dark:border-[#495059] dark:bg-[#161d27] max-md:fixed max-md:top-0 max-md:left-[52px] max-md:h-full max-md:z-40 max-md:shadow-xl{% if not show_users %} hidden{% endif %}">
+    <div class="flex items-center justify-between border-b border-[#8b847d]/30 px-4 py-3 dark:border-[#495059]">
+        <div>
+            <div class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#5c5752] dark:text-[#9fa4ab]">Administration</div>
+            <h2 class="mt-1 text-lg font-normal tracking-[-0.04em] text-[#252f3d] dark:text-[#ebe7e4]">Users</h2>
+        </div>
+        <a href="{% url 'users:user_create' %}" class="flex h-7 w-7 items-center justify-center border border-transparent text-[#5c5752] no-underline hover:border-[#4b607c] hover:bg-[#4b607c]/10 hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:border-[#6a9fcc] dark:hover:text-[#6a9fcc]" title="Create user" aria-label="Create user">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
         </a>
     </div>
     <nav class="flex-1 overflow-y-auto py-2">
-        <a href="{% url 'users:user_list' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100 transition-colors">
-            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-linecap="round"/></svg>
-            Users List
+        <a href="{% url 'users:user_list' %}" class="flex items-center gap-3 border-l-2 border-transparent px-4 py-3 font-mono text-[0.7rem] uppercase tracking-[0.04em] text-[#5c5752] no-underline hover:border-[#4b607c] hover:bg-[#4b607c]/10 hover:text-[#252f3d] dark:text-[#9fa4ab] dark:hover:border-[#6a9fcc] dark:hover:bg-[#6a9fcc]/10 dark:hover:text-[#ebe7e4]">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            Users list <span class="ml-auto">→</span>
         </a>
-        <a href="{% url 'users:user_create' %}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100 transition-colors">
-            <svg class="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
-            Create User
+        <a href="{% url 'users:user_create' %}" class="flex items-center gap-3 border-l-2 border-transparent px-4 py-3 font-mono text-[0.7rem] uppercase tracking-[0.04em] text-[#5c5752] no-underline hover:border-[#4b607c] hover:bg-[#4b607c]/10 hover:text-[#252f3d] dark:text-[#9fa4ab] dark:hover:border-[#6a9fcc] dark:hover:bg-[#6a9fcc]/10 dark:hover:text-[#ebe7e4]">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            Create user <span class="ml-auto">→</span>
         </a>
     </nav>
 </aside>
