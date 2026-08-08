@@ -26,7 +26,7 @@ jobs:
 
             echo "[1/6] Activating virtual environment..."
             cd /home/abhaya/apps/infra-inv
-            source venv/bin/activate
+            source .venv/bin/activate
             echo "[1/6] Virtual environment activated."
 
             echo "[2/6] Updating application code..."
