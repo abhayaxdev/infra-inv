@@ -6,17 +6,54 @@ on:
       - ajna
 
 jobs:
-  test-ssh:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test SSH connection
+      - name: Deploy to Droplet
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+
           script: |
-            echo "SSH connection successful"
-            whoami
-            hostname
+            set -e
+
+            echo "========================================"
+            echo "Starting deployment"
+            echo "========================================"
+
+            echo "[1/6] Activating virtual environment..."
+            cd /home/abhaya/apps/infra-inv
+            source venv/bin/activate
+            echo "[1/6] Virtual environment activated."
+
+            echo "[2/6] Updating application code..."
+            cd /home/abhaya/apps/infra-inv/infra-inv
+            git pull origin ajna
+            echo "[2/6] Application code updated."
+
+            echo "[3/6] Installing dependencies..."
+            pip install -r requirements.txt
+            echo "[3/6] Dependencies installed."
+
+            echo "[4/6] Applying database migrations..."
+            python manage.py migrate --noinput
+            echo "[4/6] Database migrations completed."
+
+            echo "[5/6] Collecting static files..."
+            python manage.py collectstatic --noinput
+            echo "[5/6] Static files collected."
+
+            echo "[6/6] Deactivating virtual environment..."
+            deactivate
+            echo "[6/6] Virtual environment deactivated."
+
+            echo "Restarting Gunicorn..."
+            sudo systemctl restart gunicorn
+            echo "Gunicorn restarted successfully."
+
+            echo "========================================"
+            echo "Deployment completed successfully."
+            echo "========================================"
