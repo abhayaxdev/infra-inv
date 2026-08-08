@@ -36,7 +36,15 @@
                             <svg class="h-4 w-4 shrink-0 text-[#5c5752] dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
                             <a href="{{ deploy.url }}" target="_blank" class="min-w-0 flex-1 truncate font-mono text-xs text-[#4b607c] hover:text-[#252f3d] dark:text-[#6a9fcc] dark:hover:text-white">{{ deploy.url }}</a>
                             <button type="button" class="shrink-0 text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]" onclick="event.stopPropagation();copyUrl(this)" data-url="{{ deploy.url }}" title="Copy URL"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
-                            <span class="h-2 w-2 shrink-0 rounded-full bg-[#5db87a]" title="Active"></span>
+                            {% if deploy.status == 1 %}
+                                <span class="h-2 w-2 shrink-0 rounded-full bg-[#5db87a]" title="{{ deploy.get_status_display }}"></span>
+                            {% elif deploy.status == 2 %}
+                                <span class="h-2 w-2 shrink-0 rounded-full bg-[#D9A441]" title="{{ deploy.get_status_display }}"></span>
+                            {% elif deploy.status == 3 %}
+                                <span class="h-2 w-2 shrink-0 rounded-full bg-[#8A8F98]" title="{{ deploy.get_status_display }}"></span>
+                            {% else %}
+                                <span class="h-2 w-2 shrink-0 rounded-full bg-[#B0B4BA]" title="N/A"></span>
+                            {% endif %}
                             <svg class="url-chevron h-4 w-4 shrink-0 text-[#5c5752] transition-transform dark:text-[#9fa4ab]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
                         </div>
                         <div class="hidden border-t border-[#5db87a]/30 bg-[#ebe7e4]/40 px-4 py-3 dark:bg-[#161d27]/40">
