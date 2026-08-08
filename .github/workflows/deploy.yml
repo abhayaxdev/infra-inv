@@ -51,7 +51,7 @@ jobs:
             echo "[6/6] Virtual environment deactivated."
 
             echo "Restarting Gunicorn..."
-            sudo systemctl restart gunicorn
+            sudo -n systemctl restart ajna.service
             echo "Gunicorn restarted successfully."
 
             echo "========================================"
