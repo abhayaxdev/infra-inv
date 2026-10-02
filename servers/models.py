@@ -33,7 +33,7 @@ class ServerDetails(BaseModel):
     auto_deploy = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.name or self.ip_address} ({self.deploy})"
+        return f"{self.name or self.ip_address}-({self.deploy})"
 
     class Meta:
         verbose_name = "Server Detail"
