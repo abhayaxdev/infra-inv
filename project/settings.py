@@ -47,6 +47,7 @@ LOGOUT_REDIRECT_URL = "core:landing"
 # Application definition
 
 INSTALLED_APPS = [
+    #'daphne',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
