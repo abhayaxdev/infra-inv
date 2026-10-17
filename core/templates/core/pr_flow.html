@@ -37,6 +37,7 @@
                 <nav class="hidden items-center gap-4 lg:flex font-mono text-[0.62rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">
                     <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#what">What</a>
                     <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#walkthrough">Walkthrough</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#push">Push</a>
                     <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#simulator">Simulator</a>
                     <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#diagrams">Diagrams</a>
                     <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#strategies">Merging</a>
@@ -89,6 +90,133 @@
             <button id="nextBtn" class="border border-[#4b607c] bg-[#4b607c] px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] text-white hover:bg-[#252f3d] dark:border-[#6a9fcc] dark:bg-[#6a9fcc] dark:hover:bg-[#4b607c] disabled:opacity-40">Next &rarr;</button>
             <button id="playBtn" class="border border-[#8b847d]/60 px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] hover:border-[#4b607c] hover:bg-[#4b607c]/10 dark:border-[#495059] dark:hover:border-[#6a9fcc]">&#9654; Autoplay</button>
             <span id="stepCount" class="font-mono text-[0.68rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]"></span>
+        </div>
+    </section>
+
+    <!-- PUSH -->
+    <section id="push" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Pushing commits</h2>
+        <p class="mt-2 max-w-3xl text-[#394352] dark:text-[#d5d8db]/80">
+            A commit only exists on <b>your machine</b>. <code class="font-mono text-base">git push</code> uploads your
+            branch's new commits to the shared <b>remote</b> (usually called <code class="font-mono text-base">origin</code>,
+            e.g. GitHub). Until you push, nobody else can see your work, CI can't test it, and a reviewer can't review it.
+        </p>
+
+        <h3 class="mt-8 text-lg">Where your code lives</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+flowchart LR
+    subgraph Local["Your machine"]
+        W["Working directory: edited files"]
+        S["Staging area: git add"]
+        L["Local repository: git commit"]
+    end
+    subgraph Remote["origin (GitHub)"]
+        R["Remote branch: feat/random-static-page"]
+        PR["Pull request #42"]
+        CI["CI checks"]
+    end
+    W -->|git add| S
+    S -->|git commit| L
+    L ==>|git push| R
+    R -->|git fetch / pull| L
+    R --> PR
+    R --> CI
+</pre>
+        </div>
+
+        <div class="mt-8 grid gap-px border border-[#8b847d]/40 bg-[#8b847d]/40 lg:grid-cols-3 dark:border-[#495059] dark:bg-[#495059]">
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]">
+                <h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Why we push</h3>
+                <ul class="mt-3 list-disc space-y-1.5 pl-5 text-sm">
+                    <li><b>Share:</b> teammates and reviewers can see the branch.</li>
+                    <li><b>Backup:</b> a dead laptop doesn't take your work with it.</li>
+                    <li><b>Trigger CI:</b> every push runs tests and linters.</li>
+                    <li><b>Update the PR:</b> new commits appear in the open PR automatically.</li>
+                    <li><b>Enable deploys:</b> pushes or merges to some branches kick off pipelines.</li>
+                </ul>
+            </article>
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]">
+                <h3 class="font-mono text-xs uppercase tracking-widest text-[#5db87a]">When to push</h3>
+                <ul class="mt-3 list-disc space-y-1.5 pl-5 text-sm">
+                    <li>After one or more <b>complete, working</b> commits.</li>
+                    <li><b>Before opening a PR</b>: the branch must exist on the remote.</li>
+                    <li><b>After addressing review</b> comments.</li>
+                    <li>At the <b>end of a work session</b>, even on a draft PR.</li>
+                    <li>Before asking someone for help, so they can check out the branch.</li>
+                </ul>
+            </article>
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]">
+                <h3 class="font-mono text-xs uppercase tracking-widest text-[#e8704f]">When not to</h3>
+                <ul class="mt-3 list-disc space-y-1.5 pl-5 text-sm">
+                    <li><b>Directly to <code class="font-mono">main</code></b>. Go through a PR instead (protected branches block this anyway).</li>
+                    <li>Commits containing <b>secrets</b>: <code class="font-mono">.env</code> values, keys or passwords. Once pushed, assume they're leaked.</li>
+                    <li><b>Force-pushing</b> a branch others also work on.</li>
+                    <li>Code that obviously doesn't run, unless the PR is a draft.</li>
+                </ul>
+            </article>
+        </div>
+
+        <h3 class="mt-10 text-lg">Push commands you'll actually use</h3>
+        <div class="mt-4 overflow-x-auto border border-[#8b847d]/40 dark:border-[#495059]">
+            <table class="w-full min-w-[40rem] text-left text-sm">
+                <thead class="bg-[#f4f2f0] font-mono text-[0.62rem] uppercase tracking-widest text-[#5c5752] dark:bg-[#161d27] dark:text-[#9fa4ab]"><tr><th class="p-3">Command</th><th class="p-3">When</th></tr></thead>
+                <tbody class="divide-y divide-[#8b847d]/30 dark:divide-[#495059]">
+                    <tr><td class="p-3 font-mono text-[0.78rem]">git push -u origin feat/random-static-page</td><td class="p-3">First push of a new branch. <code class="font-mono">-u</code> links local and remote, so later pushes are just <code class="font-mono">git push</code>.</td></tr>
+                    <tr><td class="p-3 font-mono text-[0.78rem]">git push</td><td class="p-3">Every push after that, e.g. after fixing review comments.</td></tr>
+                    <tr><td class="p-3 font-mono text-[0.78rem]">git pull --rebase &amp;&amp; git push</td><td class="p-3">Push was rejected because the remote has commits you don't have.</td></tr>
+                    <tr><td class="p-3 font-mono text-[0.78rem]">git push --force-with-lease</td><td class="p-3">After rebasing <i>your own</i> branch. Safer than <code class="font-mono">--force</code>: it refuses if someone else pushed meanwhile.</td></tr>
+                    <tr><td class="p-3 font-mono text-[0.78rem]">git status / git log origin/main..HEAD</td><td class="p-3">Before pushing: see what's ahead of the remote.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mt-10 text-lg">What a push sets off (sequence)</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+sequenceDiagram
+    actor A as Author
+    participant L as Local repo
+    participant O as origin (GitHub)
+    participant CI as CI runner
+    actor R as Reviewer
+    A->>L: git commit
+    A->>O: git push
+    O->>O: fast-forward check
+    alt remote has commits you don't
+        O-->>A: rejected (non-fast-forward)
+        A->>O: git pull --rebase
+        O-->>L: teammate's commits
+        A->>O: git push
+    end
+    O-->>A: branch updated
+    O->>CI: run checks on new commit
+    O->>R: notify: PR #42 has new commits
+    CI-->>O: ✓ / ✗ status on the PR
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Try it: local vs origin</h3>
+        <p class="mt-1 text-sm text-[#5c5752] dark:text-[#9fa4ab]">Commit locally, then push. Have a teammate push first to see a rejected push, then pull to fix it.</p>
+        <div class="mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-5 dark:border-[#495059] dark:bg-[#161d27]">
+            <div class="space-y-4">
+                <div>
+                    <p class="font-mono text-[0.62rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]">Your laptop &middot; feat/random-static-page</p>
+                    <div id="pvLocal" class="mt-2 flex min-h-[2.75rem] flex-wrap items-center gap-2"></div>
+                </div>
+                <div>
+                    <p class="font-mono text-[0.62rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]">origin &middot; feat/random-static-page</p>
+                    <div id="pvRemote" class="mt-2 flex min-h-[2.75rem] flex-wrap items-center gap-2"></div>
+                </div>
+            </div>
+            <div class="mt-5 flex flex-wrap gap-2">
+                <button data-pv="commit" class="border border-[#6a9fcc] px-3 py-1.5 font-mono text-[0.62rem] uppercase text-[#6a9fcc] hover:bg-[#6a9fcc]/10">git commit</button>
+                <button data-pv="push" class="border border-[#5db87a] px-3 py-1.5 font-mono text-[0.62rem] uppercase text-[#5db87a] hover:bg-[#5db87a]/10">git push</button>
+                <button data-pv="teammate" class="border border-[#e8993a] px-3 py-1.5 font-mono text-[0.62rem] uppercase text-[#e8993a] hover:bg-[#e8993a]/10">teammate pushes</button>
+                <button data-pv="pull" class="border border-[#8b847d]/60 px-3 py-1.5 font-mono text-[0.62rem] uppercase hover:border-[#4b607c] dark:border-[#495059]">git pull --rebase</button>
+                <button data-pv="reset" class="border border-[#8b847d]/60 px-3 py-1.5 font-mono text-[0.62rem] uppercase hover:border-[#4b607c] dark:border-[#495059]">reset</button>
+            </div>
+            <pre id="pvOut" class="mt-4 overflow-x-auto bg-[#0d1116] p-3 font-mono text-[0.75rem] leading-relaxed text-[#d5d8db]"></pre>
         </div>
     </section>
 
@@ -352,7 +480,7 @@ gitGraph
           b: 'Each commit is one logical change with a message that says why. Small commits make the eventual diff easy to review.',
           c: '$ git add core/urls.py core/templates/core/random.html\n$ git commit -m "feat(core): add static /random blueprint page"\n[feat/random-static-page 1a2b3c4] feat(core): ...\n 2 files changed, 420 insertions(+)' },
         { t: 'Push', h: 'Push the branch to the remote',
-          b: 'Pushing publishes your branch to GitHub so others (and CI) can see it. Main is still untouched.',
+          b: 'Pushing publishes your branch to GitHub so others (and CI) can see it. Main is still untouched. The "Pushing commits" section below covers this step in detail.',
           c: '$ git push -u origin feat/random-static-page\nremote: Create a pull request for \'feat/random-static-page\':\nremote:   https://github.com/you/infra-inv/pull/new/...' },
         { t: 'Open PR', h: 'Open the pull request',
           b: 'Write a title and description: what changed, why, how to test it, and screenshots if there\'s UI. Link the issue. Assign reviewers.',
@@ -413,6 +541,67 @@ gitGraph
         if (e.key === 'ArrowLeft') { stop(); go(cur - 1); }
     });
     go(0);
+
+    /* ---------- Push visualizer ---------- */
+    var pv, pvSeq;
+    function pvChip(c, pending) {
+        var color = c.by === 'teammate' ? '#e8993a' : '#6a9fcc';
+        return '<span class="fade-in inline-flex items-center gap-1.5 border px-2 py-1 font-mono text-[0.68rem]" style="border-color:' + color + ';' +
+            (pending ? 'border-style:dashed;' : 'background:' + color + '22;') + '">' +
+            '<span class="inline-block h-2 w-2 rounded-full" style="background:' + color + '"></span>' + esc(c.id) + '</span>';
+    }
+    function pvPaint(msg) {
+        var remoteIds = pv.remote.map(function (c) { return c.id; });
+        document.getElementById('pvLocal').innerHTML = pv.local.map(function (c) { return pvChip(c, remoteIds.indexOf(c.id) === -1); }).join('<span class="text-[#9fa4ab]">&rarr;</span>');
+        document.getElementById('pvRemote').innerHTML = pv.remote.map(function (c) { return pvChip(c, false); }).join('<span class="text-[#9fa4ab]">&rarr;</span>');
+        var localIds = pv.local.map(function (c) { return c.id; });
+        var ahead = localIds.filter(function (id) { return remoteIds.indexOf(id) === -1; }).length;
+        var behind = remoteIds.filter(function (id) { return localIds.indexOf(id) === -1; }).length;
+        document.getElementById('pvOut').textContent = msg + '\n\n$ git status\nYour branch is ' +
+            (ahead && behind ? 'ahead by ' + ahead + ' and behind by ' + behind + ' (diverged).' :
+             ahead ? 'ahead of \'origin\' by ' + ahead + ' commit(s). (dashed = not pushed yet)' :
+             behind ? 'behind \'origin\' by ' + behind + ' commit(s).' : 'up to date with \'origin\'.');
+    }
+    function pvHex() { return (0x1000000 + Math.floor(Math.random() * 0xefffff)).toString(16).slice(1, 8); }
+    function pvReset() {
+        var base = { id: 'a1b2c3d', by: 'you' };
+        pv = { local: [base], remote: [base] }; pvSeq = 0;
+        pvPaint('Branch is pushed and in sync.');
+    }
+    var pvActions = {
+        commit: function () {
+            var c = { id: pvHex(), by: 'you' }; pv.local.push(c); pvSeq++;
+            pvPaint('$ git commit -m "wip: step ' + pvSeq + '"\n[feat/random-static-page ' + c.id + '] saved locally only');
+        },
+        teammate: function () {
+            var c = { id: pvHex(), by: 'teammate' }; pv.remote.push(c);
+            pvPaint('(@friend pushed ' + c.id + ' to origin/feat/random-static-page)');
+        },
+        push: function () {
+            var remoteIds = pv.remote.map(function (c) { return c.id; }), localIds = pv.local.map(function (c) { return c.id; });
+            var behind = remoteIds.some(function (id) { return localIds.indexOf(id) === -1; });
+            var ahead = pv.local.filter(function (c) { return remoteIds.indexOf(c.id) === -1; });
+            if (behind) return pvPaint('$ git push\n ! [rejected]  feat/random-static-page (fetch first)\nerror: Updates were rejected because the remote contains work\nthat you do not have locally. Pull first, then push again.');
+            if (!ahead.length) return pvPaint('$ git push\nEverything up-to-date');
+            pv.remote = pv.local.slice();
+            pvPaint('$ git push\n   ' + remoteIds[remoteIds.length - 1] + '..' + ahead[ahead.length - 1].id + '  feat/random-static-page -> feat/random-static-page\n→ CI triggered · PR #42 updated');
+        },
+        pull: function () {
+            var remoteIds = pv.remote.map(function (c) { return c.id; });
+            var mine = pv.local.filter(function (c) { return remoteIds.indexOf(c.id) === -1; });
+            if (pv.local.length - mine.length === pv.remote.length) {
+                return pvPaint('$ git pull --rebase\nAlready up to date.');
+            }
+            pv.local = pv.remote.slice().concat(mine.map(function (c) { return { id: pvHex(), by: c.by }; }));
+            pvPaint('$ git pull --rebase\nSuccessfully rebased and updated refs/heads/feat/random-static-page.' +
+                (mine.length ? '\n(your ' + mine.length + ' commit(s) were replayed on top, so they got new hashes)' : ''));
+        },
+        reset: pvReset
+    };
+    Array.prototype.forEach.call(document.querySelectorAll('[data-pv]'), function (b) {
+        b.addEventListener('click', function () { pvActions[b.dataset.pv](); });
+    });
+    pvReset();
 
     /* ---------- Simulator ---------- */
     var sim;
