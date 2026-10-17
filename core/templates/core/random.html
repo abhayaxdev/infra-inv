@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfraInv | Project Blueprint</title>
+    <script>
+        tailwind = { config: { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Georgia', 'Times New Roman', 'serif'], serif: ['Georgia', 'Times New Roman', 'serif'], mono: ['SFMono-Regular', 'Consolas', 'Liberation Mono', 'monospace'] } } } } };
+        (function () { if (localStorage.getItem('infrainv:theme') === 'light') document.documentElement.classList.remove('dark'); }());
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .diagram svg { max-width: 100%; height: auto; margin: 0 auto; }
+        .diagram { overflow-x: auto; }
+        .mermaid:not([data-processed]) { visibility: hidden; }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden bg-[#ebe7e4] font-serif text-[#252f3d] antialiased dark:bg-[#0d1116] dark:text-[#ebe7e4]">
+{% verbatim %}
+<div class="mx-auto w-full max-w-6xl px-4 pb-24 sm:px-8">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-20 pt-3">
+        <div class="flex items-center justify-between border border-[#8b847d]/40 bg-[#f4f2f0]/90 px-4 py-2 backdrop-blur dark:border-[#495059] dark:bg-[#212730]/90">
+            <a href="/" class="flex items-center gap-2 no-underline text-inherit">
+                <svg class="h-8 w-8" viewBox="0 0 800 800" aria-hidden="true"><path fill="currentColor" d="M112 112H304V208H256V592H304V688H112V592H160V208H112Z"></path><path fill="currentColor" d="M496 112H688V208H640V592H688V688H496V592H544V208H496Z"></path></svg>
+                <span class="font-mono text-[0.72rem] uppercase tracking-[0.16em]">InfraInv / Blueprint</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <nav class="hidden items-center gap-4 lg:flex font-mono text-[0.62rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#stack">Stack</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#structure">Structure</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#architecture">Architecture</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#erd">ERD</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#uml">UML</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#flows">Flows</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#routes">Routes</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#setup">Setup</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#pr-flow">PR Flow</a>
+                </nav>
+                <button type="button" id="themeToggle" class="font-mono text-[0.62rem] uppercase tracking-wider text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]">Light</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="pt-16 pb-10">
+        <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-[#4b607c] dark:text-[#6a9fcc]">Static reference &middot; no database</p>
+        <h1 class="mt-3 text-4xl sm:text-5xl leading-tight">InfraInv, <span class="text-[#4b607c] dark:text-[#6a9fcc]">drawn out.</span></h1>
+        <p class="mt-5 max-w-3xl text-lg text-[#394352] dark:text-[#d5d8db]/80">
+            InfraInv is an infrastructure inventory: a single place to record which organizations own which projects,
+            where each project is deployed (dev, staging, UAT, production), the domains and servers behind those
+            deployments, and the credentials needed to reach them. Secrets are encrypted at rest. This page documents
+            the stack, layout, data model and request flow, and is rendered entirely from a template with no queries.
+        </p>
+        <dl class="mt-8 grid grid-cols-2 gap-px border border-[#8b847d]/40 bg-[#8b847d]/40 sm:grid-cols-4 dark:border-[#495059] dark:bg-[#495059]">
+            <div class="bg-[#f4f2f0] p-4 dark:bg-[#161d27]"><dt class="font-mono text-[0.6rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]">Django apps</dt><dd class="mt-1 text-2xl">4</dd></div>
+            <div class="bg-[#f4f2f0] p-4 dark:bg-[#161d27]"><dt class="font-mono text-[0.6rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]">Domain models</dt><dd class="mt-1 text-2xl">7</dd></div>
+            <div class="bg-[#f4f2f0] p-4 dark:bg-[#161d27]"><dt class="font-mono text-[0.6rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]">Environments</dt><dd class="mt-1 text-2xl">4</dd></div>
+            <div class="bg-[#f4f2f0] p-4 dark:bg-[#161d27]"><dt class="font-mono text-[0.6rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]">User roles</dt><dd class="mt-1 text-2xl">5</dd></div>
+        </dl>
+    </section>
+
+    <!-- STACK -->
+    <section id="stack" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Tech stack</h2>
+        <p class="mt-2 text-[#5c5752] dark:text-[#9fa4ab]">Pinned versions come from <code class="font-mono text-sm">requirements.txt</code>.</p>
+        <div class="mt-6 grid gap-px border border-[#8b847d]/40 bg-[#8b847d]/40 sm:grid-cols-2 lg:grid-cols-3 dark:border-[#495059] dark:bg-[#495059]">
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Backend</h3><ul class="mt-3 space-y-1 text-sm"><li><b>Django 5.2.10</b> &mdash; MVT framework</li><li><b>Django REST framework 3.16.1</b> &mdash; installed, API layer ready</li><li><b>django-environ 0.12.0</b> &mdash; 12-factor config from <code class="font-mono">.env</code></li><li><b>django-cors-headers 4.9.0</b></li></ul></article>
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Data</h3><ul class="mt-3 space-y-1 text-sm"><li><b>PostgreSQL</b> via psycopg2-binary 2.9.11</li><li><b>SQLite</b> for local dev (<code class="font-mono">USE_SQLITE=TRUE</code>)</li><li><b>django-taggit 6.1.0</b> &mdash; technology tags on servers</li><li><b>cryptography 49.0.0</b> &mdash; Fernet field encryption</li></ul></article>
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Frontend</h3><ul class="mt-3 space-y-1 text-sm"><li><b>Django templates</b> &mdash; server-rendered</li><li><b>Tailwind CSS</b> (CDN) &mdash; pi.dev-inspired look</li><li><b>HTMX 2.0.10</b> + django-htmx 1.28.0 &mdash; partial swaps</li><li><b>Mermaid</b> &mdash; diagrams on this page</li></ul></article>
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Admin &amp; tooling</h3><ul class="mt-3 space-y-1 text-sm"><li><b>django-jazzmin 3.0.2</b> &mdash; themed admin</li><li><b>django-debug-toolbar 6.2.0</b></li><li><b>Pillow 12.1.1</b> &mdash; image processing</li><li><b>Makefile</b> &mdash; setup, migrate, test shortcuts</li></ul></article>
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Auth</h3><ul class="mt-3 space-y-1 text-sm"><li>Custom user (<code class="font-mono">users.CustomUser</code>)</li><li>Email is the login identifier; no username</li><li>Session auth, <code class="font-mono">LoginRequiredMixin</code></li><li>Superuser-only user management</li></ul></article>
+            <article class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Runtime</h3><ul class="mt-3 space-y-1 text-sm"><li>WSGI entrypoint, plus an ASGI entrypoint</li><li>Channels/Daphne: groundwork only, not yet enabled in <code class="font-mono">INSTALLED_APPS</code></li><li>Python venv at <code class="font-mono">../.venv</code></li></ul></article>
+        </div>
+    </section>
+
+    <!-- STRUCTURE -->
+    <section id="structure" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Project structure</h2>
+        <div class="mt-6 grid gap-6 lg:grid-cols-2">
+<pre class="overflow-x-auto border border-[#8b847d]/40 bg-[#f4f2f0] p-5 font-mono text-[0.78rem] leading-relaxed dark:border-[#495059] dark:bg-[#161d27]">infra-inv/
+├── manage.py
+├── Makefile              setup / migrate / test
+├── requirements.txt
+├── .env.example          env contract
+├── project/              Django project package
+│   ├── settings.py       env-driven config
+│   ├── urls.py           root URL conf
+│   ├── wsgi.py / asgi.py
+├── core/                 shared + UI shell
+│   ├── models.py         BaseModel (abstract)
+│   ├── fields.py         EncryptedTextField
+│   ├── views.py          Dashboard, detail_component
+│   └── templates/
+│       ├── core/         base, landing, index, random
+│       ├── partials/     htmx fragments
+│       └── users/        auth + user CRUD pages
+├── organizations/        business domain
+│   └── models.py         Organization, Project,
+│                         Deploy, Domain, Credential
+├── servers/
+│   └── models.py         ServerDetails
+└── users/
+    ├── models.py         CustomUser
+    ├── manager.py        CustomUserManager
+    ├── forms.py          UserForm, password reset
+    └── views.py          login, logout, user CRUD</pre>
+            <div class="space-y-4 text-sm">
+                <div class="border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">core</h3><p class="mt-2">The shared kernel. Holds the abstract <code class="font-mono">BaseModel</code> (soft-delete flag and timestamps), the Fernet-backed <code class="font-mono">EncryptedTextField</code>, the base layout and the dashboard views.</p></div>
+                <div class="border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">organizations</h3><p class="mt-2">The inventory hierarchy: organization &rarr; project &rarr; deploy &rarr; domain &rarr; credential. Currently managed via admin; its URL conf is empty.</p></div>
+                <div class="border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">servers</h3><p class="mt-2">Hosts that back a deploy: IP, port, region, provider, free-form notes, technology tags and an auto-deploy flag.</p></div>
+                <div class="border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">users</h3><p class="mt-2">Email-based custom user with a role and an optional organization, plus superuser-gated user administration.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section id="architecture" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">System architecture</h2>
+        <p class="mt-2 text-[#5c5752] dark:text-[#9fa4ab]">Layered view from browser to storage.</p>
+        <div class="diagram mt-6 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+flowchart TB
+    subgraph Client["Browser"]
+        UI["Tailwind UI + HTMX"]
+    end
+    subgraph Django["Django 5.2 project"]
+        MW["Middleware: Security, Session, CORS, DebugToolbar, HTMX, CSRF, Auth, Messages"]
+        URL["project/urls.py"]
+        subgraph Apps["Apps"]
+            CORE["core: Dashboard, detail partial, landing"]
+            USERS["users: login, logout, user CRUD"]
+            ORGS["organizations: models + admin"]
+            SRV["servers: models + admin"]
+        end
+        ADMIN["Admin (Jazzmin)"]
+        ENC["EncryptedTextField (Fernet)"]
+    end
+    subgraph Storage["Storage"]
+        DB[("PostgreSQL / SQLite")]
+    end
+    UI -->|HTTP| MW --> URL
+    URL --> CORE
+    URL --> USERS
+    URL --> ADMIN
+    CORE --> ORGS
+    ORGS --> ENC
+    ORGS --> DB
+    SRV --> DB
+    USERS --> DB
+    ADMIN --> ORGS
+    ADMIN --> SRV
+    ADMIN --> USERS
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">App dependency graph</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+flowchart LR
+    core["core (BaseModel, EncryptedTextField)"]
+    organizations --> core
+    servers --> core
+    users --> core
+    servers -->|FK deploy| organizations
+    users -->|FK organization| organizations
+    coreviews["core.views"] -->|queries| organizations
+</pre>
+        </div>
+    </section>
+
+    <!-- ERD -->
+    <section id="erd" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Entity-relationship diagram</h2>
+        <p class="mt-2 text-[#5c5752] dark:text-[#9fa4ab]">Every table also inherits <code class="font-mono text-sm">is_obsolete</code>, <code class="font-mono text-sm">created_at</code> and <code class="font-mono text-sm">updated_at</code> from <code class="font-mono text-sm">BaseModel</code>. The Credential relation is the field named <code class="font-mono text-sm">deploy</code>, but it points at <b>Domain</b>.</p>
+        <div class="diagram mt-6 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+erDiagram
+    ORGANIZATION ||--o{ PROJECT : "has (projects)"
+    ORGANIZATION |o--o{ CUSTOM_USER : "employs (users, SET_NULL)"
+    PROJECT ||--o{ DEPLOY : "has (deployments)"
+    DEPLOY ||--o{ DOMAIN : "has (domains)"
+    DEPLOY ||--o{ SERVER_DETAILS : "has (servers)"
+    DOMAIN ||--o{ CREDENTIAL : "has (credentials)"
+    SERVER_DETAILS }o--o{ TAG : "technologies (taggit)"
+
+    ORGANIZATION {
+        bigint id PK
+        varchar name
+        email email_contact
+        url website_url
+        varchar email_suffix
+    }
+    PROJECT {
+        bigint id PK
+        bigint organization_id FK
+        varchar title
+        text description
+    }
+    DEPLOY {
+        bigint id PK
+        bigint project_id FK
+        varchar title
+        int environment "1 Dev, 2 Staging, 3 UAT, 4 Prod"
+    }
+    DOMAIN {
+        bigint id PK
+        bigint deploy_id FK
+        url url
+        int status "1 Active, 2 Maintenance, 3 Inactive"
+        url github_repo
+    }
+    CREDENTIAL {
+        bigint id PK
+        bigint deploy_id FK "references Domain"
+        varchar username
+        text password "Fernet encrypted"
+        varchar user_role
+    }
+    SERVER_DETAILS {
+        bigint id PK
+        bigint deploy_id FK
+        varchar name
+        ip ip_address
+        varchar port
+        varchar region
+        text services_used
+        varchar provider
+        bool auto_deploy
+    }
+    CUSTOM_USER {
+        bigint id PK
+        email email UK "login identifier"
+        int role "1-5"
+        bigint organization_id FK
+        varchar password
+        bool is_staff
+        bool is_superuser
+    }
+    TAG {
+        int id PK
+        varchar name
+        varchar slug
+    }
+</pre>
+        </div>
+    </section>
+
+    <!-- UML -->
+    <section id="uml" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">UML diagrams</h2>
+
+        <h3 class="mt-6 text-lg">Class diagram</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+classDiagram
+    class BaseModel {
+        <<abstract>>
+        +bool is_obsolete
+        +datetime created_at
+        +datetime updated_at
+    }
+    class EncryptedTextField {
+        +from_db_value(value) str
+        +get_prep_value(value) str
+        +formfield() Field
+    }
+    class Organization { +name +email_contact +website_url +email_suffix }
+    class Project { +title +description }
+    class Deploy {
+        +title
+        +environment
+    }
+    class EnvironmentChoices {
+        <<enumeration>>
+        DEV = 1
+        STAGING = 2
+        UAT = 3
+        PROD = 4
+    }
+    class Domain {
+        +url
+        +status
+        +github_repo
+    }
+    class StatusChoices {
+        <<enumeration>>
+        ACTIVE = 1
+        MAINTENANCE = 2
+        INACTIVE = 3
+    }
+    class Credential { +username +password +user_role }
+    class ServerDetails {
+        +name
+        +ip_address
+        +port
+        +region
+        +services_used
+        +provider
+        +technologies
+        +auto_deploy
+    }
+    class CustomUser {
+        +email
+        +role
+        +USERNAME_FIELD = email
+    }
+    class RoleChoices {
+        <<enumeration>>
+        STAKEHOLDER = 1
+        PRODUCT = 2
+        DEV = 3
+        INFRA = 4
+        QA = 5
+    }
+    class CustomUserManager { +create_user() +create_superuser() }
+    class AbstractUser { <<django>> }
+
+    BaseModel <|-- Organization
+    BaseModel <|-- Project
+    BaseModel <|-- Deploy
+    BaseModel <|-- Domain
+    BaseModel <|-- Credential
+    BaseModel <|-- ServerDetails
+    BaseModel <|-- CustomUser
+    AbstractUser <|-- CustomUser
+    CustomUser ..> CustomUserManager : objects
+    CustomUser ..> RoleChoices
+    Deploy ..> EnvironmentChoices
+    Domain ..> StatusChoices
+    Credential ..> EncryptedTextField : password
+
+    Organization "1" *-- "0..*" Project
+    Project "1" *-- "0..*" Deploy
+    Deploy "1" *-- "0..*" Domain
+    Deploy "1" *-- "0..*" ServerDetails
+    Domain "1" *-- "0..*" Credential
+    Organization "0..1" o-- "0..*" CustomUser
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">View &amp; form class diagram</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+classDiagram
+    class LoginRequiredMixin { <<django>> }
+    class UserPassesTestMixin { <<django>> }
+    class SuperuserRequiredMixin {
+        +dispatch()
+        +test_func() bool
+        +handle_no_permission()
+    }
+    class Dashboard { +get() }
+    class UserListView
+    class UserCreateView
+    class UserUpdateView
+    class UserDeleteView
+    class UserPasswordResetView { +form_valid() }
+    class LoginView
+    class LogoutView
+    class UserForm
+    class UserPasswordResetForm
+
+    LoginRequiredMixin <|-- SuperuserRequiredMixin
+    UserPassesTestMixin <|-- SuperuserRequiredMixin
+    LoginRequiredMixin <|-- Dashboard
+    SuperuserRequiredMixin <|-- UserListView
+    SuperuserRequiredMixin <|-- UserCreateView
+    SuperuserRequiredMixin <|-- UserUpdateView
+    SuperuserRequiredMixin <|-- UserDeleteView
+    SuperuserRequiredMixin <|-- UserPasswordResetView
+    UserCreateView ..> UserForm
+    UserUpdateView ..> UserForm
+    UserPasswordResetView ..> UserPasswordResetForm
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Component diagram</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+flowchart LR
+    subgraph Presentation
+        T1["landing.html"]
+        T2["index.html + base.html"]
+        T3["partials/_detail, _deploys, _sidebar_*"]
+        T4["users/*.html"]
+    end
+    subgraph Logic
+        V1["core.views"]
+        V2["users.views + forms"]
+    end
+    subgraph Domain
+        M1["organizations.models"]
+        M2["servers.models"]
+        M3["users.models"]
+    end
+    subgraph Infra
+        F["core.fields: Fernet"]
+        S["settings (django-environ)"]
+        D[("Database")]
+    end
+    T2 --> V1
+    T3 --> V1
+    T4 --> V2
+    V1 --> M1
+    V2 --> M3
+    M1 --> F
+    M1 --> D
+    M2 --> D
+    M3 --> D
+    S -.-> D
+    S -.-> F
+</pre>
+        </div>
+    </section>
+
+    <!-- FLOWS -->
+    <section id="flows" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Runtime flows</h2>
+
+        <h3 class="mt-6 text-lg">Dashboard &amp; HTMX project detail (sequence)</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+sequenceDiagram
+    actor U as User
+    participant B as Browser
+    participant D as Django
+    participant DB as Database
+    U->>B: open /dashboard/
+    B->>D: GET /dashboard/
+    D->>D: LoginRequiredMixin check
+    alt not authenticated
+        D-->>B: 302 to /login/
+    else authenticated
+        D->>DB: Project.objects.all()
+        DB-->>D: projects
+        D-->>B: index.html with sidebar
+    end
+    U->>B: click a project
+    B->>D: GET /detail/id/ (HTMX)
+    D->>DB: Project select_related organization
+    alt project missing
+        D-->>B: redirect with error message
+    else found
+        D-->>B: partials/_detail.html fragment
+        B->>B: HTMX swaps main content
+    end
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Credential encryption (sequence)</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+sequenceDiagram
+    participant A as Admin / ORM
+    participant F as EncryptedTextField
+    participant K as Fernet key
+    participant DB as Database
+    A->>F: save(password="s3cret")
+    F->>K: load FIELD_ENCRYPTION_KEY (or demo key)
+    F->>DB: store Fernet token
+    A->>F: read credential
+    DB-->>F: Fernet token
+    F->>K: decrypt
+    F-->>A: "s3cret"
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Access control (activity)</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+flowchart TD
+    A([Request]) --> B{Public route?}
+    B -- "/, /login/, /random/, /pr-flow/" --> OK([Serve page])
+    B -- no --> C{Authenticated?}
+    C -- no --> L["Redirect to /login/"]
+    C -- yes --> E{User management route?}
+    E -- no --> OK
+    E -- yes --> G{is_superuser?}
+    G -- yes --> OK
+    G -- no --> X["Denied with message"]
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Domain status (state diagram)</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --> Active : created (default)
+    Active --> Maintenance
+    Maintenance --> Active
+    Active --> Inactive
+    Maintenance --> Inactive
+    Inactive --> Active
+    Inactive --> [*] : is_obsolete = true
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Deployment hierarchy example</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+flowchart TD
+    O["Organization: Acme"] --> P["Project: Storefront"]
+    P --> D1["Deploy: Dev"]
+    P --> D2["Deploy: Production"]
+    D2 --> DM["Domain: shop.acme.com (Active)"]
+    D2 --> S1["Server: 10.0.0.5 (AWS, tags: nginx, django)"]
+    DM --> C1["Credential: admin (encrypted)"]
+</pre>
+        </div>
+    </section>
+
+    <!-- ROUTES -->
+    <section id="routes" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Routes</h2>
+        <div class="mt-6 overflow-x-auto border border-[#8b847d]/40 dark:border-[#495059]">
+            <table class="w-full min-w-[40rem] text-left text-sm">
+                <thead class="bg-[#f4f2f0] font-mono text-[0.62rem] uppercase tracking-widest text-[#5c5752] dark:bg-[#161d27] dark:text-[#9fa4ab]"><tr><th class="p-3">Path</th><th class="p-3">Name</th><th class="p-3">Handler</th><th class="p-3">Access</th></tr></thead>
+                <tbody class="divide-y divide-[#8b847d]/30 font-mono text-[0.78rem] dark:divide-[#495059]">
+                    <tr><td class="p-3">/</td><td class="p-3">core:landing</td><td class="p-3">TemplateView</td><td class="p-3">public</td></tr>
+                    <tr><td class="p-3">/random/</td><td class="p-3">core:random</td><td class="p-3">TemplateView (this page)</td><td class="p-3">public</td></tr>
+                    <tr><td class="p-3">/pr-flow/</td><td class="p-3">core:pr_flow</td><td class="p-3">TemplateView (PR guide)</td><td class="p-3">public</td></tr>
+                    <tr><td class="p-3">/dashboard/</td><td class="p-3">core:dashboard</td><td class="p-3">Dashboard</td><td class="p-3">login</td></tr>
+                    <tr><td class="p-3">/detail/&lt;pk&gt;/</td><td class="p-3">core:project_detail</td><td class="p-3">detail_component</td><td class="p-3">login</td></tr>
+                    <tr><td class="p-3">/login/</td><td class="p-3">users:login</td><td class="p-3">LoginView</td><td class="p-3">public</td></tr>
+                    <tr><td class="p-3">/logout/</td><td class="p-3">users:logout</td><td class="p-3">LogoutView</td><td class="p-3">login</td></tr>
+                    <tr><td class="p-3">/users/</td><td class="p-3">users:user_list</td><td class="p-3">UserListView</td><td class="p-3">superuser</td></tr>
+                    <tr><td class="p-3">/users/create/</td><td class="p-3">users:user_create</td><td class="p-3">UserCreateView</td><td class="p-3">superuser</td></tr>
+                    <tr><td class="p-3">/users/&lt;pk&gt;/update/</td><td class="p-3">users:user_update</td><td class="p-3">UserUpdateView</td><td class="p-3">superuser</td></tr>
+                    <tr><td class="p-3">/users/&lt;pk&gt;/delete/</td><td class="p-3">users:user_delete</td><td class="p-3">UserDeleteView</td><td class="p-3">superuser</td></tr>
+                    <tr><td class="p-3">/users/&lt;pk&gt;/reset-password/</td><td class="p-3">users:user_password_reset</td><td class="p-3">UserPasswordResetView</td><td class="p-3">superuser</td></tr>
+                    <tr><td class="p-3">/admin/</td><td class="p-3">admin</td><td class="p-3">Django admin</td><td class="p-3">staff</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SETUP -->
+    <section id="setup" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Setup &amp; configuration</h2>
+        <div class="mt-6 grid gap-6 lg:grid-cols-2">
+<pre class="overflow-x-auto border border-[#8b847d]/40 bg-[#f4f2f0] p-5 font-mono text-[0.78rem] leading-relaxed dark:border-[#495059] dark:bg-[#161d27]">python3 -m venv ../.venv
+source ../.venv/bin/activate
+make setup      # install deps, create .env
+# edit .env (USE_SQLITE=TRUE for local)
+make migrate
+python manage.py runserver</pre>
+            <div class="border border-[#8b847d]/40 bg-[#f4f2f0] p-5 text-sm dark:border-[#495059] dark:bg-[#161d27]">
+                <h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Environment variables</h3>
+                <ul class="mt-3 space-y-1 font-mono text-[0.78rem]">
+                    <li>DEBUG, DJANGO_SECRET_KEY, ALLOWED_HOSTS</li>
+                    <li>USE_SQLITE, or DB_ENGINE / NAME / USER / PASSWORD / HOST / PORT</li>
+                    <li>CORS_ALLOW_ALL_ORIGINS, CSRF_TRUSTED_ORIGINS</li>
+                    <li>FIELD_ENCRYPTION_KEY (optional; falls back to a demo key)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-6 border border-[#8b847d]/40 bg-[#f4f2f0] p-5 text-sm dark:border-[#495059] dark:bg-[#161d27]">
+            <h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Roadmap (from TODO.md)</h3>
+            <ul class="mt-3 list-disc space-y-1 pl-5">
+                <li>Move from pip to Poetry or uv; dockerize</li>
+                <li>Split settings into base, local and prod</li>
+                <li>Rename and review organization model fields and relationships</li>
+                <li>Add a phone number to users, enabling OTP protection for credentials</li>
+                <li>Drop redundant <code class="font-mono">is_active</code> in favor of <code class="font-mono">is_obsolete</code></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- PR FLOW -->
+    <section id="pr-flow" class="py-10 scroll-mt-20">
+        <div class="flex flex-col items-start justify-between gap-6 border border-[#4b607c] bg-[#4b607c]/10 p-6 sm:flex-row sm:items-center dark:border-[#6a9fcc] dark:bg-[#6a9fcc]/10">
+            <div>
+                <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#4b607c] dark:text-[#6a9fcc]">How changes reach main</p>
+                <h2 class="mt-2 text-2xl">Pull request flow</h2>
+                <p class="mt-2 max-w-2xl text-sm text-[#394352] dark:text-[#d5d8db]/80">What a pull request is, how it moves from branch to merge, and why teams depend on it. Includes a step-by-step walkthrough, a working PR simulator, diagrams and a quiz.</p>
+            </div>
+            <a href="/pr-flow/" class="inline-flex min-h-11 flex-shrink-0 items-center gap-2 border border-[#4b607c] bg-[#4b607c] px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] text-white no-underline transition hover:bg-[#252f3d] dark:border-[#6a9fcc] dark:bg-[#6a9fcc] dark:hover:bg-[#4b607c]">Go to PR flow <span aria-hidden="true">&rarr;</span></a>
+        </div>
+    </section>
+
+    <footer class="border-t border-[#8b847d]/40 pt-6 font-mono text-[0.62rem] uppercase tracking-widest text-[#5c5752] dark:border-[#495059] dark:text-[#9fa4ab]">
+        InfraInv &middot; a management platform for all your deployments
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+    (function () {
+        var root = document.documentElement;
+        var btn = document.getElementById('themeToggle');
+        var sources = [];
+        document.querySelectorAll('.mermaid').forEach(function (el) { sources.push(el.textContent); });
+
+        function isDark() { return root.classList.contains('dark'); }
+
+        function render() {
+            btn.textContent = isDark() ? 'Light' : 'Dark';
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'base',
+                securityLevel: 'strict',
+                themeVariables: isDark() ? {
+                    background: '#161d27', primaryColor: '#212730', primaryTextColor: '#ebe7e4',
+                    primaryBorderColor: '#6a9fcc', lineColor: '#9fa4ab', secondaryColor: '#161d27',
+                    tertiaryColor: '#0d1116', fontFamily: 'Georgia, serif'
+                } : {
+                    background: '#f4f2f0', primaryColor: '#ebe7e4', primaryTextColor: '#252f3d',
+                    primaryBorderColor: '#4b607c', lineColor: '#5c5752', secondaryColor: '#f4f2f0',
+                    tertiaryColor: '#ffffff', fontFamily: 'Georgia, serif'
+                }
+            });
+            document.querySelectorAll('.mermaid').forEach(function (el, i) {
+                el.removeAttribute('data-processed');
+                el.textContent = sources[i];
+            });
+            mermaid.run({ querySelector: '.mermaid' });
+        }
+
+        btn.addEventListener('click', function () {
+            root.classList.toggle('dark');
+            try { localStorage.setItem('infrainv:theme', isDark() ? 'dark' : 'light'); } catch (e) {}
+            render();
+        });
+        render();
+    }());
+</script>
+{% endverbatim %}
+</body>
+</html>

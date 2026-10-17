@@ -44,3 +44,6 @@ Thumbs.db
 # Misc
 celerybeat-schedule
 
+
+# Local PR drafts
+pr.md
