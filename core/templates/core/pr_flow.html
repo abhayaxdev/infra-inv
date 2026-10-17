@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfraInv | Pull Request Flow</title>
+    <script>
+        tailwind = { config: { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Georgia', 'Times New Roman', 'serif'], serif: ['Georgia', 'Times New Roman', 'serif'], mono: ['SFMono-Regular', 'Consolas', 'Liberation Mono', 'monospace'] } } } } };
+        (function () { if (localStorage.getItem('infrainv:theme') === 'light') document.documentElement.classList.remove('dark'); }());
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .diagram svg { max-width: 100%; height: auto; margin: 0 auto; }
+        .diagram { overflow-x: auto; }
+        .mermaid:not([data-processed]) { visibility: hidden; }
+        .stage { transition: all .2s ease; }
+        .stage.active { border-color: #6a9fcc; background: rgba(106,159,204,.15); color: inherit; }
+        .stage.done { border-color: #5db87a; }
+        .stage.done .dot { background: #5db87a; }
+        .stage.active .dot { background: #6a9fcc; }
+        .fade-in { animation: fade .25s ease; }
+        @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden bg-[#ebe7e4] font-serif text-[#252f3d] antialiased dark:bg-[#0d1116] dark:text-[#ebe7e4]">
+{% verbatim %}
+<div class="mx-auto w-full max-w-6xl px-4 pb-24 sm:px-8">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-20 pt-3">
+        <div class="flex items-center justify-between border border-[#8b847d]/40 bg-[#f4f2f0]/90 px-4 py-2 backdrop-blur dark:border-[#495059] dark:bg-[#212730]/90">
+            <a href="/random/" class="flex items-center gap-2 no-underline text-inherit">
+                <svg class="h-8 w-8" viewBox="0 0 800 800" aria-hidden="true"><path fill="currentColor" d="M112 112H304V208H256V592H304V688H112V592H160V208H112Z"></path><path fill="currentColor" d="M496 112H688V208H640V592H688V688H496V592H544V208H496Z"></path></svg>
+                <span class="font-mono text-[0.72rem] uppercase tracking-[0.16em]">InfraInv / PR Flow</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <nav class="hidden items-center gap-4 lg:flex font-mono text-[0.62rem] uppercase tracking-[0.1em] text-[#5c5752] dark:text-[#9fa4ab]">
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#what">What</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#walkthrough">Walkthrough</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#simulator">Simulator</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#diagrams">Diagrams</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#strategies">Merging</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#why">Why</a>
+                    <a class="hover:text-[#4b607c] dark:hover:text-[#6a9fcc]" href="#quiz">Quiz</a>
+                </nav>
+                <a href="/random/" class="font-mono text-[0.62rem] uppercase tracking-wider text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]">&larr; Blueprint</a>
+                <button type="button" id="themeToggle" class="font-mono text-[0.62rem] uppercase tracking-wider text-[#5c5752] hover:text-[#4b607c] dark:text-[#9fa4ab] dark:hover:text-[#6a9fcc]">Light</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO / WHAT -->
+    <section id="what" class="pt-16 pb-10 scroll-mt-20">
+        <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-[#4b607c] dark:text-[#6a9fcc]">A field guide &middot; interactive</p>
+        <h1 class="mt-3 text-4xl sm:text-5xl leading-tight">The Pull Request, <span class="text-[#4b607c] dark:text-[#6a9fcc]">step by step.</span></h1>
+        <p class="mt-5 max-w-3xl text-lg text-[#394352] dark:text-[#d5d8db]/80">
+            A <b>pull request</b> (PR, or "merge request" on GitLab) asks the team: <i>"I made these changes on my
+            branch; please review them and pull them into the main codebase."</i> The proposal shows the exact diff,
+            runs automated checks, collects reviewer comments, and records the decision. Nothing reaches
+            <code class="font-mono text-base">main</code> until the team agrees it should.
+        </p>
+        <div class="mt-8 grid gap-px border border-[#8b847d]/40 bg-[#8b847d]/40 sm:grid-cols-3 dark:border-[#495059] dark:bg-[#495059]">
+            <div class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">A proposal</h3><p class="mt-2 text-sm">A branch plus a description of what changed and why. It's a request for a decision, not a finished fact.</p></div>
+            <div class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">A conversation</h3><p class="mt-2 text-sm">Reviewers comment on specific lines, ask questions and suggest fixes. The author pushes more commits in reply.</p></div>
+            <div class="bg-[#f4f2f0] p-5 dark:bg-[#161d27]"><h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">A gate</h3><p class="mt-2 text-sm">Branch protection can require passing CI and approvals before the merge button unlocks.</p></div>
+        </div>
+    </section>
+
+    <!-- WALKTHROUGH -->
+    <section id="walkthrough" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Walkthrough</h2>
+        <p class="mt-2 text-[#5c5752] dark:text-[#9fa4ab]">Click a stage, use the buttons, or press &larr; / &rarr;. The example is the <code class="font-mono text-sm">/random/</code> page that was just added to this project.</p>
+
+        <ol id="stages" class="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8"></ol>
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-5">
+            <div id="stepCard" class="lg:col-span-3 border border-[#8b847d]/40 bg-[#f4f2f0] p-6 dark:border-[#495059] dark:bg-[#161d27]"></div>
+            <div class="lg:col-span-2 flex flex-col border border-[#8b847d]/40 bg-[#0d1116] dark:border-[#495059]">
+                <div class="flex items-center gap-1.5 border-b border-[#495059] px-3 py-2">
+                    <span class="h-2.5 w-2.5 rounded-full bg-[#e8704f]"></span><span class="h-2.5 w-2.5 rounded-full bg-[#e8993a]"></span><span class="h-2.5 w-2.5 rounded-full bg-[#5db87a]"></span>
+                    <span class="ml-2 font-mono text-[0.62rem] uppercase tracking-widest text-[#9fa4ab]">terminal</span>
+                </div>
+                <pre id="stepCmd" class="flex-1 overflow-x-auto p-4 font-mono text-[0.78rem] leading-relaxed text-[#d5d8db]"></pre>
+            </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+            <button id="prevBtn" class="border border-[#8b847d]/60 px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] hover:border-[#4b607c] hover:bg-[#4b607c]/10 dark:border-[#495059] dark:hover:border-[#6a9fcc] disabled:opacity-40">&larr; Prev</button>
+            <button id="nextBtn" class="border border-[#4b607c] bg-[#4b607c] px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] text-white hover:bg-[#252f3d] dark:border-[#6a9fcc] dark:bg-[#6a9fcc] dark:hover:bg-[#4b607c] disabled:opacity-40">Next &rarr;</button>
+            <button id="playBtn" class="border border-[#8b847d]/60 px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] hover:border-[#4b607c] hover:bg-[#4b607c]/10 dark:border-[#495059] dark:hover:border-[#6a9fcc]">&#9654; Autoplay</button>
+            <span id="stepCount" class="font-mono text-[0.68rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]"></span>
+        </div>
+    </section>
+
+    <!-- SIMULATOR -->
+    <section id="simulator" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">PR simulator</h2>
+        <p class="mt-2 text-[#5c5752] dark:text-[#9fa4ab]">Here, <code class="font-mono text-sm">main</code> is protected: CI must pass and one approval is required. Try to merge before the PR is ready.</p>
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-5">
+            <div class="lg:col-span-3 border border-[#8b847d]/40 bg-[#f4f2f0] dark:border-[#495059] dark:bg-[#161d27]">
+                <div class="border-b border-[#8b847d]/40 p-5 dark:border-[#495059]">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span id="prBadge" class="px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-widest text-white bg-[#5db87a]">Open</span>
+                        <h3 class="text-lg">feat: add static /random blueprint page <span class="text-[#9fa4ab]">#42</span></h3>
+                    </div>
+                    <p class="mt-1 font-mono text-[0.7rem] text-[#5c5752] dark:text-[#9fa4ab]">abhaya wants to merge <b>feat/random-static-page</b> into <b>main</b></p>
+                </div>
+                <div class="space-y-3 p-5 text-sm">
+                    <div class="flex items-center justify-between gap-3 border border-[#8b847d]/30 p-3 dark:border-[#495059]">
+                        <div class="flex items-center gap-2"><span id="ciIcon" class="inline-block h-3 w-3 rounded-full bg-[#9fa4ab]"></span><span id="ciText">CI: not run yet</span></div>
+                        <div class="flex gap-2">
+                            <button data-ci="pass" class="sim-btn border border-[#5db87a] px-2 py-1 font-mono text-[0.62rem] uppercase text-[#5db87a] hover:bg-[#5db87a]/10">Run: pass</button>
+                            <button data-ci="fail" class="sim-btn border border-[#e8704f] px-2 py-1 font-mono text-[0.62rem] uppercase text-[#e8704f] hover:bg-[#e8704f]/10">Run: fail</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-3 border border-[#8b847d]/30 p-3 dark:border-[#495059]">
+                        <div class="flex items-center gap-2"><span id="revIcon" class="inline-block h-3 w-3 rounded-full bg-[#9fa4ab]"></span><span id="revText">Review: waiting for reviewer</span></div>
+                        <div class="flex gap-2">
+                            <button data-review="approve" class="sim-btn border border-[#5db87a] px-2 py-1 font-mono text-[0.62rem] uppercase text-[#5db87a] hover:bg-[#5db87a]/10">Approve</button>
+                            <button data-review="changes" class="sim-btn border border-[#e8993a] px-2 py-1 font-mono text-[0.62rem] uppercase text-[#e8993a] hover:bg-[#e8993a]/10">Request changes</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-3 border border-[#8b847d]/30 p-3 dark:border-[#495059]">
+                        <span>Author: address feedback</span>
+                        <button id="pushFix" class="sim-btn border border-[#6a9fcc] px-2 py-1 font-mono text-[0.62rem] uppercase text-[#6a9fcc] hover:bg-[#6a9fcc]/10">Push fix commit</button>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                        <button id="mergeBtn" class="border border-[#5db87a] bg-[#5db87a] px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] text-white disabled:cursor-not-allowed disabled:border-[#9fa4ab] disabled:bg-[#9fa4ab]/40">Squash &amp; merge</button>
+                        <button id="resetSim" class="border border-[#8b847d]/60 px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.08em] hover:border-[#4b607c] dark:border-[#495059]">Reset</button>
+                        <span id="mergeHint" class="text-xs text-[#5c5752] dark:text-[#9fa4ab]"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-2 border border-[#8b847d]/40 bg-[#f4f2f0] p-5 dark:border-[#495059] dark:bg-[#161d27]">
+                <h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Timeline</h3>
+                <ol id="timeline" class="mt-3 space-y-2 border-l border-[#8b847d]/40 pl-4 text-sm dark:border-[#495059]"></ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIAGRAMS -->
+    <section id="diagrams" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Diagrams</h2>
+
+        <h3 class="mt-6 text-lg">Branching: what happens in git</h3>
+        <p class="mt-1 text-sm text-[#5c5752] dark:text-[#9fa4ab]">Work happens on a feature branch while <code class="font-mono">main</code> keeps moving. The PR merges the branch back.</p>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+gitGraph
+    commit id: "installed channels"
+    branch feat/random-static-page
+    checkout feat/random-static-page
+    commit id: "add /random view"
+    commit id: "add diagrams"
+    checkout main
+    commit id: "hotfix by teammate"
+    checkout feat/random-static-page
+    commit id: "address review"
+    checkout main
+    merge feat/random-static-page id: "PR #42 merged"
+    commit id: "next feature"
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Who talks to whom (sequence)</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+sequenceDiagram
+    actor A as Author
+    participant G as GitHub
+    participant CI as CI runner
+    actor R as Reviewer
+    A->>G: git push feature branch
+    A->>G: open pull request
+    G->>CI: trigger checks
+    G->>R: request review
+    CI-->>G: tests + lint result
+    R->>G: line comments
+    alt changes requested
+        G-->>A: notify
+        A->>G: push fix commits
+        G->>CI: re-run checks
+        R->>G: approve
+    else approved
+        R->>G: approve
+    end
+    A->>G: merge (checks green + approved)
+    G->>G: main updated, branch deleted
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Lifecycle of a PR (state)</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --> Draft : opened as draft
+    [*] --> Open : opened
+    Draft --> Open : ready for review
+    Open --> ChangesRequested : reviewer requests changes
+    ChangesRequested --> Open : author pushes fixes
+    Open --> Approved : reviewer approves
+    Approved --> Open : new commits pushed
+    Approved --> Merged : checks pass and merge
+    Open --> Closed : abandoned
+    Closed --> Open : reopened
+    Merged --> [*]
+</pre>
+        </div>
+
+        <h3 class="mt-10 text-lg">Decision flow before merge</h3>
+        <div class="diagram mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-4 dark:border-[#495059] dark:bg-[#161d27]">
+<pre class="mermaid">
+flowchart TD
+    A([PR opened]) --> B{CI green?}
+    B -- no --> F["Author fixes and pushes"] --> B
+    B -- yes --> C{Reviewer approves?}
+    C -- "changes requested" --> F
+    C -- yes --> D{Conflicts with main?}
+    D -- yes --> E["Rebase or merge main into branch"] --> B
+    D -- no --> M([Merge into main])
+    M --> X["Deploy pipeline / delete branch"]
+</pre>
+        </div>
+    </section>
+
+    <!-- MERGE STRATEGIES -->
+    <section id="strategies" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Merge strategies</h2>
+        <p class="mt-2 text-[#5c5752] dark:text-[#9fa4ab]">The same PR can land in three ways. Pick a tab to compare the resulting history.</p>
+        <div class="mt-6 flex flex-wrap gap-2" role="tablist">
+            <button data-tab="merge" class="tab-btn border px-3 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.08em]">Merge commit</button>
+            <button data-tab="squash" class="tab-btn border px-3 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.08em]">Squash</button>
+            <button data-tab="rebase" class="tab-btn border px-3 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.08em]">Rebase</button>
+        </div>
+        <div class="mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-5 dark:border-[#495059] dark:bg-[#161d27]">
+            <div data-panel="merge" class="tab-panel">
+                <p class="text-sm"><b>Merge commit</b> keeps every commit and adds a merge commit that ties the branch in. History is complete but can look busy.</p>
+                <div class="diagram mt-4">
+<pre class="mermaid">
+gitGraph
+    commit id: "A"
+    branch feature
+    commit id: "f1"
+    commit id: "f2"
+    checkout main
+    commit id: "B"
+    merge feature id: "Merge PR"
+</pre>
+                </div>
+            </div>
+            <div data-panel="squash" class="tab-panel hidden">
+                <p class="text-sm"><b>Squash</b> combines all branch commits into one commit on <code class="font-mono">main</code>. History stays clean with one commit per PR. This is the most common choice for feature work.</p>
+                <div class="diagram mt-4">
+<pre class="mermaid">
+gitGraph
+    commit id: "A"
+    commit id: "B"
+    commit id: "feat: f1+f2 (#42)"
+</pre>
+                </div>
+            </div>
+            <div data-panel="rebase" class="tab-panel hidden">
+                <p class="text-sm"><b>Rebase</b> replays each branch commit on top of <code class="font-mono">main</code>. History is linear and keeps individual commits, but those commits get new hashes.</p>
+                <div class="diagram mt-4">
+<pre class="mermaid">
+gitGraph
+    commit id: "A"
+    commit id: "B"
+    commit id: "f1'"
+    commit id: "f2'"
+</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY -->
+    <section id="why" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">How PRs keep software maintainable</h2>
+        <p class="mt-2 text-[#5c5752] dark:text-[#9fa4ab]">Click a card to expand it.</p>
+        <div id="benefits" class="mt-6 grid gap-px border border-[#8b847d]/40 bg-[#8b847d]/40 sm:grid-cols-2 lg:grid-cols-3 dark:border-[#495059] dark:bg-[#495059]"></div>
+
+        <h3 class="mt-10 text-lg">Good PR habits</h3>
+        <p class="mt-1 text-sm text-[#5c5752] dark:text-[#9fa4ab]">A checklist an author can run before requesting review.</p>
+        <div class="mt-4 border border-[#8b847d]/40 bg-[#f4f2f0] p-5 dark:border-[#495059] dark:bg-[#161d27]">
+            <div class="h-1.5 w-full bg-[#8b847d]/30"><div id="checkBar" class="h-1.5 bg-[#5db87a] transition-all" style="width:0"></div></div>
+            <p id="checkLabel" class="mt-2 font-mono text-[0.62rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]"></p>
+            <ul id="checklist" class="mt-3 grid gap-2 text-sm sm:grid-cols-2"></ul>
+        </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" class="py-10 scroll-mt-20">
+        <h2 class="text-2xl">Quick quiz</h2>
+        <p class="mt-2 text-[#5c5752] dark:text-[#9fa4ab]">Check what stuck.</p>
+        <div id="quizBox" class="mt-6 space-y-4"></div>
+        <p id="quizScore" class="mt-4 font-mono text-[0.72rem] uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]"></p>
+    </section>
+
+    <footer class="border-t border-[#8b847d]/40 pt-6 font-mono text-[0.62rem] uppercase tracking-widest text-[#5c5752] dark:border-[#495059] dark:text-[#9fa4ab]">
+        InfraInv &middot; <a href="/random/" class="hover:text-[#6a9fcc]">back to the blueprint</a>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+(function () {
+    var root = document.documentElement;
+    function isDark() { return root.classList.contains('dark'); }
+    function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    /* ---------- Mermaid (theme-aware, renders hidden tabs lazily) ---------- */
+    var diagrams = Array.prototype.map.call(document.querySelectorAll('.mermaid'), function (el) { return { el: el, src: el.textContent }; });
+    function configureMermaid() {
+        mermaid.initialize({
+            startOnLoad: false, theme: 'base', securityLevel: 'strict',
+            gitGraph: { mainBranchName: 'main' },
+            themeVariables: isDark() ? {
+                background: '#161d27', primaryColor: '#212730', primaryTextColor: '#ebe7e4', primaryBorderColor: '#6a9fcc',
+                lineColor: '#9fa4ab', secondaryColor: '#161d27', tertiaryColor: '#0d1116', fontFamily: 'Georgia, serif',
+                git0: '#6a9fcc', git1: '#5db87a', git2: '#e8993a', commitLabelColor: '#ebe7e4', commitLabelBackground: '#212730'
+            } : {
+                background: '#f4f2f0', primaryColor: '#ebe7e4', primaryTextColor: '#252f3d', primaryBorderColor: '#4b607c',
+                lineColor: '#5c5752', secondaryColor: '#f4f2f0', tertiaryColor: '#ffffff', fontFamily: 'Georgia, serif',
+                git0: '#4b607c', git1: '#3f8f5a', git2: '#c47a1f', commitLabelColor: '#252f3d', commitLabelBackground: '#ebe7e4'
+            }
+        });
+    }
+    function renderVisible() {
+        var nodes = diagrams.filter(function (d) { return !d.el.hasAttribute('data-processed') && d.el.offsetParent !== null; }).map(function (d) { return d.el; });
+        if (nodes.length) mermaid.run({ nodes: nodes });
+    }
+    function resetDiagrams() {
+        diagrams.forEach(function (d) { d.el.removeAttribute('data-processed'); d.el.textContent = d.src; });
+    }
+
+    var themeBtn = document.getElementById('themeToggle');
+    function syncThemeLabel() { themeBtn.textContent = isDark() ? 'Light' : 'Dark'; }
+    themeBtn.addEventListener('click', function () {
+        root.classList.toggle('dark');
+        try { localStorage.setItem('infrainv:theme', isDark() ? 'dark' : 'light'); } catch (e) {}
+        syncThemeLabel(); configureMermaid(); resetDiagrams(); renderVisible();
+    });
+
+    /* ---------- Walkthrough ---------- */
+    var steps = [
+        { t: 'Branch', h: 'Create a feature branch',
+          b: 'Never work directly on main. A branch is a private sandbox. Main stays deployable while you experiment.',
+          c: '$ git checkout main\n$ git pull\n$ git checkout -b feat/random-static-page\nSwitched to a new branch \'feat/random-static-page\'' },
+        { t: 'Commit', h: 'Make small, focused commits',
+          b: 'Each commit is one logical change with a message that says why. Small commits make the eventual diff easy to review.',
+          c: '$ git add core/urls.py core/templates/core/random.html\n$ git commit -m "feat(core): add static /random blueprint page"\n[feat/random-static-page 1a2b3c4] feat(core): ...\n 2 files changed, 420 insertions(+)' },
+        { t: 'Push', h: 'Push the branch to the remote',
+          b: 'Pushing publishes your branch to GitHub so others (and CI) can see it. Main is still untouched.',
+          c: '$ git push -u origin feat/random-static-page\nremote: Create a pull request for \'feat/random-static-page\':\nremote:   https://github.com/you/infra-inv/pull/new/...' },
+        { t: 'Open PR', h: 'Open the pull request',
+          b: 'Write a title and description: what changed, why, how to test it, and screenshots if there\'s UI. Link the issue. Assign reviewers.',
+          c: '$ gh pr create \\\n    --base main \\\n    --title "feat: add static /random blueprint page" \\\n    --body "Adds a no-DB docs page with ERD + UML."\nhttps://github.com/you/infra-inv/pull/42' },
+        { t: 'CI checks', h: 'Automated checks run',
+          b: 'CI (e.g. GitHub Actions) runs tests, linters and builds on the PR\'s code. A red check blocks the merge, so robots catch the obvious mistakes before humans spend time.',
+          c: '$ gh pr checks 42\n✓ lint        12s\n✓ tests       48s   (python manage.py test)\n✓ build       20s' },
+        { t: 'Review', h: 'Teammates review the diff',
+          b: 'Reviewers read the changes line by line, leave comments, ask questions, and then Approve or Request changes. This shares knowledge and catches bugs and design problems.',
+          c: '$ gh pr review 42 --request-changes \\\n    --body "Credential FK note in ERD is great; pin mermaid version?"\n\n# reviewer later:\n$ gh pr review 42 --approve' },
+        { t: 'Iterate', h: 'Address the feedback',
+          b: 'The author pushes new commits to the same branch and the PR updates automatically. CI re-runs. The whole discussion stays attached to the code forever.',
+          c: '$ git commit -am "fix: pin mermaid@11.4.1"\n$ git push\n# PR #42 updated, checks re-running…' },
+        { t: 'Merge', h: 'Merge and clean up',
+          b: 'With green checks and approvals, the PR is merged into main (often via squash). The branch is deleted, and a deploy pipeline may ship main automatically.',
+          c: '$ gh pr merge 42 --squash --delete-branch\n✓ Squashed and merged pull request #42\n✓ Deleted branch feat/random-static-page\n$ git checkout main && git pull' }
+    ];
+    var cur = 0, timer = null;
+    var stagesEl = document.getElementById('stages');
+    steps.forEach(function (s, i) {
+        var li = document.createElement('li');
+        li.innerHTML = '<button class="stage w-full border border-[#8b847d]/40 bg-[#f4f2f0] p-3 text-left dark:border-[#495059] dark:bg-[#161d27]">' +
+            '<span class="flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-widest text-[#5c5752] dark:text-[#9fa4ab]"><span class="dot inline-block h-2 w-2 rounded-full bg-[#9fa4ab]"></span>Step ' + (i + 1) + '</span>' +
+            '<span class="mt-1 block text-sm">' + esc(s.t) + '</span></button>';
+        li.firstChild.addEventListener('click', function () { stop(); go(i); });
+        stagesEl.appendChild(li);
+    });
+    function go(i) {
+        cur = Math.max(0, Math.min(steps.length - 1, i));
+        var s = steps[cur];
+        Array.prototype.forEach.call(stagesEl.querySelectorAll('.stage'), function (b, j) {
+            b.classList.toggle('active', j === cur);
+            b.classList.toggle('done', j < cur);
+        });
+        var card = document.getElementById('stepCard');
+        card.innerHTML = '<div class="fade-in"><p class="font-mono text-[0.62rem] uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Step ' + (cur + 1) + ' of ' + steps.length + '</p>' +
+            '<h3 class="mt-2 text-xl">' + esc(s.h) + '</h3><p class="mt-3 text-[#394352] dark:text-[#d5d8db]/85">' + esc(s.b) + '</p></div>';
+        var cmd = document.getElementById('stepCmd');
+        cmd.textContent = s.c; cmd.classList.remove('fade-in'); void cmd.offsetWidth; cmd.classList.add('fade-in');
+        document.getElementById('prevBtn').disabled = cur === 0;
+        document.getElementById('nextBtn').disabled = cur === steps.length - 1;
+        document.getElementById('stepCount').textContent = (cur + 1) + ' / ' + steps.length;
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; document.getElementById('playBtn').innerHTML = '&#9654; Autoplay'; } }
+    document.getElementById('prevBtn').addEventListener('click', function () { stop(); go(cur - 1); });
+    document.getElementById('nextBtn').addEventListener('click', function () { stop(); go(cur + 1); });
+    document.getElementById('playBtn').addEventListener('click', function () {
+        if (timer) return stop();
+        if (cur === steps.length - 1) go(0);
+        this.innerHTML = '&#10073;&#10073; Pause';
+        timer = setInterval(function () { if (cur >= steps.length - 1) return stop(); go(cur + 1); }, 3500);
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.target.closest('input, textarea')) return;
+        var r = document.getElementById('walkthrough').getBoundingClientRect();
+        if (r.bottom < 0 || r.top > window.innerHeight) return;
+        if (e.key === 'ArrowRight') { stop(); go(cur + 1); }
+        if (e.key === 'ArrowLeft') { stop(); go(cur - 1); }
+    });
+    go(0);
+
+    /* ---------- Simulator ---------- */
+    var sim;
+    var C = { grey: '#9fa4ab', green: '#5db87a', red: '#e8704f', amber: '#e8993a', purple: '#8b6fd1', blue: '#6a9fcc' };
+    function log(msg, color) {
+        var li = document.createElement('li');
+        li.className = 'relative fade-in';
+        li.innerHTML = '<span class="absolute -left-[1.3rem] top-1.5 h-2 w-2 rounded-full" style="background:' + (color || C.blue) + '"></span>' + esc(msg);
+        document.getElementById('timeline').appendChild(li);
+    }
+    function resetSim() {
+        sim = { ci: null, review: null, merged: false };
+        document.getElementById('timeline').innerHTML = '';
+        log('abhaya opened PR #42 from feat/random-static-page', C.green);
+        log('Review requested from @friend', C.blue);
+        paint();
+    }
+    function paint() {
+        var ciIcon = document.getElementById('ciIcon'), revIcon = document.getElementById('revIcon');
+        ciIcon.style.background = sim.ci === 'pass' ? C.green : sim.ci === 'fail' ? C.red : sim.ci === 'running' ? C.amber : C.grey;
+        document.getElementById('ciText').textContent = sim.ci === 'pass' ? 'CI: all checks passed' : sim.ci === 'fail' ? 'CI: tests failed' : sim.ci === 'running' ? 'CI: running…' : 'CI: not run yet';
+        revIcon.style.background = sim.review === 'approve' ? C.green : sim.review === 'changes' ? C.amber : C.grey;
+        document.getElementById('revText').textContent = sim.review === 'approve' ? 'Review: approved' : sim.review === 'changes' ? 'Review: changes requested' : 'Review: waiting for reviewer';
+        var ready = sim.ci === 'pass' && sim.review === 'approve' && !sim.merged;
+        var mb = document.getElementById('mergeBtn');
+        mb.disabled = !ready;
+        var hint = [];
+        if (sim.merged) hint.push('Merged. Branch deleted.');
+        else {
+            if (sim.ci !== 'pass') hint.push('needs passing CI');
+            if (sim.review !== 'approve') hint.push('needs 1 approval');
+        }
+        document.getElementById('mergeHint').textContent = sim.merged ? hint[0] : (hint.length ? 'Blocked: ' + hint.join(', ') : 'Ready to merge');
+        var badge = document.getElementById('prBadge');
+        badge.textContent = sim.merged ? 'Merged' : 'Open';
+        badge.style.background = sim.merged ? C.purple : C.green;
+        Array.prototype.forEach.call(document.querySelectorAll('.sim-btn'), function (b) { b.disabled = sim.merged || sim.ci === 'running'; b.classList.toggle('opacity-40', b.disabled); });
+    }
+    function runCI(result) {
+        sim.ci = 'running'; paint(); log('CI started: lint, tests, build', C.amber);
+        setTimeout(function () {
+            sim.ci = result;
+            log(result === 'pass' ? 'CI passed ✓' : 'CI failed ✗: test_random_view', result === 'pass' ? C.green : C.red);
+            paint();
+        }, 900);
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ci]'), function (b) {
+        b.addEventListener('click', function () { runCI(b.dataset.ci); });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-review]'), function (b) {
+        b.addEventListener('click', function () {
+            sim.review = b.dataset.review;
+            log(sim.review === 'approve' ? '@friend approved these changes' : '@friend requested changes: "please pin the CDN version"', sim.review === 'approve' ? C.green : C.amber);
+            paint();
+        });
+    });
+    document.getElementById('pushFix').addEventListener('click', function () {
+        log('abhaya pushed 1 commit: "fix: address review"', C.blue);
+        if (sim.review === 'approve') log('Approval dismissed: new commits need re-review', C.grey);
+        sim.review = null;
+        log('Re-review requested from @friend', C.blue);
+        runCI('pass');
+    });
+    document.getElementById('mergeBtn').addEventListener('click', function () {
+        if (this.disabled) return;
+        sim.merged = true;
+        log('PR #42 squashed and merged into main', C.purple);
+        log('Branch feat/random-static-page deleted', C.grey);
+        paint();
+    });
+    document.getElementById('resetSim').addEventListener('click', resetSim);
+    resetSim();
+
+    /* ---------- Merge strategy tabs ---------- */
+    function showTab(name) {
+        Array.prototype.forEach.call(document.querySelectorAll('.tab-btn'), function (b) {
+            var on = b.dataset.tab === name;
+            b.className = 'tab-btn border px-3 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.08em] ' +
+                (on ? 'border-[#4b607c] bg-[#4b607c] text-white dark:border-[#6a9fcc] dark:bg-[#6a9fcc]' : 'border-[#8b847d]/60 hover:border-[#4b607c] dark:border-[#495059] dark:hover:border-[#6a9fcc]');
+            b.setAttribute('aria-selected', on);
+        });
+        Array.prototype.forEach.call(document.querySelectorAll('.tab-panel'), function (p) { p.classList.toggle('hidden', p.dataset.panel !== name); });
+        renderVisible();
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.tab-btn'), function (b) { b.addEventListener('click', function () { showTab(b.dataset.tab); }); });
+
+    /* ---------- Benefits ---------- */
+    var benefits = [
+        ['Quality gate', 'Bugs are caught before they reach main.', 'Two sets of eyes plus automated tests catch logic errors, missing edge cases and security issues while they\'re still cheap to fix.'],
+        ['Shared knowledge', 'No single person is the only one who knows a module.', 'Reviewers learn the code they approve. When someone is away, others already understand the change.'],
+        ['History & context', 'Every line has a "why".', 'git blame → commit → PR shows the discussion, the linked issue and the reasoning. Future maintainers get the context, not just the code.'],
+        ['Consistency', 'One codebase, one style.', 'Linters in CI and reviewer feedback keep naming, structure and patterns uniform, so the code stays readable as the team grows.'],
+        ['Safe collaboration', 'Many people, no stepping on toes.', 'Everyone works on isolated branches. Conflicts surface in the PR, not in production.'],
+        ['Easy rollback', 'One PR, one revertable unit.', 'If a squashed PR causes trouble, a single git revert (or GitHub\'s Revert button) removes it cleanly.']
+    ];
+    var bEl = document.getElementById('benefits');
+    benefits.forEach(function (b) {
+        var d = document.createElement('button');
+        d.className = 'bg-[#f4f2f0] p-5 text-left hover:bg-[#6a9fcc]/10 dark:bg-[#161d27] dark:hover:bg-[#212730]';
+        d.innerHTML = '<h3 class="font-mono text-xs uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">' + esc(b[0]) + ' <span class="float-right">+</span></h3>' +
+            '<p class="mt-2 text-sm">' + esc(b[1]) + '</p><p class="more mt-2 hidden text-sm text-[#5c5752] dark:text-[#9fa4ab]">' + esc(b[2]) + '</p>';
+        d.setAttribute('aria-expanded', 'false');
+        d.addEventListener('click', function () {
+            var m = d.querySelector('.more'), open = m.classList.toggle('hidden') === false;
+            d.querySelector('.float-right').textContent = open ? '−' : '+';
+            d.setAttribute('aria-expanded', open);
+        });
+        bEl.appendChild(d);
+    });
+
+    /* ---------- Checklist ---------- */
+    var checks = ['PR does one thing (small diff)', 'Title says what; description says why', 'Linked to an issue / ticket', 'Tests added or updated', 'CI is green locally / on push', 'Self-reviewed the diff first', 'Screenshots for UI changes', 'No secrets or .env values committed'];
+    var clEl = document.getElementById('checklist');
+    checks.forEach(function (c, i) {
+        var li = document.createElement('li');
+        li.innerHTML = '<label class="flex cursor-pointer items-center gap-2 border border-[#8b847d]/30 p-2 dark:border-[#495059]"><input type="checkbox" class="accent-[#5db87a]" data-i="' + i + '"> <span>' + esc(c) + '</span></label>';
+        clEl.appendChild(li);
+    });
+    function updateChecks() {
+        var boxes = clEl.querySelectorAll('input'), n = 0;
+        Array.prototype.forEach.call(boxes, function (b) { if (b.checked) n++; });
+        document.getElementById('checkBar').style.width = (n / boxes.length * 100) + '%';
+        document.getElementById('checkLabel').textContent = n === boxes.length ? 'Ready to request review ✓' : n + ' / ' + boxes.length + ' done';
+    }
+    clEl.addEventListener('change', updateChecks);
+    updateChecks();
+
+    /* ---------- Quiz ---------- */
+    var quiz = [
+        { q: 'Where should you make changes for a new feature?', o: ['Directly on main', 'On a separate feature branch', 'On the production server'], a: 1, e: 'Branches isolate work so main stays stable and deployable.' },
+        { q: 'A reviewer clicks "Request changes". What do you do?', o: ['Open a new PR', 'Push more commits to the same branch', 'Merge anyway'], a: 1, e: 'New commits on the branch update the same PR, and the conversation stays in one place.' },
+        { q: 'Which strategy leaves exactly one commit on main per PR?', o: ['Merge commit', 'Rebase', 'Squash'], a: 2, e: 'Squash folds all branch commits into one.' },
+        { q: 'What usually blocks the merge button on a protected branch?', o: ['Failing CI or missing approvals', 'Too many files', 'Long PR title'], a: 0, e: 'Branch protection rules require green checks and the configured number of approvals.' }
+    ];
+    var answered = {}, score = 0, qEl = document.getElementById('quizBox');
+    quiz.forEach(function (item, qi) {
+        var box = document.createElement('div');
+        box.className = 'border border-[#8b847d]/40 bg-[#f4f2f0] p-5 dark:border-[#495059] dark:bg-[#161d27]';
+        box.innerHTML = '<p class="font-mono text-[0.62rem] uppercase tracking-widest text-[#4b607c] dark:text-[#6a9fcc]">Q' + (qi + 1) + '</p><p class="mt-1">' + esc(item.q) + '</p><div class="mt-3 flex flex-wrap gap-2"></div><p class="exp mt-3 hidden text-sm"></p>';
+        var opts = box.querySelector('div');
+        item.o.forEach(function (o, oi) {
+            var b = document.createElement('button');
+            b.className = 'border border-[#8b847d]/60 px-3 py-1.5 text-sm hover:border-[#4b607c] dark:border-[#495059] dark:hover:border-[#6a9fcc]';
+            b.textContent = o;
+            b.addEventListener('click', function () {
+                if (answered[qi]) return;
+                answered[qi] = true;
+                var ok = oi === item.a;
+                if (ok) score++;
+                Array.prototype.forEach.call(opts.children, function (x, xi) {
+                    x.disabled = true;
+                    if (xi === item.a) { x.style.borderColor = C.green; x.style.background = 'rgba(93,184,122,.15)'; }
+                    else if (xi === oi) { x.style.borderColor = C.red; x.style.background = 'rgba(232,112,79,.15)'; }
+                    else x.classList.add('opacity-50');
+                });
+                var exp = box.querySelector('.exp');
+                exp.textContent = (ok ? '✓ Correct. ' : '✗ Not quite. ') + item.e;
+                exp.style.color = ok ? C.green : C.red;
+                exp.classList.remove('hidden');
+                var n = Object.keys(answered).length;
+                document.getElementById('quizScore').textContent = 'Score: ' + score + ' / ' + n + (n === quiz.length ? (score === quiz.length ? ': ready to open your first PR!' : '. Re-read the walkthrough and try again.') : '');
+            });
+            opts.appendChild(b);
+        });
+        qEl.appendChild(box);
+    });
+
+    /* ---------- Boot ---------- */
+    syncThemeLabel();
+    configureMermaid();
+    showTab('merge');
+}());
+</script>
+{% endverbatim %}
+</body>
+</html>
